@@ -671,7 +671,7 @@ async function spLogin(){
     await loadMSAL();
     const app=getMSALApp();
     await app.initialize();
-    const scopes=['https://estelaliving-my.sharepoint.com/AllSites.ReadWrite'];
+    const scopes=['https://graph.microsoft.com/Sites.ReadWrite.All','https://graph.microsoft.com/Files.ReadWrite.All'];
     let result;
     // Try silent first
     const accounts=app.getAllAccounts();
@@ -741,10 +741,9 @@ function getProjectSPPath(p){
 
 // Ensure a folder exists at path, create if not. Returns item id.
 async function spEnsureFolder(driveId, folderPath){
-  // Try to get it first
   const enc=folderPath.split('/').map(encodeURIComponent).join('/');
   const checkR=await fetch(
-    `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root:/${enc}`,
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${enc}`,
     {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
   );
   if(checkR.ok){const d=await checkR.json();return d.id;}
@@ -753,18 +752,15 @@ async function spEnsureFolder(driveId, folderPath){
   let currentPath='';
   for(const part of folderPath.split('/')){
     if(!part)continue;
-    const parentEnc=currentPath?encodeURIComponent(currentPath):'root';
     const parentUrl=currentPath
-      ?`https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root:/${encodeURIComponent(currentPath)}:/children`
-      :`https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root/children`;
+      ?`https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${currentPath.split('/').map(encodeURIComponent).join('/')}:/children`
+      :`https://graph.microsoft.com/v1.0/drives/${driveId}/root/children`;
     currentPath=currentPath?`${currentPath}/${part}`:part;
-    // Check if this level exists
     const chkR=await fetch(
-      `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root:/${currentPath.split('/').map(encodeURIComponent).join('/')}`,
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${currentPath.split('/').map(encodeURIComponent).join('/')}`,
       {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
     );
     if(!chkR.ok){
-      // Create it
       await fetch(parentUrl,{
         method:'POST',
         headers:{Authorization:`Bearer ${spToken}`,'Content-Type':'application/json','Accept':'application/json'},
@@ -772,9 +768,8 @@ async function spEnsureFolder(driveId, folderPath){
       });
     }
   }
-  // Return final folder id
   const finalR=await fetch(
-    `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root:/${folderPath.split('/').map(encodeURIComponent).join('/')}`,
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${folderPath.split('/').map(encodeURIComponent).join('/')}`,
     {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
   );
   const fd=await finalR.json();
@@ -785,13 +780,12 @@ async function spEnsureFolder(driveId, folderPath){
 async function spUploadFile(driveId, folderPath, fileName, fileBlob){
   const enc=folderPath.split('/').map(encodeURIComponent).join('/');
   const uploadR=await fetch(
-    `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root:/${enc}/${encodeURIComponent(fileName)}:/content`,
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${enc}/${encodeURIComponent(fileName)}:/content`,
     {method:'PUT',headers:{Authorization:`Bearer ${spToken}`,'Content-Type':fileBlob.type||'application/octet-stream'},body:fileBlob}
   );
   const uploaded=await uploadR.json();
-  // Create sharing link
   const shareR=await fetch(
-    `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/items/${uploaded.id}/createLink`,
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${uploaded.id}/createLink`,
     {method:'POST',headers:{Authorization:`Bearer ${spToken}`,'Content-Type':'application/json','Accept':'application/json'},
      body:JSON.stringify({type:'view',scope:'organization'})}
   );
@@ -801,16 +795,17 @@ async function spUploadFile(driveId, folderPath, fileName, fileBlob){
 
 async function spGetDriveId(){
   const r=await fetch(
-    `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drive`,
+    `https://graph.microsoft.com/v1.0/me/drive`,
     {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
   );
   const d=await r.json();
+  if(!d.id)throw new Error('Could not get drive: '+(d.error?.message||JSON.stringify(d)));
   return d.id;
 }
 
 async function spGetFileId(driveId){
   const r=await fetch(
-    `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root:/${SP_CONFIG.driveFolder}/${SP_CONFIG.fileName}`,
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${SP_CONFIG.driveFolder}/${SP_CONFIG.fileName}`,
     {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
   );
   if(r.status===404)return null;
@@ -825,23 +820,19 @@ async function spPull(){
     setSyncStatus('syncing');
     const driveId=await spGetDriveId();
     const fileId=await spGetFileId(driveId);
-    if(!fileId){
-      // File doesn't exist yet — push current data
-      await spPush();return;
-    }
+    if(!fileId){await spPush();return;}
     const r=await fetch(
-      `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/items/${fileId}/content`,
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${fileId}/content`,
       {headers:{Authorization:`Bearer ${spToken}`}}
     );
     const text=await r.text();
     const remote=JSON.parse(text);
-    // Merge: remote wins for projects, keep local sections if remote has none
     S.projects=remote.projects||S.projects;
     if(remote.sections)S.sections=remote.sections;
     if(remote.attachments)S.attachments=remote.attachments;
     if(remote.lastImportMapping)S.lastImportMapping=remote.lastImportMapping;
     if(remote.filterFieldId)S.filterFieldId=remote.filterFieldId;
-    save();// also keep local copy
+    save();
     spLastSync=new Date();
     setSyncStatus('synced');
     renderSidebar();renderMain();
@@ -860,7 +851,7 @@ async function spPush(){
     const content=JSON.stringify(S,null,2);
     const blob=new Blob([content],{type:'application/json'});
     await fetch(
-      `https://estelaliving-my.sharepoint.com/personal/rcelis_estelaliving_com/_api/v2.0/drives/${driveId}/root:/${SP_CONFIG.driveFolder}/${SP_CONFIG.fileName}:/content`,
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${SP_CONFIG.driveFolder}/${SP_CONFIG.fileName}:/content`,
       {method:'PUT',headers:{Authorization:`Bearer ${spToken}`,'Content-Type':'application/json'},body:blob}
     );
     spLastSync=new Date();spSyncing=false;
