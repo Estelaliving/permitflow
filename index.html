@@ -652,11 +652,13 @@ function loadMSAL(){
 }
 
 function getMSALApp(){
+  // Hosted at https://lgrimaldiestelaliving.github.io/permitflow/
+  const redirectUri=window.location.href.split('?')[0].split('#')[0];
   return new window.msal.PublicClientApplication({
     auth:{
       clientId:SP_CONFIG.clientId,
       authority:`https://login.microsoftonline.com/${SP_CONFIG.tenantId}`,
-      redirectUri:window.location.href.split('?')[0],
+      redirectUri,
     },
     cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false},
   });
