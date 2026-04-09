@@ -1,0 +1,2946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PermitFlow</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#F4F2ED;--surface:#FFF;--surface2:#EEEAE2;--surface3:#E6E1D6;
+  --border:#D8D3C8;--border2:#BFB9AC;
+  --text:#1C1A16;--text2:#6A6560;--text3:#A09B93;
+  --accent:#1B4F35;--accent2:#2D7A52;--accent-bg:#E6F0EB;
+  --blue:#1A3D6B;--blue-bg:#E4EDF8;
+  --amber:#7A5C18;--amber-bg:#F5EDD6;
+  --red:#8B1E2A;--red-bg:#F5E0E3;
+  --green:#1B5C32;--green-bg:#E0F0E6;
+  --r:8px;--r2:14px;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.55}
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:270px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.sb-head{padding:1.25rem 1.125rem 1rem;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--accent);letter-spacing:.12em;text-transform:uppercase}
+.logo-tag{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
+.sb-body{flex:1;overflow-y:auto;padding:.75rem .875rem}
+.sb-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;margin-top:.75rem}
+.proj-item{padding:.55rem .7rem;border-radius:var(--r);cursor:pointer;border:1px solid transparent;margin-bottom:3px;transition:all .13s}
+.proj-item:hover{background:var(--surface2)}
+.proj-item.active{background:var(--accent-bg);border-color:rgba(27,79,53,.18)}
+.proj-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-item.active .proj-name{color:var(--accent)}
+.proj-sub{font-size:11px;color:var(--text3);margin-top:1px;display:flex;align-items:center;gap:5px}
+.mini-bar{display:inline-block;width:32px;height:3px;background:var(--border);border-radius:99px;overflow:hidden;vertical-align:middle}
+.mini-bar-fill{height:100%;background:var(--accent2);border-radius:99px;transition:width .3s}
+.btn-add{display:flex;align-items:center;gap:7px;width:100%;margin-top:6px;padding:.55rem .7rem;background:none;border:1px dashed var(--border2);border-radius:var(--r);font-family:var(--sans);font-size:13px;color:var(--text2);cursor:pointer;transition:all .13s}
+.btn-add:hover{border-color:var(--accent2);color:var(--accent);background:var(--accent-bg)}
+.sb-foot{padding:.875rem 1rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.btn-sm{display:flex;align-items:center;gap:6px;padding:.45rem .7rem;border-radius:var(--r);font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:all .13s}
+.btn-sm:hover{background:var(--surface2);border-color:var(--border2)}
+.btn-sm.accent{background:var(--accent-bg);color:var(--accent);border-color:rgba(27,79,53,.2)}
+.btn-sm.accent:hover{background:var(--accent);color:#fff}
+.btn-sm.blue{background:var(--blue-bg);color:var(--blue);border-color:rgba(26,61,107,.2)}
+.btn-sm.blue:hover{background:var(--blue);color:#fff}
+.main-inner{padding:2rem 2.25rem;max-width:1100px}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;gap:1rem;text-align:center}
+.empty-icon{font-size:52px;opacity:.25}
+.empty-title{font-size:20px;font-weight:500;color:var(--text2)}
+.empty-sub{font-size:13px;color:var(--text3)}
+.proj-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.proj-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:3px}
+.proj-meta{font-size:12px;color:var(--text3);font-family:var(--mono)}
+.hdr-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.btn{display:flex;align-items:center;gap:6px;padding:.45rem .9rem;border-radius:var(--r);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:all .13s;white-space:nowrap}
+.btn:hover{background:var(--surface2);border-color:var(--border2)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary:hover{background:var(--accent2)}
+.btn.danger{color:var(--red);border-color:rgba(139,30,42,.2)}
+.btn.danger:hover{background:var(--red-bg)}
+.btn.edit-fields{background:var(--blue-bg);color:var(--blue);border-color:rgba(26,61,107,.18)}
+.btn.edit-fields:hover{background:#d0dff0}
+.prog-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:1.125rem 1.25rem;margin-bottom:1.25rem}
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.prog-lbl{font-size:12px;font-weight:600;color:var(--text2)}
+.prog-cnt{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:500}
+.prog-bg{height:7px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.sec-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:12px;overflow:hidden}
+.sec-head{display:flex;align-items:center;gap:10px;padding:.875rem 1.25rem;cursor:pointer;user-select:none;transition:background .13s}
+.sec-head:hover{background:var(--surface2)}
+.sec-icon{font-size:15px;flex-shrink:0}
+.sec-title{font-size:13px;font-weight:600;flex:1;color:var(--text)}
+.sec-stat{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.sec-stat.done{color:var(--accent)}
+.sec-chev{font-size:10px;color:var(--text3);transition:transform .2s;flex-shrink:0}
+.sec-chev.open{transform:rotate(180deg)}
+.sec-body{border-top:1px solid var(--border)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.fcell{padding:.7rem 1rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px}
+.flabel{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.fval{font-size:13px;color:var(--text);cursor:pointer;border-radius:5px;padding:2px 4px;margin:-2px -4px;transition:background .12s;word-break:break-word}
+.fval:hover{background:var(--surface2)}
+.fval.empty{color:var(--text3);font-style:italic}
+.chk-wrap{display:flex;align-items:center;gap:8px;margin-top:2px}
+.chk{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--surface);transition:all .13s}
+.chk:hover{border-color:var(--accent2)}
+.chk.on{background:var(--accent);border-color:var(--accent)}
+.chk.on::after{content:'';display:block;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.chk-lbl{font-size:13px;color:var(--text);cursor:pointer}
+.chk-lbl.done{color:var(--text3);text-decoration:line-through}
+.ie-input{width:100%;font-family:var(--sans);font-size:13px;padding:4px 6px;border:1px solid var(--accent2);border-radius:6px;outline:none;box-shadow:0 0 0 2px rgba(27,79,53,.1);background:var(--surface);color:var(--text)}
+.ie-row{display:flex;gap:5px;margin-top:4px}
+.ie-save{padding:3px 10px;background:var(--accent);color:#fff;border:none;border-radius:5px;font-size:11px;cursor:pointer;font-family:var(--sans)}
+.ie-cancel{padding:3px 8px;background:none;border:1px solid var(--border);border-radius:5px;font-size:11px;cursor:pointer;font-family:var(--sans);color:var(--text2)}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;font-family:var(--mono);letter-spacing:.04em;cursor:pointer;border:1px solid transparent}
+.p-active{background:var(--blue-bg);color:var(--blue);border-color:rgba(26,61,107,.2)}
+.p-onhold{background:var(--amber-bg);color:var(--amber);border-color:rgba(122,92,24,.2)}
+.p-completed{background:var(--green-bg);color:var(--green);border-color:rgba(27,92,50,.2)}
+.p-pending{background:var(--surface2);color:var(--text2);border-color:var(--border)}
+.dd-wrap{position:relative;display:inline-block}
+.dd-menu{position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:50;min-width:130px;overflow:hidden;display:none}
+.dd-opt{padding:.45rem .75rem;font-size:12px;cursor:pointer;transition:background .1s}
+.dd-opt:hover{background:var(--surface2)}
+.notes-bar{background:var(--amber-bg);border:1px solid rgba(122,92,24,.18);border-radius:var(--r);padding:.65rem 1rem;margin-bottom:1rem;font-size:13px;color:var(--amber);cursor:pointer;display:flex;align-items:flex-start;gap:8px}
+.notes-edit{margin-bottom:1rem}
+.notes-ta{width:100%;font-family:var(--sans);font-size:13px;padding:.65rem .875rem;border:1px solid var(--accent2);border-radius:var(--r);outline:none;background:var(--surface);color:var(--text);resize:vertical;min-height:80px;box-shadow:0 0 0 2px rgba(27,79,53,.08)}
+
+/* ── Modals ── */
+.modal-bg{position:fixed;inset:0;background:rgba(20,18,14,.52);display:flex;align-items:center;justify-content:center;z-index:200;padding:1rem;backdrop-filter:blur(3px)}
+.modal{background:var(--surface);border-radius:var(--r2);padding:2rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.modal-lg{max-width:720px}
+.modal-ttl{font-size:17px;font-weight:600;margin-bottom:.25rem;display:flex;justify-content:space-between;align-items:center}
+.modal-sub{font-size:12px;color:var(--text3);margin-bottom:1.25rem}
+.modal-x{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text3);line-height:1}
+.modal-x:hover{color:var(--text)}
+.mf{margin-bottom:.875rem}
+.mf label{display:block;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.mf input,.mf select,.mf textarea{width:100%;font-family:var(--sans);font-size:13px;padding:.55rem .75rem;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);outline:none;transition:border-color .13s}
+.mf input:focus,.mf select:focus,.mf textarea:focus{border-color:var(--accent2);box-shadow:0 0 0 2px rgba(27,79,53,.1)}
+.mf textarea{resize:vertical;min-height:65px}
+.mf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
+
+/* ── Field Editor ── */
+.fe-panel-bg{position:fixed;inset:0;background:rgba(20,18,14,.45);z-index:300;display:flex;align-items:stretch;justify-content:flex-end;backdrop-filter:blur(2px)}
+.fe-panel{width:480px;max-width:100vw;background:var(--surface);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.15);overflow:hidden}
+.fe-head{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.fe-title{font-size:16px;font-weight:600;color:var(--text)}
+.fe-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.fe-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text3);line-height:1}
+.fe-close:hover{color:var(--text)}
+.fe-body{flex:1;overflow-y:auto;padding:1rem 1.5rem}
+.fe-sec{margin-bottom:1.5rem}
+.fe-sec-head{display:flex;align-items:center;gap:8px;margin-bottom:.65rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.fe-sec-icon{font-size:14px}
+.fe-sec-name{font-size:13px;font-weight:600;color:var(--text);flex:1;cursor:pointer}
+.fe-sec-add{font-size:11px;padding:3px 10px;background:var(--accent-bg);color:var(--accent);border:1px solid rgba(27,79,53,.2);border-radius:99px;cursor:pointer;font-family:var(--sans);font-weight:500;white-space:nowrap}
+.fe-sec-add:hover{background:var(--accent);color:#fff}
+.fe-field-row{display:flex;align-items:center;gap:8px;padding:.45rem .5rem;border-radius:var(--r);margin-bottom:3px;border:1px solid transparent;background:var(--surface);transition:all .13s}
+.fe-field-row:hover{background:var(--surface2);border-color:var(--border)}
+.fe-drag{color:var(--text3);cursor:grab;font-size:14px;padding:0 2px;flex-shrink:0;user-select:none}
+.fe-drag:active{cursor:grabbing}
+.fe-field-name{flex:1;font-size:13px;color:var(--text)}
+.fe-field-type{font-size:10px;font-family:var(--mono);color:var(--text3);background:var(--surface2);border-radius:4px;padding:1px 6px;flex-shrink:0}
+.fe-edit-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer;color:var(--text2);font-family:var(--sans);flex-shrink:0}
+.fe-edit-btn:hover{background:var(--blue-bg);color:var(--blue);border-color:rgba(26,61,107,.2)}
+.fe-del-btn{background:none;border:1px solid transparent;border-radius:5px;padding:3px 6px;font-size:13px;cursor:pointer;color:var(--text3);flex-shrink:0;line-height:1}
+.fe-del-btn:hover{background:var(--red-bg);color:var(--red);border-color:rgba(139,30,42,.2)}
+.fe-name-input{flex:1;font-family:var(--sans);font-size:13px;padding:3px 7px;border:1px solid var(--accent2);border-radius:5px;outline:none;background:var(--surface);color:var(--text);box-shadow:0 0 0 2px rgba(27,79,53,.08)}
+.fe-add-form{display:flex;gap:6px;align-items:center;margin-top:6px;padding:.6rem .5rem;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border)}
+.fe-add-input{flex:1;font-family:var(--sans);font-size:13px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;outline:none;background:var(--surface);color:var(--text)}
+.fe-add-input:focus{border-color:var(--accent2)}
+.fe-add-type{font-family:var(--sans);font-size:12px;padding:5px 6px;border:1px solid var(--border);border-radius:6px;outline:none;background:var(--surface);color:var(--text);cursor:pointer}
+.fe-add-ok{padding:5px 12px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--sans);font-weight:500}
+.fe-add-ok:hover{background:var(--accent2)}
+.fe-add-cancel{padding:5px 8px;background:none;border:1px solid var(--border);border-radius:6px;font-size:12px;cursor:pointer;color:var(--text2);font-family:var(--sans)}
+.fe-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
+.fe-hint{font-size:11px;margin-bottom:1rem;padding:.5rem .75rem;background:var(--blue-bg);border-radius:var(--r);color:var(--blue)}
+
+/* ── Import Modal ── */
+.import-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.25rem}
+.import-tab{padding:.55rem 1.1rem;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2);transition:all .13s;margin-bottom:-1px}
+.import-tab.active{color:var(--accent);border-color:var(--accent)}
+.import-tab:hover{color:var(--text)}
+.import-panel{display:none}
+.import-panel.active{display:block}
+
+/* Paste area */
+.paste-area{width:100%;min-height:140px;font-family:var(--mono);font-size:12px;padding:.75rem;border:1px solid var(--border);border-radius:var(--r);background:var(--surface2);color:var(--text);outline:none;resize:vertical;line-height:1.6}
+.paste-area:focus{border-color:var(--accent2);box-shadow:0 0 0 2px rgba(27,79,53,.1);background:var(--surface)}
+.paste-hint{font-size:11px;color:var(--text3);margin-top:.4rem;font-family:var(--mono)}
+
+/* CSV drop zone */
+.drop-zone{border:2px dashed var(--border2);border-radius:var(--r2);padding:2rem 1rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface2)}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent2);background:var(--accent-bg)}
+.drop-zone-icon{font-size:32px;margin-bottom:.5rem;opacity:.5}
+.drop-zone-text{font-size:13px;color:var(--text2);font-weight:500}
+.drop-zone-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.drop-zone input{display:none}
+
+/* Column mapper */
+.col-mapper{margin-top:1.25rem}
+.col-mapper-title{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+.col-mapper-badge{font-size:10px;background:var(--green-bg);color:var(--green);padding:2px 8px;border-radius:99px;font-family:var(--mono)}
+.mapper-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:6px}
+.mapper-src{font-size:12px;font-family:var(--mono);color:var(--text2);background:var(--surface2);padding:5px 10px;border-radius:6px;border:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mapper-arrow{font-size:14px;color:var(--text3);text-align:center}
+.mapper-select{width:100%;font-family:var(--sans);font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);outline:none;cursor:pointer}
+.mapper-select:focus{border-color:var(--accent2)}
+.mapper-select.mapped{border-color:var(--accent2);background:var(--accent-bg)}
+
+/* Preview table */
+.preview-wrap{margin-top:1rem;overflow-x:auto;max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--r)}
+.preview-table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--mono)}
+.preview-table th{background:var(--surface2);padding:5px 10px;text-align:left;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0}
+.preview-table td{padding:4px 10px;border-bottom:1px solid var(--border);color:var(--text);white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.preview-table tr:last-child td{border-bottom:none}
+.preview-table tr:hover td{background:var(--surface2)}
+
+.import-result{margin-top:1rem;padding:.75rem 1rem;border-radius:var(--r);font-size:13px;display:none}
+.import-result.success{background:var(--green-bg);color:var(--green);border:1px solid rgba(27,92,50,.2)}
+.import-result.error{background:var(--red-bg);color:var(--red);border:1px solid rgba(139,30,42,.2)}
+
+.mode-toggle{display:flex;gap:6px;margin-bottom:.75rem}
+.mode-btn{padding:4px 12px;border-radius:99px;font-size:12px;cursor:pointer;font-family:var(--sans);font-weight:500;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:all .13s}
+.mode-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ── Multi-select / manage mode ── */
+.sb-manage-bar{display:none;align-items:center;justify-content:space-between;padding:.5rem .875rem;background:var(--red-bg);border-bottom:1px solid rgba(139,30,42,.15);flex-shrink:0}
+.sb-manage-bar.show{display:flex}
+.sb-manage-count{font-size:12px;font-weight:600;color:var(--red)}
+.sb-manage-actions{display:flex;gap:6px}
+.sb-manage-del{padding:3px 10px;background:var(--red);color:#fff;border:none;border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.sb-manage-del:disabled{opacity:.4;cursor:default}
+.sb-manage-cancel{padding:3px 8px;background:none;border:1px solid rgba(139,30,42,.3);border-radius:99px;font-size:11px;cursor:pointer;color:var(--red);font-family:var(--sans)}
+.proj-item.manage-mode{padding-left:.45rem}
+.proj-checkbox{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;background:var(--surface);transition:all .13s;margin-right:6px;vertical-align:middle}
+.proj-checkbox.sel{background:var(--red);border-color:var(--red)}
+.proj-checkbox.sel::after{content:'';display:block;width:4px;height:7px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.proj-item.selected{background:var(--red-bg);border-color:rgba(139,30,42,.2)}
+.btn-sm.red{background:var(--red-bg);color:var(--red);border-color:rgba(139,30,42,.2)}
+.btn-sm.red:hover{background:var(--red);color:#fff}
+
+/* ── Remap button in import success ── */
+.remap-btn{margin-top:.6rem;padding:5px 14px;background:none;border:1px solid var(--accent2);border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;color:var(--accent);font-family:var(--sans)}
+.remap-btn:hover{background:var(--accent-bg)}
+
+/* Cross-section drop zones */
+.fe-sec-head.drag-over{background:var(--accent-bg);border-radius:var(--r)}
+.fe-drop-end{display:none;text-align:center;font-size:11px;color:var(--text3);padding:.4rem;border:1.5px dashed var(--border);border-radius:var(--r);margin:.3rem .5rem .5rem;cursor:default;transition:all .15s}
+.fe-drop-end.visible{display:block}
+.fe-drop-end.drag-over{background:var(--accent-bg);border-color:var(--accent2);color:var(--accent)}
+.fe-field-row.drag-over-top{border-top:2px solid var(--accent2)!important}
+.fe-field-row.drag-over-bottom{border-bottom:2px solid var(--accent2)!important}
+
+/* Select field type */
+.fval-select{font-size:13px;color:var(--text);width:100%;font-family:var(--sans);padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface);outline:none;cursor:pointer;transition:border-color .13s}
+.fval-select:focus{border-color:var(--accent2)}
+.fval-select option{color:var(--text)}
+
+/* Options editor in field editor panel */
+.opts-editor{margin-top:.5rem;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border);padding:.5rem .6rem}
+.opts-editor-title{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
+.opt-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.opt-input{flex:1;font-family:var(--sans);font-size:12px;padding:3px 7px;border:1px solid var(--border);border-radius:5px;background:var(--surface);color:var(--text);outline:none}
+.opt-input:focus{border-color:var(--accent2)}
+.opt-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:0 2px;line-height:1}
+.opt-del:hover{color:var(--red)}
+.opt-add-btn{font-size:11px;padding:3px 10px;background:none;border:1px solid var(--border);border-radius:99px;cursor:pointer;color:var(--text2);font-family:var(--sans);margin-top:4px}
+.opt-add-btn:hover{border-color:var(--accent2);color:var(--accent);background:var(--accent-bg)}
+
+/* Lists Manager */
+.lm-field{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:1rem 1.125rem;margin-bottom:12px}
+.lm-field-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.lm-field-name{font-size:14px;font-weight:600;color:var(--text)}
+.lm-field-sec{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.lm-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.6rem}
+.lm-opt-tag{display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:12px;color:var(--text2)}
+.lm-opt-tag input{border:none;outline:none;background:transparent;font-family:var(--sans);font-size:12px;color:var(--text);width:auto;min-width:40px}
+.lm-opt-del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;line-height:1;padding:0 0 0 2px}
+.lm-opt-del:hover{color:var(--red)}
+.lm-add-opt{display:flex;gap:6px;align-items:center}
+.lm-add-input{font-family:var(--sans);font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:99px;outline:none;background:var(--surface);color:var(--text);min-width:160px}
+.lm-add-input:focus{border-color:var(--accent2)}
+.lm-add-btn{padding:5px 12px;background:var(--accent);color:#fff;border:none;border-radius:99px;font-size:12px;cursor:pointer;font-family:var(--sans);font-weight:500}
+.lm-add-btn:hover{background:var(--accent2)}
+/* ── File attachments ── */
+.attach-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;padding:2px 4px;line-height:1;border-radius:4px;transition:all .13s;flex-shrink:0}
+.attach-btn:hover{color:var(--accent);background:var(--accent-bg)}
+.attach-btn.has-files{color:var(--accent);font-weight:600}
+.attach-panel{margin-top:6px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:.6rem .75rem}
+.attach-list{display:flex;flex-direction:column;gap:5px;margin-bottom:.5rem}
+.attach-item{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 8px}
+.attach-icon{font-size:14px;flex-shrink:0}
+.attach-name{flex:1;font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.attach-name:hover{color:var(--accent);text-decoration:underline}
+.attach-del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;line-height:1;padding:0 2px;flex-shrink:0}
+.attach-del:hover{color:var(--red)}
+.attach-actions{display:flex;gap:6px;flex-wrap:wrap}
+.attach-link-row{display:flex;gap:5px;margin-top:6px}
+.attach-link-input{flex:1;font-family:var(--sans);font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;outline:none;background:var(--surface);color:var(--text)}
+.attach-link-input:focus{border-color:var(--accent2)}
+.attach-link-save{padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:11px;cursor:pointer;font-family:var(--sans);font-weight:500;white-space:nowrap}
+.attach-upload-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;background:none;border:1px solid var(--border);border-radius:6px;font-size:11px;cursor:pointer;color:var(--text2);font-family:var(--sans);transition:all .13s}
+.attach-upload-btn:hover{border-color:var(--accent2);color:var(--accent);background:var(--accent-bg)}
+
+/* ── SharePoint sync button ── */
+.sync-btn{display:flex;align-items:center;gap:7px;width:100%;padding:.55rem .75rem;border-radius:var(--r);font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid;transition:all .15s}
+.sync-offline{background:var(--blue-bg);color:var(--blue);border-color:rgba(26,61,107,.25)}
+.sync-offline:hover{background:var(--blue);color:#fff}
+.sync-busy{background:var(--amber-bg);color:var(--amber);border-color:rgba(122,92,24,.2);cursor:wait}
+.sync-ok{background:var(--green-bg);color:var(--green);border-color:rgba(27,92,50,.2)}
+.sync-ok:hover{background:var(--green);color:#fff}
+.sync-err{background:var(--red-bg);color:var(--red);border-color:rgba(139,30,42,.2)}
+.sync-err:hover{background:var(--red);color:#fff}
+
+/* ── Dashboard full-screen ── */
+.dash-nav-item{display:flex;align-items:center;gap:10px;padding:.55rem 1.125rem;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .13s}
+.dash-nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.dash-nav-item.active{background:rgba(255,255,255,.1);color:#fff;font-weight:500}
+.dash-comm-item{display:flex;align-items:center;gap:8px;padding:.4rem 1.125rem;font-size:12px;color:rgba(255,255,255,.55);cursor:pointer;transition:all .13s}
+.dash-comm-item:hover{color:#fff}
+.dash-stat-card{background:#fff;border-radius:12px;padding:1.25rem 1.5rem;border:1px solid #E5E7EB}
+.dash-stat-label{font-size:11px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
+.dash-stat-val{font-size:36px;font-weight:700;color:#111827;line-height:1}
+.dash-stat-sub{font-size:12px;color:#9CA3AF;margin-top:4px}
+.dash-comm-card{background:#fff;border-radius:12px;padding:1.25rem 1.5rem;border:1px solid #E5E7EB;cursor:pointer;transition:all .15s}
+.dash-comm-card:hover{border-color:#93C5FD;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.dash-comm-name{font-size:15px;font-weight:600;color:#111827;margin-bottom:.6rem}
+.dash-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;margin-right:6px}
+.dash-badge-gray{background:#F3F4F6;color:#374151}
+.dash-badge-blue{background:#EFF6FF;color:#1D4ED8}
+.dash-badge-green{background:#F0FDF4;color:#15803D}
+.dash-badge-red{background:#FEF2F2;color:#DC2626}
+.dash-alert-row{display:flex;align-items:center;gap:12px;padding:.75rem 1rem;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;margin-bottom:6px}
+.dash-alert-icon{color:#DC2626;font-size:14px;flex-shrink:0}
+.dash-alert-text{flex:1;font-size:13px;color:#991B1B}
+.dash-alert-link{font-size:12px;color:#DC2626;font-weight:600;cursor:pointer;white-space:nowrap;text-decoration:underline}
+.dash-table{width:100%;border-collapse:collapse;font-size:12px}
+.dash-table th{background:#F9FAFB;padding:.6rem .875rem;text-align:left;font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid #E5E7EB;white-space:nowrap}
+.dash-table td{padding:.65rem .875rem;border-bottom:1px solid #F3F4F6;vertical-align:middle}
+.dash-table tr:hover td{background:#F9FAFB}
+.dash-check{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px}
+.dash-check-done{background:#D1FAE5;color:#059669}
+.dash-check-pending{background:#F3F4F6;color:#9CA3AF}
+.dash-check-overdue{background:#FEE2E2;color:#DC2626}
+.dash-status-pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600}
+.dash-status-submitted{background:#EFF6FF;color:#1D4ED8}
+.dash-status-permitted{background:#F0FDF4;color:#15803D}
+.dash-status-pending{background:#FFF7ED;color:#C2410C}
+.dash-status-active{background:#F0F9FF;color:#0369A1}
+.dash-prog-bar{height:6px;background:#E5E7EB;border-radius:99px;overflow:hidden;width:80px}
+.dash-prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#F59E0B,#10B981)}
+.dash-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem}
+.dash-section-title{font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.06em}
+.dash-view-all{font-size:12px;color:#3B82F6;cursor:pointer;font-weight:500}
+.dash-col-header{padding:4px 8px;border-radius:4px;font-size:10px;font-weight:700;text-align:center;letter-spacing:.04em}
+.col-pre{background:#DBEAFE;color:#1D4ED8}
+.col-sub{background:#E9D5FF;color:#6D28D9}
+.col-post{background:#D1FAE5;color:#065F46}
+
+/* Alert banner */
+#alertBanner{display:none;position:fixed;top:0;left:0;right:0;z-index:600;background:#DC2626;color:#fff;padding:.55rem 1.25rem;font-size:13px;font-weight:500;align-items:center;justify-content:space-between;gap:1rem}
+
+/* ── Dashboard ── */
+.dash-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:1.5rem}
+.dash-card{background:var(--surface2);border-radius:var(--r);padding:.875rem 1rem;text-align:center}
+.dash-card-val{font-size:28px;font-weight:600;color:var(--text);line-height:1}
+.dash-card-lbl{font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+.dash-card.green .dash-card-val{color:var(--green)}
+.dash-card.red .dash-card-val{color:var(--red)}
+.dash-card.amber .dash-card-val{color:var(--amber)}
+.dash-card.blue .dash-card-val{color:var(--blue)}
+.dash-section{margin-bottom:1.5rem}
+.dash-section-title{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.dash-dev-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dash-dev-name{font-size:12px;font-weight:500;color:var(--text);min-width:120px}
+.dash-dev-bar-bg{flex:1;height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.dash-dev-bar-fill{height:100%;background:var(--accent2);border-radius:99px;transition:width .4s}
+.dash-dev-pct{font-size:11px;color:var(--text3);font-family:var(--mono);min-width:35px;text-align:right}
+.overdue-item{display:flex;align-items:flex-start;gap:10px;padding:.55rem .75rem;background:var(--red-bg);border:1px solid rgba(139,30,42,.15);border-radius:var(--r);margin-bottom:6px;cursor:pointer}
+.overdue-item:hover{background:#fde8ea}
+.overdue-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:4px}
+.overdue-proj{font-size:12px;font-weight:600;color:var(--red)}
+.overdue-field{font-size:11px;color:var(--text2);margin-top:1px}
+.overdue-days{font-size:11px;font-family:var(--mono);color:var(--red);margin-left:auto;flex-shrink:0;font-weight:600}
+.day-counter{background:var(--surface2);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.day-counter-info{flex:1}
+.day-counter-label{font-size:12px;font-weight:600;color:var(--text2)}
+.day-counter-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.day-counter-val{font-size:32px;font-weight:600;font-family:var(--mono);flex-shrink:0}
+.day-counter-val.green{color:var(--green)}
+.day-counter-val.amber{color:var(--amber)}
+.day-counter-val.red{color:var(--red)}
+
+/* ── Document tracking ── */
+.doc-track{margin-top:6px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:.5rem .65rem}
+.doc-track-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.doc-track-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;min-width:80px}
+.doc-track-val{font-size:11px;color:var(--text);font-family:var(--mono)}
+.doc-track-elapsed{font-size:10px;padding:1px 6px;border-radius:99px;font-family:var(--mono);font-weight:600}
+.elapsed-ok{background:var(--green-bg);color:var(--green)}
+.elapsed-warn{background:var(--amber-bg);color:var(--amber)}
+.elapsed-over{background:var(--red-bg);color:var(--red)}
+.doc-track-input{font-family:var(--sans);font-size:11px;padding:2px 6px;border:1px solid var(--border);border-radius:5px;background:var(--surface);color:var(--text);outline:none;width:110px}
+.doc-track-input:focus{border-color:var(--accent2)}
+.doc-track-who{font-family:var(--sans);font-size:11px;padding:2px 6px;border:1px solid var(--border);border-radius:5px;background:var(--surface);color:var(--text);outline:none;flex:1}
+.doc-track-who:focus{border-color:var(--accent2)}
+
+/* ── Notification permission ── */
+.notif-bar{background:var(--blue-bg);border:1px solid rgba(26,61,107,.15);border-radius:var(--r);padding:.5rem .75rem;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--blue)}
+
+/* ── Dev filter chips ── */
+.dev-filter-wrap{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.dev-chip{font-size:11px;font-weight:500;padding:3px 9px;border-radius:99px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-family:var(--sans);transition:all .13s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.dev-chip:hover{border-color:var(--accent2);color:var(--accent)}
+.dev-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sb-filter-count{font-size:10px;color:var(--text3);margin-bottom:4px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="sidebar">
+    <div class="sb-head">
+      <div class="logo">PermitFlow</div>
+      <div class="logo-tag">Permit Control System</div>
+    </div>
+    <!-- Multi-select delete bar (shown in manage mode) -->
+    <div class="sb-manage-bar" id="manageBar">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+        <span class="sb-manage-count" id="manageCount">0 selected</span>
+        <button class="sb-manage-cancel" onclick="exitManageMode()" style="margin-left:auto">✕ Cancel</button>
+      </div>
+      <div class="sb-manage-actions" style="flex-direction:column;gap:5px">
+        <div style="display:flex;gap:5px">
+          <button style="flex:1;padding:3px 0;background:none;border:1px solid rgba(139,30,42,.3);border-radius:99px;font-size:11px;cursor:pointer;color:var(--red);font-family:var(--sans)" onclick="selectAll()">Select all</button>
+          <button style="flex:1;padding:3px 0;background:none;border:1px solid rgba(139,30,42,.3);border-radius:99px;font-size:11px;cursor:pointer;color:var(--red);font-family:var(--sans)" onclick="selectNone()">Select none</button>
+        </div>
+        <button class="sb-manage-del" id="manageDelBtn" onclick="deleteSelected()" disabled style="width:100%">🗑 Delete selected</button>
+        <button class="sb-manage-del" onclick="deleteAll()" style="width:100%;background:var(--red-bg);color:var(--red);border:1px solid rgba(139,30,42,.3)">🗑 Delete ALL projects</button>
+      </div>
+    </div>
+    <div class="sb-body">
+      <div class="sb-label">Projects</div>
+      <!-- Development filter bar -->
+      <div id="devFilterBar"></div>
+      <!-- Search box -->
+      <div style="position:relative;margin-bottom:6px">
+        <input id="projSearch" type="text" placeholder="🔍 Search projects..."
+          oninput="renderSidebar()"
+          style="width:100%;font-family:var(--sans);font-size:12px;padding:5px 8px 5px 8px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface2);color:var(--text);outline:none"/>
+      </div>
+      <div id="projList"></div>
+      <button class="btn-add" onclick="openNewModal()">+ New project</button>
+    </div>
+    <div class="sb-foot">
+      <button id="syncStatus" class="sync-btn sync-offline" onclick="spLogin()">
+        <span>☁</span><span>Connect to SharePoint</span>
+      </button>
+      <button class="btn-sm" style="background:var(--amber-bg);color:var(--amber);border-color:rgba(122,92,24,.2);font-weight:600" onclick="openDashboard()">📊 Dashboard</button>
+      <button class="btn-sm blue" onclick="openImportModal()">⇄ Import from spreadsheet</button>
+      <button class="btn-sm red" id="manageToggleBtn" onclick="toggleManageMode()">☑ Select & delete</button>
+      <button class="btn-sm accent" onclick="openFieldEditor()">⚙ Customize fields</button>
+      <button class="btn-sm" onclick="exportSettings()" title="Save your field/section layout">💾 Save settings</button>
+      <label class="btn-sm" style="cursor:pointer" title="Restore a previously saved settings file">📂 Load settings<input type="file" accept=".json" style="display:none" onchange="importSettings(event)"/></label>
+      <button class="btn-sm" onclick="exportData()">↓ Export all data (JSON)</button>
+      <label class="btn-sm" style="cursor:pointer">↑ Import all data (JSON)<input type="file" accept=".json" style="display:none" onchange="importJSON(event)"/></label>
+    </div>
+  </nav>
+  <main class="main">
+    <div class="main-inner">
+      <div class="empty" id="emptyState">
+        <div class="empty-icon">🏗️</div>
+        <div class="empty-title">No project selected</div>
+        <div class="empty-sub">Add a project or import from a spreadsheet</div>
+        <div style="display:flex;gap:8px;margin-top:.5rem;flex-wrap:wrap;justify-content:center">
+          <button class="btn primary" onclick="openNewModal()">+ New project</button>
+          <button class="btn edit-fields" onclick="openImportModal()">⇄ Import from spreadsheet</button>
+        </div>
+      </div>
+      <div id="projView" style="display:none"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Project Modal — content rendered dynamically by JS -->
+<div class="modal-bg" id="modalBg" style="display:none">
+  <div class="modal" id="modalInner">
+    <!-- filled by renderModal() -->
+  </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal-bg" id="importBg" style="display:none">
+  <div class="modal modal-lg">
+    <div class="modal-ttl">
+      <span>⇄ Import from spreadsheet</span>
+      <button class="modal-x" onclick="closeImportModal()">×</button>
+    </div>
+    <div class="modal-sub">Map your spreadsheet columns to PermitFlow fields. Each row becomes one project.</div>
+
+    <div class="import-tabs">
+      <div class="import-tab active" onclick="switchImportTab('paste',this)">📋 Paste data</div>
+      <div class="import-tab" onclick="switchImportTab('csv',this)">📂 CSV file</div>
+    </div>
+
+    <!-- Paste tab -->
+    <div class="import-panel active" id="tab-paste">
+      <div class="mf">
+        <label>Paste rows from your spreadsheet</label>
+        <textarea class="paste-area" id="pasteArea" placeholder="Copy cells from Excel, Google Sheets, or Looker Studio and paste here..." oninput="onPasteInput()"></textarea>
+        <div class="paste-hint">Tip: Select your rows including the header row, then Ctrl+C / Cmd+C and paste here.</div>
+      </div>
+    </div>
+
+    <!-- CSV tab -->
+    <div class="import-panel" id="tab-csv">
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('csvInput').click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave()" ondrop="dzDrop(event)">
+        <div class="drop-zone-icon">📂</div>
+        <div class="drop-zone-text">Click to browse or drag a CSV file here</div>
+        <div class="drop-zone-sub">Exported from Excel, Google Sheets, or any spreadsheet app</div>
+        <input type="file" id="csvInput" accept=".csv,.txt" onchange="onCSVFile(event)"/>
+      </div>
+    </div>
+
+    <!-- Column mapper (shown after data is loaded) -->
+    <div id="mapperArea" style="display:none">
+      <div class="col-mapper">
+        <div class="col-mapper-title">
+          Map columns to fields
+          <span class="col-mapper-badge" id="rowCountBadge"></span>
+        </div>
+        <div id="mapperRows"></div>
+      </div>
+
+      <!-- Data preview -->
+      <div style="margin-top:1rem">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:.4rem;letter-spacing:.06em;text-transform:uppercase">Preview (first 3 rows)</div>
+        <div class="preview-wrap"><table class="preview-table" id="previewTable"></table></div>
+      </div>
+
+      <!-- Add mode -->
+      <div style="margin-top:1rem">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:.4rem">Import mode</div>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeAdd" onclick="setImportMode('add')">Add as new projects</button>
+          <button class="mode-btn" id="modeReplace" onclick="setImportMode('replace')">Replace all projects</button>
+        </div>
+      </div>
+
+      <div class="import-result" id="importResult"></div>
+      <div id="remapArea" style="display:none">
+        <button class="remap-btn" onclick="showRemapper()">↺ Re-map columns from last import</button>
+      </div>
+    </div>
+
+    <div class="modal-acts" style="margin-top:1.25rem">
+      <button class="btn" onclick="closeImportModal()">Cancel</button>
+      <button class="btn primary" id="doImportBtn" style="display:none" onclick="doImport()">Import projects</button>
+    </div>
+  </div>
+</div>
+
+<!-- Field Editor Panel -->
+<div class="fe-panel-bg" id="fePanelBg" style="display:none" onclick="fePanelBgClick(event)">
+  <div class="fe-panel">
+    <div class="fe-head">
+      <div>
+        <div class="fe-title">⚙ Customize fields</div>
+        <div class="fe-sub">Rename, add, remove or reorder fields in any section</div>
+      </div>
+      <button class="fe-close" onclick="closeFieldEditor()">×</button>
+    </div>
+    <div class="fe-body" id="feBody"></div>
+    <div class="fe-foot">
+      <button class="btn" onclick="closeFieldEditor()">Close</button>
+      <button class="btn edit-fields" onclick="openListsManager()">▾ Manage lists</button>
+      <button class="btn primary" onclick="addSection()">+ Add section</button>
+      <button class="btn" style="background:var(--green);color:#fff;border-color:var(--green)" onclick="saveFieldSettings()">💾 Save & Sync</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lists Manager Modal -->
+<div class="modal-bg" id="listsMgrBg" style="display:none">
+  <div class="modal modal-lg">
+    <div class="modal-ttl">
+      <span>▾ Manage dropdown lists</span>
+      <button class="modal-x" onclick="closeListsManager()">×</button>
+    </div>
+    <div class="modal-sub">Edit the options in your dropdown fields. Changes apply instantly to all projects.</div>
+    <div id="listsMgrBody"></div>
+    <div class="modal-acts">
+      <button class="btn" onclick="closeListsManager()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Full-screen Dashboard -->
+<div id="dashOverlay" style="display:none;position:fixed;inset:0;z-index:1000;background:#F0F2F5;font-family:var(--sans);overflow:hidden;display:none">
+
+  <!-- Dark sidebar -->
+  <div style="position:fixed;left:0;top:0;bottom:0;width:200px;background:#1E2A3A;color:#fff;display:flex;flex-direction:column;z-index:10">
+    <div style="padding:1.25rem 1.125rem;border-bottom:1px solid rgba(255,255,255,.08)">
+      <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:.02em">ESTELA LIVING</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;letter-spacing:.08em;text-transform:uppercase">Permit Tracking Portal</div>
+    </div>
+    <div style="padding:.75rem 0;flex:1;overflow-y:auto">
+      <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;padding:.5rem 1.125rem .25rem">Navigation</div>
+      <div id="dash-nav-dashboard" class="dash-nav-item active" onclick="dashShowView('dashboard')">
+        <span>⊞</span> Dashboard
+      </div>
+      <div id="dash-nav-permits" class="dash-nav-item" onclick="dashShowView('permits')">
+        <span>☰</span> All Permits <span id="dash-permits-badge" style="margin-left:auto;background:#3B82F6;color:#fff;border-radius:99px;font-size:10px;padding:1px 7px;font-weight:600"></span>
+      </div>
+      <div id="dash-nav-alerts" class="dash-nav-item" onclick="dashShowView('alerts')">
+        <span>🔔</span> Alerts <span id="dash-alerts-badge" style="margin-left:auto;background:#EF4444;color:#fff;border-radius:99px;font-size:10px;padding:1px 7px;font-weight:600"></span>
+      </div>
+      <div id="dash-nav-settings" class="dash-nav-item" onclick="closeDashboard()">
+        <span>⚙</span> Back to App
+      </div>
+      <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;padding:.75rem 1.125rem .25rem;margin-top:.5rem">Communities</div>
+      <div id="dashCommList"></div>
+    </div>
+    <div style="padding:.75rem 1.125rem;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:rgba(255,255,255,.35)">v2.1 · Estela Living © 2026</div>
+  </div>
+
+  <!-- Main content -->
+  <div style="margin-left:200px;height:100vh;overflow-y:auto;display:flex;flex-direction:column">
+    <!-- Top bar -->
+    <div style="background:#fff;border-bottom:1px solid #E5E7EB;padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:5">
+      <div id="dashViewTitle" style="font-size:18px;font-weight:600;color:#111827">Dashboard</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button onclick="spLogin()" style="display:flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;font-family:var(--sans);color:#374151">
+          ☁ Connect OneDrive
+        </button>
+        <div id="dashAlertTopBtn" style="position:relative;cursor:pointer" onclick="dashShowView('alerts')">
+          <span style="font-size:20px">🔔</span>
+          <span id="dashAlertTopCount" style="position:absolute;top:-4px;right:-6px;background:#EF4444;color:#fff;border-radius:99px;font-size:9px;padding:1px 5px;font-weight:700;display:none"></span>
+        </div>
+        <div style="width:32px;height:32px;border-radius:50%;background:#1E2A3A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">LG</div>
+      </div>
+    </div>
+    <!-- Dynamic view content -->
+    <div id="dashViewContent" style="flex:1;padding:1.5rem 2rem;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- Alert Banner (in-app, outside dashboard) -->
+<div id="alertBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:600;background:#DC2626;color:#fff;padding:.55rem 1.25rem;font-size:13px;font-weight:500;flex-direction:row;align-items:center;justify-content:space-between;gap:1rem">
+  <span id="alertBannerText"></span>
+  <div style="display:flex;gap:8px;flex-shrink:0">
+    <button onclick="openDashboard()" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 12px;border-radius:99px;cursor:pointer;font-size:12px;font-family:var(--sans)">View details</button>
+    <button onclick="dismissAlert()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:18px;line-height:1">×</button>
+  </div>
+</div>
+
+<script>
+// ── Default sections ──────────────────────────────────────────────────
+const DEFAULT_SECTIONS=[
+  {id:'info',icon:'🏠',label:'Project information',fields:[
+    {id:'proj_status',  label:'Status',          type:'select', options:['Active','Pending','On Hold','Completed','Cancelled']},
+    {id:'proj_type',    label:'Project Type',    type:'select', options:['Single Family','Townhome','Duplex','Commercial','Other']},
+    {id:'builder',      label:'Builder / Company',type:'select',options:[]},
+    {id:'subdivision',  label:'Subdivision',     type:'select', options:[]},
+    {id:'release',      label:'Release Date',    type:'date'},
+    {id:'city',         label:'City',            type:'text'},
+    {id:'address',      label:'Address',         type:'text'},
+    {id:'house_number', label:'House Number',    type:'text'},
+    {id:'lot_number',   label:'Lot Number',      type:'text'},
+    {id:'parcel',       label:'Parcel',          type:'text'},
+    {id:'water',        label:'Water',           type:'text'},
+    {id:'model',        label:'Model',           type:'text'},
+    {id:'garage',       label:'Garage',          type:'text'},
+    {id:'elevation',    label:'Elevation',       type:'text'},
+  ]},
+  {id:'docs',icon:'📄',label:'Documents & plans',fields:[
+    {id:'structural_options',label:'Structural Options',type:'check'},
+    {id:'architecture',label:'Architecture',type:'check'},
+    {id:'site_plans_topo',label:'Site Plans / Topo',type:'check'},
+    {id:'truss_eng',label:'Truss Eng',type:'check'},
+    {id:'energy_calcs',label:'Energy Calcs',type:'check'},
+    {id:'soil_test',label:'Soil Test',type:'check'},
+    {id:'structural_eng',label:'Structural Eng',type:'check'},
+    {id:'landscape',label:'Landscape',type:'check'},
+    {id:'product_approval',label:'Product Approval',type:'check'},
+    {id:'color_material',label:'Color & Material',type:'check'},
+    {id:'roofing_worksheet',label:'Roofing Worksheet',type:'check'},
+    {id:'geotech_letter',label:'GeoTech Letter',type:'check'},
+  ]},
+  {id:'legal',icon:'📋',label:'Legal & compliance',fields:[
+    {id:'utility_pp',label:'Utility PP',type:'check'},
+    {id:'const_lien_aff',label:'Const. Lien Aff.',type:'check'},
+    {id:'noc',label:'NOC',type:'check'},
+    {id:'recorded_deed',label:'Recorded Deed',type:'check'},
+  ]},
+  {id:'permit',icon:'🏛️',label:'Permit & utilities',fields:[
+    {id:'sent_to_apply',label:'Sent to Apply',type:'check'},
+    {id:'permit_date',label:'Permit Date',type:'date'},
+    {id:'permit_number',label:'Permit Number',type:'text'},
+    {id:'utilities',label:'Utilities',type:'text'},
+    {id:'permit_fee',label:'Permit Fee',type:'money'},
+  ]},
+  {id:'insurance',icon:'🛡️',label:'Insurance',fields:[
+    {id:'builders_risk',label:'Builders Risk',type:'check'},
+    {id:'builders_risk_canceled',label:'Builders Risk Canceled',type:'check'},
+  ]},
+];
+
+// ── OneDrive config ───────────────────────────────────────────────────
+// Development → direct SharePoint folder link
+const ONEDRIVE_FOLDERS={
+  'OW':              'https://estelaliving-my.sharepoint.com/:f:/p/rcelis/IgANpxXfjeukRoo75ol2qQuUAU23RFCXvhcG5rc4ezSwKD8?e=B4m9no',
+  'MO':              'https://estelaliving-my.sharepoint.com/:f:/p/rcelis/IgCLdDwZ1OPXSY2sDUk92qikAT2tKYnw0EdZe7xA2Un8BwE?e=JXZnFc',
+  'JF':              'https://estelaliving-my.sharepoint.com/:f:/p/rcelis/IgBvwmXHCxXxS51EZ9hHcqGVAeM-Qu953GvTW71WK-OUZ8E?e=8bEPQL',
+  'Palm Coast':      'https://estelaliving-my.sharepoint.com/:f:/p/rcelis/IgCy9Yq_mSUeRZOM-FCXoFIxAa4teihbrFcokioefkxTV18?e=xCddFz',
+  'Sawmill Branch':  'https://estelaliving-my.sharepoint.com/:f:/p/rcelis/IgBlxobyU8TsQK2ZQsYsU0RmAZyXK4QiobNz5yI90LYdZjE?e=LauY0G',
+  'Sabana Reserve':  'https://estelaliving-my.sharepoint.com/:f:/p/rcelis/IgBsdileHoJrTLsGF2hBXWmRAaNGjs-sBCQUv825vsPfEMA?e=m4rFJq',
+};
+// Fallback — main Estela Living folder
+const ONEDRIVE_BASE='https://estelaliving-my.sharepoint.com/:f:/p/rcelis/IgCb1IdThK2qQ7WpwL3DaUd3AS9aHHGmnqHoicxdS_Hbquo?e=6PjTK9';
+
+// Get the project folder name — Sabana Reserve uses lot number, others use address
+function getProjFolderName(p){
+  const dev=getDevValue(p)||'';
+  if(dev.toLowerCase().includes('sabana')){
+    // Lot number = last 3 digits of house number
+    const hn=(p.fields['house_number']||'').trim();
+    if(hn){
+      const digits=hn.replace(/\D/g,'');
+      const lot=digits.slice(-3);
+      // Auto-fill lot_number field if empty
+      if(lot&&!p.fields['lot_number']){
+        p.fields['lot_number']=lot;
+        save();
+      }
+      return p.fields['lot_number']||lot||hn;
+    }
+    return p.fields['lot_number']||p.fields['address']||p.name;
+  }
+  return p.fields['address']||p.name;
+}
+
+function openOneDriveFolder(projId){
+  const p=S.projects.find(q=>q.id===projId);if(!p)return;
+  const dev=getDevValue(p)||'';
+  const folderName=getProjFolderName(p);
+  const url=ONEDRIVE_FOLDERS[dev]||ONEDRIVE_BASE;
+  const isKnown=!!ONEDRIVE_FOLDERS[dev];
+
+  // Copy folder name to clipboard silently
+  navigator.clipboard.writeText(folderName).catch(()=>{});
+
+  // Show a non-blocking toast with instructions then open the folder
+  showOneDriveToast(dev, folderName, isKnown);
+  setTimeout(()=>window.open(url,'_blank'), 800);
+}
+
+function showOneDriveToast(dev, folderName, isKnown){
+  // Remove any existing toast
+  const old=document.getElementById('odToast');if(old)old.remove();
+
+  const steps=isKnown
+    ? `<ol style="margin:.4rem 0 0 1.1rem;padding:0;font-size:11px;line-height:1.8;color:var(--blue)">
+        <li>Opening <strong>${x(dev)}</strong> folder in OneDrive…</li>
+        <li>Find or create a subfolder named: <span style="font-family:var(--mono);background:#fff;padding:1px 5px;border-radius:3px;border:1px solid rgba(26,61,107,.2)">${x(folderName)}</span> <span style="opacity:.6">(copied to clipboard ✓)</span></li>
+        <li>Upload your file into that subfolder</li>
+        <li>Right-click the file → <strong>Copy link</strong></li>
+        <li>Come back and paste it in the 📎 panel below</li>
+      </ol>`
+    : `<div style="font-size:11px;color:var(--amber);margin-top:.3rem">No OneDrive folder linked for "${x(dev||'this project')}". Opening main folder.</div>`;
+
+  const toast=document.createElement('div');
+  toast.id='odToast';
+  toast.style.cssText=`position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+    background:var(--blue-bg);border:1px solid rgba(26,61,107,.25);border-radius:var(--r2);
+    padding:.875rem 1.125rem;max-width:420px;width:90vw;z-index:9999;
+    box-shadow:0 8px 32px rgba(0,0,0,.15);animation:slideUp .2s ease`;
+  toast.innerHTML=`
+    <style>@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}</style>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+      <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:.2rem">☁ OneDrive — ${x(dev||'Estela Living')}</div>
+      <button onclick="document.getElementById('odToast').remove()" style="background:none;border:none;cursor:pointer;color:var(--blue);font-size:16px;line-height:1;padding:0;opacity:.6;flex-shrink:0">×</button>
+    </div>
+    ${steps}
+    <div style="font-size:10px;color:var(--text3);margin-top:.5rem">This message closes in 12 seconds</div>`;
+  document.body.appendChild(toast);
+  setTimeout(()=>{const t=document.getElementById('odToast');if(t)t.remove();},12000);
+}
+
+
+let S={projects:[],activeId:null,sections:null};
+let openSec={};
+let editingId=null;
+let addingInSec=null;
+let editingFieldKey=null;
+let dragSec=null,dragFid=null;
+
+// Import state
+let importRows=[];   // parsed rows (array of arrays)
+let importHeaders=[];// first row = headers
+let importMode='add';// 'add' | 'replace'
+let currentImportTab='paste';
+
+// Manage mode state
+let manageMode=false;
+let selectedIds=new Set();
+let activeDevFilter=null; // null = all, string = filter by subdivision field value
+
+// ── SharePoint Sync ───────────────────────────────────────────────────
+const SP_CONFIG={
+  clientId:'05942f64-61bc-4567-9cba-1e1a3174498f',
+  tenantId:'9aecb969-8ceb-4c3e-ba5a-53266a072fe8',
+  siteId:'bb35bec1-01ec-4be3-9782-5a91cd951101',
+  driveFolder:'PermitFlow',
+  fileName:'permitflow-data.json',
+};
+let spToken=null;
+let spSyncing=false;
+let spLastSync=null;
+let spError=null;
+
+// Load MSAL library
+function loadMSAL(){
+  return new Promise((res,rej)=>{
+    if(window.msal){res();return;}
+    const s=document.createElement('script');
+    s.src='https://unpkg.com/@azure/msal-browser@2.38.3/lib/msal-browser.min.js';
+    s.onload=()=>{console.log('MSAL loaded OK');res();}
+    s.onerror=(e)=>{console.error('MSAL load failed',e);rej(new Error('Failed to load MSAL library. Check your internet connection.'));}
+    document.head.appendChild(s);
+  });
+}
+
+function getMSALApp(){
+  // Hosted at https://estelaliving.github.io/permitflow/
+  const redirectUri=window.location.href.split('?')[0].split('#')[0];
+  return new window.msal.PublicClientApplication({
+    auth:{
+      clientId:SP_CONFIG.clientId,
+      authority:`https://login.microsoftonline.com/${SP_CONFIG.tenantId}`,
+      redirectUri,
+    },
+    cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false},
+  });
+}
+
+async function spLogin(){
+  try{
+    setSyncStatus('signing-in');
+    await loadMSAL();
+    const app=getMSALApp();
+    await app.initialize();
+    const scopes=['https://graph.microsoft.com/Sites.ReadWrite.All','https://graph.microsoft.com/Files.ReadWrite.All'];
+    let result;
+    // Try silent first
+    const accounts=app.getAllAccounts();
+    if(accounts.length){
+      try{result=await app.acquireTokenSilent({scopes,account:accounts[0]});}
+      catch(e){result=await app.loginPopup({scopes});}
+    } else {
+      result=await app.loginPopup({scopes});
+    }
+    spToken=result.accessToken;
+    setSyncStatus('syncing');
+    await spPull();
+    setSyncStatus('synced');
+  }catch(e){
+    spError=e.message;
+    setSyncStatus('error');
+    console.error('SP login error:',e);
+  }
+}
+
+// ── Field → OneDrive folder mapping ──────────────────────────────────
+const FIELD_FOLDER_MAP={
+  'architecture':        'Drawings',
+  'site_plans_topo':     'Site Plan Survey',
+  'truss_eng':           'Truss Engineering',
+  'energy_calcs':        'Energy Cals',
+  'soil_test':           'Soil Test',
+  'structural_eng':      'Engineering',
+  'structural_options':  'Engineering',
+  'product_approval':    'Permits',
+  'sent_to_apply':       'Permits',
+  'noc':                 'Permits',
+  'recorded_deed':       'Lot Purchase Contracts',
+  'const_lien_aff':      'Lot Purchase Contracts',
+  'landscape':           'Landscape',
+  'color_material':      'Spec Sheet',
+  'roofing_worksheet':   'Spec Sheet',
+  'geotech_letter':      'Spec Sheet',
+  'utility_pp':          'Spec Sheet',
+  'builders_risk':       'Spec Sheet',
+  'builders_risk_canceled':'Spec Sheet',
+};
+
+// Full OneDrive path for a project:
+// Single Family Development / [Region] / [Development] / [Address-Parcel]
+const SP_BASE_PATH='Single Family Development';
+
+// Region map: development tag → region folder name
+const DEV_REGION_MAP={
+  'OW':'Ocala',
+  'MO':'Ocala',
+  'JF':'Ocala',
+  'Palm Coast':'Palm Coast',
+  'Sawmill Branch':'Sawmill Branch',
+  'Sabana Reserve':'Sabana Reserve',
+};
+
+function getProjectSPPath(p){
+  const dev=getDevValue(p)||'';
+  const region=DEV_REGION_MAP[dev]||dev||'Other';
+  const address=(p.fields['address']||p.name||'Unknown').trim();
+  const parcel=(p.fields['parcel']||'').trim();
+  const projFolder=parcel?`${address}-${parcel}`:address;
+  return{region, dev, projFolder,
+    fullPath:`${SP_BASE_PATH}/${region}${dev&&dev!==region?'/'+dev:''}/${projFolder}`};
+}
+
+// Ensure a folder exists at path, create if not. Returns item id.
+async function spEnsureFolder(driveId, folderPath){
+  const enc=folderPath.split('/').map(encodeURIComponent).join('/');
+  const checkR=await fetch(
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${enc}`,
+    {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
+  );
+  if(checkR.ok){const d=await checkR.json();return d.id;}
+
+  // Create folder by parts
+  let currentPath='';
+  for(const part of folderPath.split('/')){
+    if(!part)continue;
+    const parentUrl=currentPath
+      ?`https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${currentPath.split('/').map(encodeURIComponent).join('/')}:/children`
+      :`https://graph.microsoft.com/v1.0/drives/${driveId}/root/children`;
+    currentPath=currentPath?`${currentPath}/${part}`:part;
+    const chkR=await fetch(
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${currentPath.split('/').map(encodeURIComponent).join('/')}`,
+      {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
+    );
+    if(!chkR.ok){
+      await fetch(parentUrl,{
+        method:'POST',
+        headers:{Authorization:`Bearer ${spToken}`,'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({name:part,folder:{},['@microsoft.graph.conflictBehavior']:'rename'})
+      });
+    }
+  }
+  const finalR=await fetch(
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${folderPath.split('/').map(encodeURIComponent).join('/')}`,
+    {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
+  );
+  const fd=await finalR.json();
+  return fd.id;
+}
+
+// Upload file to a specific folder, returns the shared link URL
+async function spUploadFile(driveId, folderPath, fileName, fileBlob){
+  const enc=folderPath.split('/').map(encodeURIComponent).join('/');
+  const uploadR=await fetch(
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${enc}/${encodeURIComponent(fileName)}:/content`,
+    {method:'PUT',headers:{Authorization:`Bearer ${spToken}`,'Content-Type':fileBlob.type||'application/octet-stream'},body:fileBlob}
+  );
+  const uploaded=await uploadR.json();
+  const shareR=await fetch(
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${uploaded.id}/createLink`,
+    {method:'POST',headers:{Authorization:`Bearer ${spToken}`,'Content-Type':'application/json','Accept':'application/json'},
+     body:JSON.stringify({type:'view',scope:'organization'})}
+  );
+  const shareD=await shareR.json();
+  return{url:shareD.link?.webUrl||uploaded.webUrl||'',name:fileName,id:uploaded.id};
+}
+
+async function spGetDriveId(){
+  const r=await fetch(
+    `https://graph.microsoft.com/v1.0/me/drive`,
+    {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
+  );
+  const d=await r.json();
+  if(!d.id)throw new Error('Could not get drive: '+(d.error?.message||JSON.stringify(d)));
+  return d.id;
+}
+
+async function spGetFileId(driveId){
+  const r=await fetch(
+    `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${SP_CONFIG.driveFolder}/${SP_CONFIG.fileName}`,
+    {headers:{Authorization:`Bearer ${spToken}`,'Accept':'application/json'}}
+  );
+  if(r.status===404)return null;
+  const d=await r.json();
+  return d.id;
+}
+
+// Pull data from SharePoint
+async function spPull(){
+  if(!spToken)return;
+  try{
+    setSyncStatus('syncing');
+    const driveId=await spGetDriveId();
+    const fileId=await spGetFileId(driveId);
+    if(!fileId){await spPush();return;}
+    const r=await fetch(
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${fileId}/content`,
+      {headers:{Authorization:`Bearer ${spToken}`}}
+    );
+    const text=await r.text();
+    const remote=JSON.parse(text);
+    S.projects=remote.projects||S.projects;
+    if(remote.sections)S.sections=remote.sections;
+    if(remote.attachments)S.attachments=remote.attachments;
+    if(remote.lastImportMapping)S.lastImportMapping=remote.lastImportMapping;
+    if(remote.filterFieldId)S.filterFieldId=remote.filterFieldId;
+    save();
+    spLastSync=new Date();
+    setSyncStatus('synced');
+    renderSidebar();renderMain();
+  }catch(e){
+    spError=e.message;setSyncStatus('error');
+    console.error('SP pull error:',e);
+  }
+}
+
+// Push data to SharePoint
+async function spPush(){
+  if(!spToken)return;
+  try{
+    spSyncing=true;setSyncStatus('syncing');
+    const driveId=await spGetDriveId();
+    const content=JSON.stringify(S,null,2);
+    const blob=new Blob([content],{type:'application/json'});
+    await fetch(
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${SP_CONFIG.driveFolder}/${SP_CONFIG.fileName}:/content`,
+      {method:'PUT',headers:{Authorization:`Bearer ${spToken}`,'Content-Type':'application/json'},body:blob}
+    );
+    spLastSync=new Date();spSyncing=false;
+    setSyncStatus('synced');
+  }catch(e){
+    spSyncing=false;spError=e.message;setSyncStatus('error');
+    console.error('SP push error:',e);
+  }
+}
+
+function setSyncStatus(status){
+  const el=document.getElementById('syncStatus');if(!el)return;
+  const icons={
+    'offline':    {icon:'☁',  label:'Connect to SharePoint', cls:'sync-offline'},
+    'signing-in': {icon:'⏳', label:'Signing in…',           cls:'sync-busy'},
+    'syncing':    {icon:'🔄', label:'Syncing…',              cls:'sync-busy'},
+    'synced':     {icon:'✓',  label:'Synced · '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}), cls:'sync-ok'},
+    'error':      {icon:'⚠', label:'Sync error — retry',    cls:'sync-err'},
+  };
+  const s=icons[status]||icons['offline'];
+  el.className='sync-btn '+s.cls;
+  el.innerHTML=`<span>${s.icon}</span><span>${s.label}</span>`;
+  el.onclick=status==='offline'||status==='error'?spLogin:spPull;
+}
+
+// Override save() to also push to SharePoint
+const _localSave=()=>localStorage.setItem('pf_v4',JSON.stringify(S));
+function save(){
+  _localSave();
+  if(spToken&&!spSyncing){
+    clearTimeout(window._spPushTimer);
+    window._spPushTimer=setTimeout(spPush,1500);// debounce 1.5s
+  }
+}
+
+function getSections(){return S.sections||DEFAULT_SECTIONS;}
+function load(){
+  try{const r=localStorage.getItem('pf_v4');if(r)S=JSON.parse(r);}catch(e){}
+  if(!S.projects||!S.projects.length){
+    try{const old=localStorage.getItem('pf_v3');if(old){const d=JSON.parse(old);if(d.projects){S.projects=d.projects;S.activeId=d.activeId;}}}catch(e){}
+  }
+}
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+
+function blankFields(){
+  const f={};
+  getSections().forEach(s=>s.fields.forEach(fd=>{f[fd.id]=fd.type==='check'?false:'';}));
+  return f;
+}
+function ensureFields(p){
+  getSections().forEach(s=>s.fields.forEach(fd=>{if(!(fd.id in p.fields))p.fields[fd.id]=fd.type==='check'?false:'';}));
+}
+
+// ── Progress ──────────────────────────────────────────────────────────
+function checkProgress(p){
+  const all=getSections().flatMap(s=>s.fields.filter(f=>f.type==='check'));
+  const done=all.filter(f=>p.fields[f.id]).length;
+  return{total:all.length,done,pct:all.length?Math.round(done/all.length*100):0};
+}
+function secProgress(p,sec){
+  const c=sec.fields.filter(f=>f.type==='check');
+  if(!c.length)return null;
+  return{total:c.length,done:c.filter(f=>p.fields[f.id]).length};
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────
+// Find the field ID that most likely holds the development/subdivision name.
+// Checks: any field whose id or label contains dev/subdivision/community keywords,
+// plus the hardcoded fallbacks.
+function getDevFieldId(){
+  // User override takes priority
+  if(S.filterFieldId) return S.filterFieldId;
+  const keywords=['subdivision','development','develop','community','subdiv'];
+  const allFields=getSections().flatMap(s=>s.fields);
+  for(const f of allFields){
+    const combined=(f.id+' '+f.label).toLowerCase();
+    if(keywords.some(k=>combined.includes(k))) return f.id;
+  }
+  return null;
+}
+
+function getDevValue(p){
+  // Try known dev field IDs in priority order
+  const devId=getDevFieldId();
+  if(devId&&p.fields&&p.fields[devId]) return p.fields[devId];
+  // Fallbacks
+  if(p.fields){
+    return p.fields['subdivision']||p.fields['development']||
+           p.fields['subdiv']||p.fields['community']||'';
+  }
+  return '';
+}
+
+function renderDevFilter(){
+  const bar=document.getElementById('devFilterBar');
+  if(!bar)return;
+  if(!S.projects.length){bar.innerHTML='';return;}
+
+  const devId=getDevFieldId();
+  // Collect unique non-empty values
+  const devs=[...new Set(S.projects.map(p=>getDevValue(p)).filter(Boolean))].sort();
+
+  // If no dev field exists or no values, show a picker so user can choose any field
+  if(!devs.length){
+    const allFields=getSections().flatMap(s=>s.fields).filter(f=>f.type==='text'||f.type==='select');
+    if(!allFields.length){bar.innerHTML='';return;}
+    bar.innerHTML=`<div style="font-size:11px;color:var(--text3);margin-bottom:6px">
+      Filter by:
+      <select onchange="setFilterField(this.value)" style="font-size:11px;font-family:var(--sans);border:1px solid var(--border);border-radius:4px;padding:2px 4px;background:var(--surface);color:var(--text);outline:none;cursor:pointer;margin-left:4px">
+        <option value="">— pick a field —</option>
+        ${allFields.map(f=>`<option value="${f.id}"${f.id===S.filterFieldId?' selected':''}>${x(f.label)}</option>`).join('')}
+      </select>
+    </div>`;
+    return;
+  }
+
+  // Find label of the field being used
+  const allFields=getSections().flatMap(s=>s.fields);
+  const fieldLabel=devId?(allFields.find(f=>f.id===devId)||{label:'Development'}).label:'Development';
+
+  bar.innerHTML=`<div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between">
+    <span>${x(fieldLabel)}</span>
+    <select onchange="setFilterField(this.value)" style="font-size:10px;font-family:var(--sans);border:1px solid var(--border);border-radius:4px;padding:1px 4px;background:var(--surface);color:var(--text3);outline:none;cursor:pointer" title="Change filter field">
+      <option value="">change field</option>
+      ${allFields.filter(f=>f.type==='text'||f.type==='select').map(f=>`<option value="${f.id}"${f.id===(S.filterFieldId||devId)?' selected':''}>${x(f.label)}</option>`).join('')}
+    </select>
+  </div>
+  <div class="dev-filter-wrap">
+    <span class="dev-chip all${!activeDevFilter?' active':''}" onclick="setDevFilter(null)">All (${S.projects.length})</span>
+    ${devs.map(d=>{
+      const count=S.projects.filter(p=>getDevValue(p)===d).length;
+      return`<span class="dev-chip${activeDevFilter===d?' active':''}" onclick="setDevFilter('${x(d)}')" title="${x(d)}">${x(d)} <span style="opacity:.7">${count}</span></span>`;
+    }).join('')}
+  </div>`;
+}
+
+function setFilterField(fid){
+  if(!fid)return;
+  S.filterFieldId=fid;
+  activeDevFilter=null;
+  save();
+  renderDevFilter();
+  renderSidebar();
+}
+
+function setDevFilter(val){
+  activeDevFilter=val;
+  // If switching filter and active project is not in this filter, clear selection
+  if(val&&S.activeId){
+    const p=S.projects.find(p=>p.id===S.activeId);
+    if(p&&getDevValue(p)!==val) S.activeId=null;
+  }
+  renderDevFilter();
+  renderSidebar();
+  if(!S.activeId) renderMain();
+}
+
+function renderSidebar(){
+  const el=document.getElementById('projList');
+  const searchEl=document.getElementById('projSearch');
+  const query=(searchEl?searchEl.value.trim().toLowerCase():'');
+
+  // Apply development filter + search
+  let visible=S.projects.filter(p=>{
+    if(activeDevFilter&&getDevValue(p)!==activeDevFilter) return false;
+    if(query){
+      const haystack=[p.name,p.address,p.city,getDevValue(p),p.client].join(' ').toLowerCase();
+      if(!haystack.includes(query)) return false;
+    }
+    return true;
+  });
+
+  // Render filter chips
+  renderDevFilter();
+
+  if(!S.projects.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--text3);padding:4px 2px 6px">No projects yet</div>';
+    return;
+  }
+  if(!visible.length){
+    el.innerHTML=`<div style="font-size:12px;color:var(--text3);padding:4px 2px 8px">No projects match${activeDevFilter?' "'+activeDevFilter+'"':''}${query?' "'+query+'"':''}.</div>`;
+    return;
+  }
+
+  // Show count if filtered
+  const countHtml=(activeDevFilter||query)?
+    `<div class="sb-filter-count">${visible.length} of ${S.projects.length} projects</div>`:'';
+
+  el.innerHTML=countHtml+visible.map(p=>{
+    const{pct}=checkProgress(p);
+    const isSel=selectedIds.has(p.id);
+    const devVal=getDevValue(p);
+    if(manageMode){
+      return`<div class="proj-item manage-mode${isSel?' selected':''}" onclick="toggleSelect('${p.id}')">
+        <div style="display:flex;align-items:center;gap:0">
+          <span class="proj-checkbox${isSel?' sel':''}"></span>
+          <div style="flex:1;min-width:0">
+            <div class="proj-name">${x(p.name)}</div>
+            <div class="proj-sub">
+              <span class="mini-bar"><span class="mini-bar-fill" style="width:${pct}%"></span></span>
+              <span>${pct}%</span><span>·</span><span>${slbl(p.status)}</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+    return`<div class="proj-item${p.id===S.activeId?' active':''}" onclick="sel('${p.id}')">
+      <div class="proj-name">${x(p.name)}</div>
+      <div class="proj-sub">
+        <span class="mini-bar"><span class="mini-bar-fill" style="width:${pct}%"></span></span>
+        <span>${pct}%</span><span>·</span>
+        <span>${devVal||slbl(p.status)}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Update manage bar
+  const manageBar=document.getElementById('manageBar');
+  const cnt=document.getElementById('manageCount');
+  const del=document.getElementById('manageDelBtn');
+  if(manageMode){
+    manageBar.classList.add('show');
+    cnt.textContent=selectedIds.size+' selected';
+    del.disabled=selectedIds.size===0;
+  } else {
+    manageBar.classList.remove('show');
+  }
+}
+
+// ── Manage mode ───────────────────────────────────────────────────────
+function toggleManageMode(){
+  manageMode=!manageMode;
+  selectedIds.clear();
+  const btn=document.getElementById('manageToggleBtn');
+  if(btn)btn.textContent=manageMode?'✕ Exit select mode':'☑ Select & delete';
+  renderSidebar();
+}
+function exitManageMode(){
+  manageMode=false;selectedIds.clear();
+  const btn=document.getElementById('manageToggleBtn');
+  if(btn)btn.textContent='☑ Select & delete';
+  renderSidebar();
+}
+function toggleSelect(id){
+  if(selectedIds.has(id))selectedIds.delete(id);else selectedIds.add(id);
+  renderSidebar();
+}
+function selectAll(){
+  // Select all visible projects (respecting current filter)
+  const searchEl=document.getElementById('projSearch');
+  const query=(searchEl?searchEl.value.trim().toLowerCase():'');
+  S.projects.filter(p=>{
+    if(activeDevFilter&&getDevValue(p)!==activeDevFilter)return false;
+    if(query){const h=[p.name,p.address,p.city,getDevValue(p),p.client].join(' ').toLowerCase();if(!h.includes(query))return false;}
+    return true;
+  }).forEach(p=>selectedIds.add(p.id));
+  renderSidebar();
+}
+function selectNone(){selectedIds.clear();renderSidebar();}
+function deleteSelected(){
+  if(!selectedIds.size)return;
+  const n=selectedIds.size;
+  if(!confirm(`Delete ${n} project${n!==1?'s':''}? This cannot be undone.`))return;
+  S.projects=S.projects.filter(p=>!selectedIds.has(p.id));
+  if(selectedIds.has(S.activeId))S.activeId=S.projects.length?S.projects[0].id:null;
+  selectedIds.clear();
+  manageMode=false;
+  const btn=document.getElementById('manageToggleBtn');
+  if(btn)btn.textContent='☑ Select & delete';
+  save();renderSidebar();renderMain();
+}
+function deleteAll(){
+  const n=S.projects.length;
+  if(!n)return;
+  if(!confirm(`Delete ALL ${n} projects? This cannot be undone.`))return;
+  S.projects=[];S.activeId=null;selectedIds.clear();
+  manageMode=false;
+  const btn=document.getElementById('manageToggleBtn');
+  if(btn)btn.textContent='☑ Select & delete';
+  save();renderSidebar();renderMain();
+}
+
+
+function renderMain(){
+  const p=curProj();
+  document.getElementById('emptyState').style.display=p?'none':'flex';
+  document.getElementById('projView').style.display=p?'block':'none';
+  if(!p)return;
+  ensureFields(p);
+  const{total,done,pct}=checkProgress(p);
+
+  let h=`<div class="proj-header">
+    <div>
+      <div class="proj-title">${x(p.name)}</div>
+      <div class="proj-meta">${[p.city,p.address,p.client?'Client: '+p.client:''].filter(Boolean).join('  ·  ')||'No details set'}</div>
+    </div>
+    <div class="hdr-actions">
+      <div class="dd-wrap">
+        <div class="pill ${pcls(p.status)}" onclick="toggleDD(event)">${slbl(p.status)} ▾</div>
+        <div class="dd-menu" id="statusDD">
+          ${['pending','active','onhold','completed'].map(s=>`<div class="dd-opt" onclick="setStatus('${s}')">${slbl(s)}</div>`).join('')}
+        </div>
+      </div>
+      <button class="btn edit-fields" onclick="openFieldEditor()">⚙ Fields</button>
+      <button class="btn" onclick="openOneDriveFolder('${p.id}')" title="Open this project's OneDrive folder" style="background:var(--blue-bg);color:var(--blue);border-color:rgba(26,61,107,.18)">☁ OneDrive</button>
+      <button class="btn" onclick="openEditModal()">✎ Edit</button>
+      <button class="btn danger" onclick="delProj()">✕</button>
+    </div>
+  </div>`;
+
+  if(p.notes){
+    h+=`<div class="notes-bar" onclick="editNotes()">📝 <span>${x(p.notes)}</span></div>`;
+  } else {
+    h+=`<div id="notesArea"><button class="btn" style="margin-bottom:1rem;font-size:12px" onclick="editNotes()">+ Add notes</button></div>`;
+  }
+
+  h+=`<div class="prog-wrap">
+    <div class="prog-row"><span class="prog-lbl">Checklist progress</span><span class="prog-cnt">${done} / ${total} — ${pct}%</span></div>
+    <div class="prog-bg"><div class="prog-fill" style="width:${pct}%"></div></div>
+  </div>`;
+
+  getSections().forEach(sec=>{
+    const key=S.activeId+':'+sec.id;
+    const isOpen=openSec[key]!==false;
+    const sp=secProgress(p,sec);
+    const allDone=sp&&sp.done===sp.total;
+    const stxt=sp?(allDone?`${sp.total}/${sp.total} ✓`:`${sp.done}/${sp.total}`):'';
+    h+=`<div class="sec-block">
+      <div class="sec-head" onclick="toggleSec('${sec.id}')">
+        <span class="sec-icon">${sec.icon}</span>
+        <span class="sec-title">${x(sec.label)}</span>
+        <span class="sec-stat${allDone?' done':''}">${stxt}</span>
+        <span class="sec-chev${isOpen?' open':''}">▼</span>
+      </div>`;
+    if(isOpen){
+      h+=`<div class="sec-body"><div class="fgrid">`;
+      sec.fields.forEach(f=>{
+        const val=p.fields[f.id];
+        h+=`<div class="fcell"><div class="flabel">${x(f.label)}</div>`;
+        if(f.type==='check'){
+          const attachments=getAttachments(p.id,f.id);
+          const hasFiles=attachments.length>0;
+          const panelId=`ap-${p.id}-${f.id}`;
+          const track=getDocTrack(p.id,f.id);
+          const elapsed=track.requested?daysBetween(track.requested,track.received||new Date().toISOString().slice(0,10)):null;
+          const elapsedCls=elapsed===null?'':elapsed>4?'elapsed-over':elapsed>2?'elapsed-warn':'elapsed-ok';
+          h+=`<div class="chk-wrap">
+            <div class="chk${val?' on':''}" onclick="togChk('${f.id}')"></div>
+            <span class="chk-lbl${val?' done':''}" onclick="togChk('${f.id}')">${val?'Done':'Pending'}</span>
+            <button class="attach-btn${hasFiles?' has-files':''}" onclick="toggleAttachPanel('${p.id}','${f.id}')"
+              title="${hasFiles?attachments.length+' file(s) attached':'Attach file'}">
+              📎${hasFiles?` ${attachments.length}`:''}
+            </button>
+          </div>
+          <div class="doc-track">
+            <div class="doc-track-row">
+              <span class="doc-track-lbl">Requested</span>
+              <input class="doc-track-input" type="date" value="${track.requested||''}"
+                onchange="saveDocTrack('${p.id}','${f.id}','requested',this.value)"/>
+              ${elapsed!==null?`<span class="doc-track-elapsed ${elapsedCls}">${elapsed}d</span>`:''}
+            </div>
+            <div class="doc-track-row">
+              <span class="doc-track-lbl">Received</span>
+              <input class="doc-track-input" type="date" value="${track.received||''}"
+                onchange="saveDocTrack('${p.id}','${f.id}','received',this.value)"/>
+            </div>
+            <div class="doc-track-row">
+              <span class="doc-track-lbl">By</span>
+              <input class="doc-track-who" type="text" value="${x(track.who||'')}" placeholder="Who requested"
+                onchange="saveDocTrack('${p.id}','${f.id}','who',this.value)"/>
+            </div>
+          </div>
+          <div class="attach-panel" id="${panelId}" style="display:none">
+            ${(()=>{
+              const{fullPath}=getProjectSPPath(p);
+              const subFolder=FIELD_FOLDER_MAP[f.id]||'Other';
+              const targetPath=`${fullPath}/${subFolder}`;
+              const connected=!!spToken;
+              return`<div style="background:var(--blue-bg);border:1px solid rgba(26,61,107,.15);border-radius:var(--r);padding:.6rem .75rem;margin-bottom:.6rem">
+                <div style="font-size:11px;font-weight:600;color:var(--blue);margin-bottom:.3rem">
+                  ☁ ${connected?'Auto-saves to OneDrive':'Connect to OneDrive to auto-save'}
+                </div>
+                <div style="font-size:10px;font-family:var(--mono);color:var(--blue);opacity:.8;word-break:break-all;margin-bottom:.4rem">
+                  📁 ${x(targetPath)}
+                </div>
+                ${!connected?`<div style="font-size:10px;color:var(--amber);margin-top:.2rem">⚠ Not connected — click <b>Connect to SharePoint</b> in the sidebar first</div>`:''}
+              </div>`;
+            })()}
+            ${hasFiles?`<div class="attach-list">${attachments.map((a,ai)=>`
+              <div class="attach-item">
+                <span class="attach-icon">${fileIcon(a.type)}</span>
+                <span class="attach-name" onclick="openAttachment('${p.id}','${f.id}',${ai})" title="${x(a.name)}">${x(a.name)}${a.folder?` <span style="font-size:10px;opacity:.6">[${x(a.folder)}]</span>`:''}</span>
+                <button class="attach-del" onclick="removeAttachment('${p.id}','${f.id}',${ai})" title="Remove">✕</button>
+              </div>`).join('')}
+            </div>`:''}
+            <label class="attach-upload-btn" style="width:100%;justify-content:center;margin-top:.25rem" title="Upload file — auto-saved to correct OneDrive folder">
+              📁 ${spToken?'Upload file → saves to OneDrive automatically':'Upload file (browser only)'}
+              <input type="file" style="display:none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="uploadAttachment(event,'${p.id}','${f.id}')"/>
+            </label>
+            <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin:.5rem 0 5px">Or paste existing link</div>
+            <div class="attach-link-row">
+              <input class="attach-link-input" id="lnk-${p.id}-${f.id}" placeholder="Paste OneDrive or SharePoint link…" onkeydown="if(event.key==='Enter')saveLinkAttachment('${p.id}','${f.id}')"/>
+              <button class="attach-link-save" onclick="saveLinkAttachment('${p.id}','${f.id}')">Save</button>
+            </div>
+          </div>`;
+        } else if(f.type==='select'){
+          const opts=(f.options||[]);
+          h+=`<select class="fval-select" onchange="saveSelectField('${f.id}',this.value)">
+            <option value="">— select —</option>
+            ${opts.map(o=>`<option value="${x(o)}"${val===o?' selected':''}>${x(o)}</option>`).join('')}
+          </select>`;
+        } else {
+          const disp=f.type==='date'&&val?fmtDate(val):f.type==='money'&&val?'$'+parseFloat(val).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):val;
+          h+=`<div class="fval${!val?' empty':''}" onclick="startEdit('${f.id}','${f.type}')" id="fv-${f.id}">${x(disp)||'Click to edit'}</div>`;
+        }
+        h+=`</div>`;
+      });
+      h+=`</div></div>`;
+    }
+    h+=`</div>`;
+  });
+  document.getElementById('projView').innerHTML=h;
+}
+
+// ── Interactions ──────────────────────────────────────────────────────
+function sel(id){S.activeId=id;save();renderSidebar();renderMain();}
+function toggleSec(sid){const k=S.activeId+':'+sid;openSec[k]=openSec[k]===false;renderMain();}
+function togChk(fid){const p=curProj();p.fields[fid]=!p.fields[fid];save();renderSidebar();renderMain();}
+function startEdit(fid,type){
+  const p=curProj();const val=p.fields[fid]||'';
+  const el=document.getElementById('fv-'+fid);if(!el)return;
+  const itype=type==='date'?'date':type==='money'?'number':'text';
+  el.outerHTML=`<div id="fe-${fid}">
+    <input class="ie-input" id="fei-${fid}" type="${itype}" value="${x(val)}" ${type==='money'?'min="0" step="0.01"':''}/>
+    <div class="ie-row">
+      <button class="ie-save" onclick="saveEdit('${fid}')">Save</button>
+      <button class="ie-cancel" onclick="renderMain()">✕</button>
+    </div>
+  </div>`;
+  const inp=document.getElementById('fei-'+fid);inp.focus();inp.select();
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit(fid);if(e.key==='Escape')renderMain();});
+}
+function saveSelectField(fid,val){
+  const p=curProj();if(!p)return;
+  p.fields[fid]=val;save();renderSidebar();
+}
+
+// ── File attachments ──────────────────────────────────────────────────
+// ── Document tracking ─────────────────────────────────────────────────
+function docTrackKey(projId,fid){return `dt_${projId}::${fid}`;}
+function getDocTrack(projId,fid){
+  if(!S.docTrack)S.docTrack={};
+  return S.docTrack[docTrackKey(projId,fid)]||{};
+}
+function saveDocTrack(projId,fid,field,val){
+  if(!S.docTrack)S.docTrack={};
+  const k=docTrackKey(projId,fid);
+  if(!S.docTrack[k])S.docTrack[k]={};
+  S.docTrack[k][field]=val;
+  save();
+}
+function daysBetween(d1,d2){
+  if(!d1||!d2)return null;
+  const ms=new Date(d2)-new Date(d1);
+  return Math.max(0,Math.round(ms/(1000*60*60*24)));
+}
+
+// ── Alert / notification system ───────────────────────────────────────
+function getOverdueItems(){
+  const overdue=[];
+  const today=new Date().toISOString().slice(0,10);
+  const allFields=getSections().flatMap(s=>s.fields);
+  S.projects.forEach(p=>{
+    allFields.filter(f=>f.type==='check').forEach(f=>{
+      if(p.fields[f.id])return;
+      const track=getDocTrack(p.id,f.id);
+      if(!track.requested||track.received)return;
+      const days=daysBetween(track.requested,today);
+      if(days>=2) overdue.push({proj:p,fieldId:f.id,fieldLabel:f.label,days,requestedBy:track.who||'',requested:track.requested});
+    });
+  });
+  return overdue.sort((a,b)=>b.days-a.days);
+}
+
+function checkAlerts(){
+  const overdue=getOverdueItems();
+  const banner=document.getElementById('alertBanner');
+  if(!banner)return;
+  if(!overdue.length){banner.style.display='none';document.querySelector('.app').style.marginTop='';return;}
+  const txt=document.getElementById('alertBannerText');
+  txt.textContent=`⚠ ${overdue.length} document${overdue.length!==1?'s':''} pending follow-up (2+ days without response)`;
+  banner.style.display='flex';
+  document.querySelector('.app').style.marginTop='44px';
+  if(Notification.permission==='granted'){
+    const top=overdue[0];
+    try{new Notification('PermitFlow — Follow-up needed',{
+      body:`${top.fieldLabel} for ${top.proj.name} — ${top.days} days pending`,
+    });}catch(e){}
+  }
+}
+
+function dismissAlert(){
+  document.getElementById('alertBanner').style.display='none';
+  document.querySelector('.app').style.marginTop='';
+}
+
+function requestNotifPermission(){
+  Notification.requestPermission().then(p=>{if(p==='granted')checkAlerts();renderDashBody();});
+}
+
+// ── Dashboard (full screen) ───────────────────────────────────────────
+const COMM_ICONS={'OW':'🌿','MO':'🏡','JF':'🌲','Palm Coast':'🌴','Sawmill Branch':'🪵','Sabana Reserve':'🏞️'};
+let dashCurrentView='dashboard';
+
+function openDashboard(){
+  dashCurrentView='dashboard';
+  document.getElementById('dashOverlay').style.display='flex';
+  renderDashSidebar();
+  dashShowView('dashboard');
+}
+function closeDashboard(){
+  document.getElementById('dashOverlay').style.display='none';
+}
+
+function dashShowView(view){
+  dashCurrentView=view;
+  // Update nav active state
+  ['dashboard','permits','alerts','settings'].forEach(v=>{
+    const el=document.getElementById('dash-nav-'+v);
+    if(el)el.classList.toggle('active',v===view);
+  });
+  const titles={dashboard:'Dashboard','permits':'All Permits',alerts:'Alerts'};
+  document.getElementById('dashViewTitle').textContent=titles[view]||'Dashboard';
+  if(view==='dashboard')renderDashHome();
+  else if(view==='permits')renderDashPermits();
+  else if(view==='alerts')renderDashAlerts();
+}
+
+function renderDashSidebar(){
+  const devs=[...new Set(S.projects.map(p=>getDevValue(p)).filter(Boolean))].sort();
+  const overdue=getOverdueItems();
+  const badge=document.getElementById('dash-alerts-badge');
+  if(badge)badge.textContent=overdue.length||'';
+  const pbadge=document.getElementById('dash-permits-badge');
+  if(pbadge)pbadge.textContent=S.projects.length||'';
+  const topCount=document.getElementById('dashAlertTopCount');
+  if(topCount){topCount.textContent=overdue.length;topCount.style.display=overdue.length?'block':'none';}
+  const list=document.getElementById('dashCommList');
+  if(list)list.innerHTML=devs.map(d=>`
+    <div class="dash-comm-item" onclick="setDevFilter('${x(d)}');closeDashboard()">
+      <span>${COMM_ICONS[d]||'🏘️'}</span>${x(d)}
+    </div>`).join('');
+}
+
+function renderDashHome(){
+  const today=new Date().toISOString().slice(0,10);
+  const allFields=getSections().flatMap(s=>s.fields);
+  const checkFields=allFields.filter(f=>f.type==='check');
+  const overdue=getOverdueItems();
+
+  // Stats
+  let totalP=S.projects.length;
+  let submitted=0,permitted=0;
+  S.projects.forEach(p=>{
+    const st=(p.fields['proj_status']||p.status||'').toLowerCase();
+    if(st.includes('submitted')||p.fields['sent_to_apply'])submitted++;
+    if(p.fields['permit_date'])permitted++;
+  });
+
+  // Notification bar
+  const notifStatus=typeof Notification!=='undefined'?Notification.permission:'default';
+  const notifHtml=notifStatus!=='granted'
+    ?`<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#1D4ED8">
+        🔔 Enable browser notifications to get 2-day follow-up alerts
+        <button onclick="requestNotifPermission()" style="background:#1D4ED8;color:#fff;border:none;border-radius:99px;padding:4px 14px;font-size:11px;cursor:pointer;font-family:var(--sans)">Enable</button>
+      </div>`:'';
+
+  let h=notifHtml;
+
+  // Top stat cards
+  h+=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:1.5rem">
+    <div class="dash-stat-card">
+      <div class="dash-stat-label">Total Permits</div>
+      <div class="dash-stat-val">${totalP}</div>
+      <div class="dash-stat-sub">${submitted} in progress</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="dash-stat-label">Submitted · Pending</div>
+      <div class="dash-stat-val" style="color:#D97706">${submitted}</div>
+      <div class="dash-stat-sub">Awaiting jurisdiction review</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="dash-stat-label">Permits Issued</div>
+      <div class="dash-stat-val" style="color:#059669">${permitted}</div>
+      <div class="dash-stat-sub">${S.projects.filter(p=>p.fields['noc']).length} with CO received</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="dash-stat-label">Active Alerts</div>
+      <div class="dash-stat-val" style="color:#DC2626">${overdue.length}</div>
+      <div class="dash-stat-sub">${overdue.filter(o=>o.days>4).length} critical requiring action</div>
+    </div>
+  </div>`;
+
+  // Active alerts section
+  if(overdue.length){
+    h+=`<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:1.25rem 1.5rem;margin-bottom:1.5rem">
+      <div class="dash-section-head">
+        <span class="dash-section-title">⚠ Active Alerts (${overdue.length})</span>
+        <span class="dash-view-all" onclick="dashShowView('alerts')">View All →</span>
+      </div>
+      ${overdue.slice(0,5).map(o=>`
+      <div class="dash-alert-row">
+        <span class="dash-alert-icon">🔔</span>
+        <span class="dash-alert-text">${x(o.proj.name)} · ${x(getDevValue(o.proj)||'No dev')} · <b>${x(o.fieldLabel)}</b> pending ${o.days} days since request</span>
+        <span class="dash-alert-link" onclick="sel('${o.proj.id}');closeDashboard()">View →</span>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  // By community
+  const devGroups={};
+  S.projects.forEach(p=>{
+    const dev=getDevValue(p)||'Other';
+    if(!devGroups[dev])devGroups[dev]={total:0,submitted:0,permitted:0,alerts:0};
+    devGroups[dev].total++;
+    if(p.fields['sent_to_apply'])devGroups[dev].submitted++;
+    if(p.fields['permit_date'])devGroups[dev].permitted++;
+    const ov=getOverdueItems().filter(o=>o.proj.id===p.id);
+    devGroups[dev].alerts+=ov.length;
+  });
+
+  const devEntries=Object.entries(devGroups);
+  if(devEntries.length){
+    h+=`<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:1.25rem 1.5rem;margin-bottom:1.5rem">
+      <div class="dash-section-head"><span class="dash-section-title">By Community</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      ${devEntries.sort((a,b)=>b[1].total-a[1].total).map(([dev,g])=>`
+        <div class="dash-comm-card" onclick="setDevFilter('${x(dev)}');closeDashboard()">
+          <div class="dash-comm-name">${COMM_ICONS[dev]||'🏘️'} ${x(dev)}</div>
+          <div>
+            <span class="dash-badge dash-badge-gray">${g.total} Total</span>
+            ${g.submitted?`<span class="dash-badge dash-badge-blue">${g.submitted} Submitted</span>`:''}
+            ${g.permitted?`<span class="dash-badge dash-badge-green">${g.permitted} Permitted</span>`:''}
+            ${g.alerts?`<span class="dash-badge dash-badge-red">${g.alerts} ⚠</span>`:''}
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // Currently submitted table
+  const submitted_projects=S.projects.filter(p=>p.fields['sent_to_apply']&&!p.fields['permit_date']);
+  if(submitted_projects.length){
+    h+=renderPermitTable(submitted_projects,'CURRENTLY SUBMITTED — PENDING REVIEW');
+  }
+
+  document.getElementById('dashViewContent').innerHTML=h;
+}
+
+// Permit table with community tabs, filters, individual check columns, Edit button
+let dashPermitFilter={dev:'all',search:'',model:'',elevation:'',status:''};
+
+function renderPermitTable(projects, title){
+  const preFields=[
+    {id:'structural_options',lbl:'Str Opt'},{id:'architecture',lbl:'Arch'},{id:'site_plans_topo',lbl:'Site Plan'},
+    {id:'truss_eng',lbl:'Truss'},{id:'energy_calcs',lbl:'Energy'},{id:'soil_test',lbl:'Soil'},
+    {id:'structural_eng',lbl:'Str Eng'},{id:'landscape',lbl:'Landsc'},{id:'product_approval',lbl:'Prod Appr'},
+    {id:'color_material',lbl:'Color'},{id:'roofing_worksheet',lbl:'Roof'},{id:'geotech_letter',lbl:'Geo'},
+  ];
+  const subFields=[
+    {id:'utility_pp',lbl:'Util PP'},{id:'const_lien_aff',lbl:'Lien'},{id:'noc',lbl:'NOC'},
+    {id:'recorded_deed',lbl:'Deed'},{id:'sent_to_apply',lbl:'Sent'},
+  ];
+  const postFields=[
+    {id:'permit_date',lbl:'Permit Date',isDate:true},{id:'utilities',lbl:'Util',isText:true},
+    {id:'builders_risk',lbl:'Bld Risk'},{id:'builders_risk_canceled',lbl:'Canceled'},
+  ];
+  const today=new Date().toISOString().slice(0,10);
+
+  const mkCheck=(p,f)=>{
+    const val=p.fields[f.id];
+    if(f.isDate){return val?`<span class="dash-check dash-check-done" title="${val}">✓<br><span style="font-size:8px">${fmtDate(val).slice(0,6)}</span></span>`:`<span class="dash-check dash-check-pending">—</span>`;}
+    if(f.isText){return val?`<span class="dash-check dash-check-done" title="${val}">✓</span>`:`<span class="dash-check dash-check-pending">—</span>`;}
+    const track=getDocTrack(p.id,f.id);
+    const overdue=!val&&track.requested&&!track.received&&daysBetween(track.requested,today)>=2;
+    if(val)return`<span class="dash-check dash-check-done">✓</span>`;
+    if(overdue)return`<span class="dash-check dash-check-overdue" title="${track.requested} — ${daysBetween(track.requested,today)}d">!</span>`;
+    return`<span class="dash-check dash-check-pending">—</span>`;
+  };
+
+  let h=`<div style="overflow-x:auto"><table class="dash-table">
+    <thead>
+      <tr>
+        <th style="min-width:180px">ADDRESS / LOT</th>
+        <th>COMMUNITY</th>
+        <th>MODEL · ELEVATION</th>
+        <th>PROGRESS</th>
+        <th>STATUS</th>
+        <th colspan="${preFields.length}" style="text-align:center;padding:4px 0">
+          <span class="dash-col-header col-pre">PRE-PERMIT DOCS</span>
+        </th>
+        <th colspan="${subFields.length}" style="text-align:center;padding:4px 0">
+          <span class="dash-col-header col-sub">SUBMISSION</span>
+        </th>
+        <th colspan="${postFields.length}" style="text-align:center;padding:4px 0">
+          <span class="dash-col-header col-post">POST-SUBMIT</span>
+        </th>
+        <th>ALERTS</th>
+        <th>PERMIT #</th>
+        <th></th>
+      </tr>
+      <tr style="background:#F9FAFB">
+        <th></th><th></th><th></th><th></th><th></th>
+        ${preFields.map(f=>`<th style="text-align:center;font-size:9px;color:#9CA3AF;padding:2px 4px;white-space:nowrap">${f.lbl}</th>`).join('')}
+        ${subFields.map(f=>`<th style="text-align:center;font-size:9px;color:#9CA3AF;padding:2px 4px;white-space:nowrap">${f.lbl}</th>`).join('')}
+        ${postFields.map(f=>`<th style="text-align:center;font-size:9px;color:#9CA3AF;padding:2px 4px;white-space:nowrap">${f.lbl}</th>`).join('')}
+        <th></th><th></th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+    ${projects.map(p=>{
+      const{done,total,pct}=checkProgress(p);
+      const dev=getDevValue(p)||'';
+      const lot=p.fields['lot_number']||p.fields['parcel']||'N/A';
+      const model=p.fields['model']||'';
+      const elev=p.fields['elevation']||'';
+      const permitNum=p.fields['permit_number']||'—';
+      const status=p.fields['proj_status']||p.status||'active';
+      const overdueForProj=getOverdueItems().filter(o=>o.proj.id===p.id).length;
+      const statusCls={'permitted':'dash-status-permitted','active':'dash-status-active','submitted':'dash-status-submitted','pending':'dash-status-pending','on hold':'dash-status-pending','completed':'dash-status-permitted'}[status.toLowerCase()]||'dash-status-active';
+      return`<tr>
+        <td>
+          <div style="font-size:10px;color:#9CA3AF">Lot ${x(lot)}</div>
+          <div style="font-weight:600;color:#111827;font-size:13px">${x(p.name)}</div>
+          <div style="font-size:11px;color:#9CA3AF">${x(p.fields['city']||'')}</div>
+        </td>
+        <td><span style="background:#D1FAE5;color:#065F46;border-radius:99px;padding:2px 10px;font-size:11px;font-weight:600;white-space:nowrap">${x(dev)}</span></td>
+        <td>
+          <div style="font-weight:500;color:#374151">${x(model)}</div>
+          <div style="font-size:11px;color:#9CA3AF">${x(elev)}</div>
+        </td>
+        <td>
+          <div class="dash-prog-bar"><div class="dash-prog-fill" style="width:${pct}%"></div></div>
+          <div style="font-size:10px;color:#9CA3AF;margin-top:2px">${done}/${total} stages</div>
+        </td>
+        <td><span class="dash-status-pill ${statusCls}">${x(status)}</span></td>
+        ${preFields.map(f=>`<td style="text-align:center;padding:6px 4px">${mkCheck(p,f)}</td>`).join('')}
+        ${subFields.map(f=>`<td style="text-align:center;padding:6px 4px">${mkCheck(p,f)}</td>`).join('')}
+        ${postFields.map(f=>`<td style="text-align:center;padding:6px 4px">${mkCheck(p,f)}</td>`).join('')}
+        <td style="text-align:center">${overdueForProj?`<span style="background:#FEE2E2;color:#DC2626;border-radius:99px;padding:2px 8px;font-size:11px;font-weight:600">⚠ ${overdueForProj}</span>`:`<span style="font-size:11px;color:#10B981;font-weight:600">✓ OK</span>`}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:#374151;white-space:nowrap">${x(permitNum)}</td>
+        <td><button onclick="sel('${p.id}');closeDashboard()" style="padding:4px 12px;border:1px solid #E5E7EB;border-radius:6px;background:#fff;font-size:12px;cursor:pointer;font-family:var(--sans);color:#374151;font-weight:500">Edit</button></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table></div>`;
+  return h;
+}
+
+function renderDashPermits(){
+  // Get unique devs for tabs
+  const devs=[...new Set(S.projects.map(p=>getDevValue(p)).filter(Boolean))].sort();
+  // Get unique models and elevations for filters
+  const models=[...new Set(S.projects.map(p=>p.fields['model']).filter(Boolean))].sort();
+  const elevs=[...new Set(S.projects.map(p=>p.fields['elevation']).filter(Boolean))].sort();
+  const statuses=[...new Set(S.projects.map(p=>p.fields['proj_status']||p.status).filter(Boolean))].sort();
+
+  // Apply filters
+  let filtered=S.projects.filter(p=>{
+    if(dashPermitFilter.dev!=='all'&&getDevValue(p)!==dashPermitFilter.dev)return false;
+    if(dashPermitFilter.search){
+      const q=dashPermitFilter.search.toLowerCase();
+      const hay=[p.name,p.fields['address'],p.fields['parcel'],p.fields['permit_number'],p.fields['model']].join(' ').toLowerCase();
+      if(!hay.includes(q))return false;
+    }
+    if(dashPermitFilter.model&&p.fields['model']!==dashPermitFilter.model)return false;
+    if(dashPermitFilter.elevation&&p.fields['elevation']!==dashPermitFilter.elevation)return false;
+    if(dashPermitFilter.status){const st=p.fields['proj_status']||p.status||'';if(st!==dashPermitFilter.status)return false;}
+    return true;
+  });
+
+  const tabAll=S.projects.length;
+  const activeFilters=Object.values(dashPermitFilter).filter(v=>v&&v!=='all').length;
+
+  let h=`
+  <!-- Community tabs -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:.75rem 1rem">
+    <button onclick="dashPermitFilter.dev='all';renderDashPermits()" style="padding:5px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);border:1px solid ${dashPermitFilter.dev==='all'?'#1E2A3A':'#E5E7EB'};background:${dashPermitFilter.dev==='all'?'#1E2A3A':'#fff'};color:${dashPermitFilter.dev==='all'?'#fff':'#374151'}">All <span style="opacity:.7">${tabAll}</span></button>
+    ${devs.map(d=>{const cnt=S.projects.filter(p=>getDevValue(p)===d).length;const active=dashPermitFilter.dev===d;return`<button onclick="dashPermitFilter.dev='${x(d)}';renderDashPermits()" style="padding:5px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);border:1px solid ${active?'#1E2A3A':'#E5E7EB'};background:${active?'#1E2A3A':'#fff'};color:${active?'#fff':'#374151'}">${x(d)} <span style="opacity:.7">${cnt}</span></button>`;}).join('')}
+  </div>
+
+  <!-- Filter bar -->
+  <div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:.75rem 1rem;margin-bottom:1rem">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:12px;font-weight:600;color:#374151">🔍 Filters${activeFilters?` <span style="background:#3B82F6;color:#fff;border-radius:99px;padding:1px 7px;font-size:10px">${activeFilters} active</span>`:''}</span>
+      <input placeholder="Search address, lot, model, permit #..." value="${x(dashPermitFilter.search)}"
+        oninput="dashPermitFilter.search=this.value;renderDashPermits()"
+        style="flex:1;min-width:200px;padding:6px 10px;border:1px solid #E5E7EB;border-radius:8px;font-size:12px;font-family:var(--sans);outline:none"/>
+      <select onchange="dashPermitFilter.model=this.value;renderDashPermits()" style="padding:6px 10px;border:1px solid #E5E7EB;border-radius:8px;font-size:12px;font-family:var(--sans);outline:none">
+        <option value="">All Models</option>${models.map(m=>`<option value="${x(m)}"${dashPermitFilter.model===m?' selected':''}>${x(m)}</option>`).join('')}
+      </select>
+      <select onchange="dashPermitFilter.elevation=this.value;renderDashPermits()" style="padding:6px 10px;border:1px solid #E5E7EB;border-radius:8px;font-size:12px;font-family:var(--sans);outline:none">
+        <option value="">All Elevations</option>${elevs.map(e=>`<option value="${x(e)}"${dashPermitFilter.elevation===e?' selected':''}>${x(e)}</option>`).join('')}
+      </select>
+      <select onchange="dashPermitFilter.status=this.value;renderDashPermits()" style="padding:6px 10px;border:1px solid #E5E7EB;border-radius:8px;font-size:12px;font-family:var(--sans);outline:none">
+        <option value="">All Statuses</option>${statuses.map(s=>`<option value="${x(s)}"${dashPermitFilter.status===s?' selected':''}>${x(s)}</option>`).join('')}
+      </select>
+      ${activeFilters?`<button onclick="dashPermitFilter={dev:dashPermitFilter.dev,search:'',model:'',elevation:'',status:''};renderDashPermits()" style="padding:5px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:12px;cursor:pointer;font-family:var(--sans);color:#6B7280;background:#fff">✕ Clear filters</button>`:''}
+    </div>
+  </div>
+
+  <!-- Actions + count -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem">
+    <div style="display:flex;gap:8px">
+      <button onclick="openNewModal();closeDashboard()" style="display:flex;align-items:center;gap:6px;padding:7px 16px;background:#1E2A3A;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans)">+ Add Permit</button>
+      <button onclick="exportCSV()" style="display:flex;align-items:center;gap:6px;padding:7px 16px;background:#fff;color:#374151;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans)">↑ Export CSV</button>
+    </div>
+    <div style="font-size:12px;color:#9CA3AF">Showing ${filtered.length} of ${S.projects.length} permits</div>
+  </div>
+
+  <!-- Table -->
+  <div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;overflow:hidden">
+    ${renderPermitTable(filtered,'')}
+  </div>`;
+
+  document.getElementById('dashViewContent').innerHTML=h;
+}
+
+function exportCSV(){
+  const headers=['Name','Address','City','Parcel','Development','Model','Elevation','Status','Permit Number','Permit Fee'];
+  const rows=S.projects.map(p=>[
+    p.name,p.fields['address']||'',p.fields['city']||'',p.fields['parcel']||'',
+    getDevValue(p)||'',p.fields['model']||'',p.fields['elevation']||'',
+    p.fields['proj_status']||p.status||'',p.fields['permit_number']||'',p.fields['permit_fee']||''
+  ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv=[headers.join(','),...rows].join('\n');
+  const b=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='permits-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+function renderDashAlerts(){
+  const overdue=getOverdueItems();
+  const critical=overdue.filter(o=>o.days>=5);
+  const warnings=overdue.filter(o=>o.days>=2&&o.days<5);
+
+  let h=`<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:1.25rem 1.5rem">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+      <span style="font-size:16px;font-weight:700;color:#111827">Active Alerts</span>
+      ${critical.length?`<span style="background:#FEE2E2;color:#DC2626;border-radius:99px;padding:3px 12px;font-size:12px;font-weight:700">${critical.length} Critical</span>`:''}
+      ${warnings.length?`<span style="background:#FEF3C7;color:#D97706;border-radius:99px;padding:3px 12px;font-size:12px;font-weight:700">${warnings.length} Warnings</span>`:''}
+    </div>`;
+
+  if(!overdue.length){
+    h+=`<div style="text-align:center;padding:2rem;color:#9CA3AF">✓ No overdue documents — all good!</div>`;
+  } else {
+    overdue.forEach(o=>{
+      const isCritical=o.days>=5;
+      const bg=isCritical?'#FEF2F2':'#FFFBEB';
+      const border=isCritical?'#FECACA':'#FDE68A';
+      const icon=isCritical?'🚨':'⚠️';
+      const textColor=isCritical?'#991B1B':'#92400E';
+      const dev=getDevValue(o.proj)||'';
+      const lot=o.proj.fields['lot_number']||o.proj.fields['parcel']||'N/A';
+      const model=o.proj.fields['model']||'';
+      h+=`<div style="display:flex;align-items:center;gap:12px;padding:.875rem 1rem;background:${bg};border:1px solid ${border};border-radius:8px;margin-bottom:8px">
+        <span style="font-size:18px;flex-shrink:0">${icon}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;color:${textColor};font-size:14px">${x(o.proj.name)}</div>
+          <div style="font-size:12px;color:${textColor};opacity:.8;margin-top:2px">${x(dev)} · Lot ${x(lot)}${model?' · '+x(model):''}</div>
+          <div style="font-size:12px;color:${textColor};margin-top:2px"><b>${x(o.fieldLabel)}</b> pending ${o.days} business days since ${fmtDate(o.requested)}${o.requestedBy?' · By: '+x(o.requestedBy):''}</div>
+        </div>
+        <button onclick="sel('${o.proj.id}');closeDashboard()" style="padding:6px 16px;border:1px solid ${border};border-radius:8px;background:#fff;font-size:12px;cursor:pointer;font-family:var(--sans);color:#374151;font-weight:600;white-space:nowrap">Open →</button>
+      </div>`;
+    });
+  }
+  h+=`</div>`;
+  document.getElementById('dashViewContent').innerHTML=h;
+}
+
+
+function attachKey(projId,fid){return projId+'::'+fid;}
+
+function getAttachments(projId,fid){
+  if(!S.attachments)S.attachments={};
+  return S.attachments[attachKey(projId,fid)]||[];
+}
+
+function setAttachments(projId,fid,arr){
+  if(!S.attachments)S.attachments={};
+  S.attachments[attachKey(projId,fid)]=arr;
+  save();
+}
+
+function fileIcon(type){
+  if(!type)return'📄';
+  if(type==='link')return'🔗';
+  if(type==='sharepoint')return'☁';
+  if(type==='application/pdf')return'📋';
+  if(type.startsWith('image/'))return'🖼️';
+  if(type.includes('word')||type.includes('document')||type.includes('.doc'))return'📝';
+  if(type.includes('sheet')||type.includes('excel')||type.includes('.xls'))return'📊';
+  return'📄';
+}
+
+function toggleAttachPanel(projId,fid){
+  const panel=document.getElementById(`ap-${projId}-${fid}`);
+  if(!panel)return;
+  panel.style.display=panel.style.display==='none'?'block':'none';
+  if(panel.style.display==='block'){
+    const inp=document.getElementById(`lnk-${projId}-${fid}`);
+    if(inp)setTimeout(()=>inp.focus(),50);
+  }
+}
+
+async function uploadAttachment(e,projId,fid){
+  const file=e.target.files[0];if(!file)return;
+  e.target.value='';
+
+  const p=S.projects.find(q=>q.id===projId);if(!p)return;
+
+  // If connected to SharePoint, upload directly
+  if(spToken){
+    try{
+      showUploadToast('Uploading to OneDrive…');
+      const driveId=await spGetDriveId();
+      const{fullPath}=getProjectSPPath(p);
+      const subFolder=FIELD_FOLDER_MAP[fid]||'Other';
+      const targetPath=`${fullPath}/${subFolder}`;
+
+      // Ensure all folders exist
+      showUploadToast(`Creating folders if needed…`);
+      await spEnsureFolder(driveId,targetPath);
+
+      // Upload the file
+      showUploadToast(`Uploading ${file.name}…`);
+      const{url,name}=await spUploadFile(driveId,targetPath,file.name,file);
+
+      // Save as link attachment
+      const attachments=getAttachments(projId,fid);
+      attachments.push({name,type:'sharepoint',url,addedAt:new Date().toISOString(),folder:subFolder});
+      setAttachments(projId,fid,attachments);
+      showUploadToast(`✓ Saved to OneDrive: ${subFolder}`,true);
+      renderMain();
+      setTimeout(()=>toggleAttachPanel(projId,fid),50);
+    }catch(err){
+      console.error('SP upload error:',err);
+      showUploadToast('⚠ Upload failed: '+err.message,true);
+      // Fall back to browser storage
+      storeInBrowser(file,projId,fid);
+    }
+    return;
+  }
+
+  // Not connected — store in browser
+  if(file.size>10*1024*1024){
+    alert('File is larger than 10MB. Connect to SharePoint to upload larger files.');return;
+  }
+  storeInBrowser(file,projId,fid);
+}
+
+function storeInBrowser(file,projId,fid){
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const attachments=getAttachments(projId,fid);
+    attachments.push({name:file.name,type:file.type,data:ev.target.result,addedAt:new Date().toISOString()});
+    setAttachments(projId,fid,attachments);
+    renderMain();
+    setTimeout(()=>toggleAttachPanel(projId,fid),50);
+  };
+  reader.readAsDataURL(file);
+}
+
+function showUploadToast(msg,autohide=false){
+  let t=document.getElementById('uploadToast');
+  if(!t){
+    t=document.createElement('div');t.id='uploadToast';
+    t.style.cssText=`position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);
+      background:var(--accent);color:#fff;border-radius:var(--r2);padding:.6rem 1.25rem;
+      font-size:12px;font-weight:500;z-index:9999;font-family:var(--sans);
+      box-shadow:0 4px 20px rgba(0,0,0,.2);white-space:nowrap`;
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;
+  if(autohide)setTimeout(()=>{const el=document.getElementById('uploadToast');if(el)el.remove();},3000);
+}
+
+function saveLinkAttachment(projId,fid){
+  const inp=document.getElementById(`lnk-${projId}-${fid}`);
+  const url=inp?inp.value.trim():'';
+  if(!url)return;
+  // Extract a friendly name from URL
+  let name=url;
+  try{const u=new URL(url);name=decodeURIComponent(u.pathname.split('/').filter(Boolean).pop()||u.hostname);}catch(e){}
+  const attachments=getAttachments(projId,fid);
+  attachments.push({name:name||url,type:'link',url:url,addedAt:new Date().toISOString()});
+  setAttachments(projId,fid,attachments);
+  renderMain();
+  setTimeout(()=>toggleAttachPanel(projId,fid),50);
+}
+
+function openAttachment(projId,fid,idx){
+  const attachments=getAttachments(projId,fid);
+  const a=attachments[idx];if(!a)return;
+  if(a.type==='link'){window.open(a.url,'_blank');return;}
+  // For stored files, open in new tab
+  const win=window.open();
+  if(a.type&&a.type.startsWith('image/')){
+    win.document.write(`<img src="${a.data}" style="max-width:100%"/>`);
+  } else {
+    // Create a blob URL and open it
+    const byteStr=atob(a.data.split(',')[1]);
+    const mime=a.data.split(',')[0].match(/:(.*?);/)[1];
+    const ab=new ArrayBuffer(byteStr.length);
+    const ia=new Uint8Array(ab);
+    for(let i=0;i<byteStr.length;i++)ia[i]=byteStr.charCodeAt(i);
+    const blob=new Blob([ab],{type:mime});
+    const url=URL.createObjectURL(blob);
+    win.location=url;
+  }
+}
+
+function removeAttachment(projId,fid,idx){
+  const attachments=getAttachments(projId,fid);
+  attachments.splice(idx,1);
+  setAttachments(projId,fid,attachments);
+  renderMain();
+  setTimeout(()=>toggleAttachPanel(projId,fid),50);
+}
+function saveEdit(fid){
+  const inp=document.getElementById('fei-'+fid);if(!inp)return;
+  curProj().fields[fid]=inp.value.trim();save();renderSidebar();renderMain();
+}
+function toggleDD(e){e.stopPropagation();const m=document.getElementById('statusDD');if(m)m.style.display=m.style.display==='block'?'none':'block';}
+document.addEventListener('click',()=>{const m=document.getElementById('statusDD');if(m)m.style.display='none';});
+function setStatus(s){curProj().status=s;save();renderSidebar();renderMain();}
+function editNotes(){
+  const p=curProj();
+  const t=document.querySelector('.notes-bar')||document.getElementById('notesArea');if(!t)return;
+  t.outerHTML=`<div class="notes-edit" id="notesArea">
+    <textarea class="notes-ta" id="notes-ta" rows="3">${x(p.notes||'')}</textarea>
+    <div style="display:flex;gap:6px;margin-top:6px">
+      <button class="btn primary" onclick="saveNotes()">Save notes</button>
+      <button class="btn" onclick="renderMain()">Cancel</button>
+    </div>
+  </div>`;
+  document.getElementById('notes-ta').focus();
+}
+function saveNotes(){curProj().notes=document.getElementById('notes-ta').value.trim();save();renderMain();}
+function delProj(){
+  if(!confirm('Delete this project?'))return;
+  S.projects=S.projects.filter(p=>p.id!==S.activeId);
+  S.activeId=S.projects.length?S.projects[0].id:null;
+  save();renderSidebar();renderMain();
+}
+
+// ── Import Modal ──────────────────────────────────────────────────────
+function openImportModal(){
+  importRows=[];importHeaders=[];importMode='add';
+  document.getElementById('importResult').style.display='none';
+  document.getElementById('remapArea').style.display='none';
+  document.getElementById('mapperArea').style.display='none';
+  document.getElementById('doImportBtn').style.display='none';
+  document.getElementById('pasteArea').value='';
+  document.getElementById('importBg').style.display='flex';
+  switchImportTab('paste',document.querySelector('.import-tab'));
+}
+function closeImportModal(){document.getElementById('importBg').style.display='none';}
+
+function switchImportTab(tab,el){
+  currentImportTab=tab;
+  document.querySelectorAll('.import-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.import-panel').forEach(p=>p.classList.remove('active'));
+  if(el)el.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+// ── Paste import ──────────────────────────────────────────────────────
+function onPasteInput(){
+  const raw=document.getElementById('pasteArea').value.trim();
+  if(!raw){document.getElementById('mapperArea').style.display='none';document.getElementById('doImportBtn').style.display='none';return;}
+  const parsed=parseTSV(raw);
+  if(parsed.length<2){showImportError('Need at least a header row and one data row.');return;}
+  loadImportData(parsed);
+}
+
+function parseTSV(raw){
+  // Handle both tab-separated (from spreadsheets) and comma-separated
+  const lines=raw.split(/\r?\n/).filter(l=>l.trim());
+  if(!lines.length)return[];
+  // Detect delimiter: if first line has tabs, use tab; else comma
+  const delim=lines[0].includes('\t')?'\t':',';
+  return lines.map(l=>parseDelimitedLine(l,delim));
+}
+
+function parseDelimitedLine(line,delim){
+  if(delim==='\t')return line.split('\t').map(c=>c.trim());
+  // CSV-aware comma split
+  const result=[];let cur='';let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(ch===','&&!inQ){result.push(cur.trim());cur='';}
+    else cur+=ch;
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+// ── CSV file import ───────────────────────────────────────────────────
+function onCSVFile(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const parsed=parseTSV(ev.target.result);
+    if(parsed.length<2){showImportError('Need at least a header row and one data row.');return;}
+    loadImportData(parsed);
+  };
+  r.readAsText(f);
+  e.target.value='';
+}
+
+function dzDragOver(e){e.preventDefault();document.getElementById('dropZone').classList.add('drag-over');}
+function dzDragLeave(){document.getElementById('dropZone').classList.remove('drag-over');}
+function dzDrop(e){
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-over');
+  const f=e.dataTransfer.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const parsed=parseTSV(ev.target.result);
+    if(parsed.length<2){showImportError('Need at least a header row and one data row.');return;}
+    loadImportData(parsed);
+  };
+  r.readAsText(f);
+}
+
+// ── Core: load parsed data, build mapper ─────────────────────────────
+function loadImportData(parsed){
+  importHeaders=parsed[0];
+  importRows=parsed.slice(1).filter(r=>r.some(c=>c));
+  document.getElementById('rowCountBadge').textContent=importRows.length+' rows detected';
+  buildMapper();
+  buildPreview();
+  document.getElementById('mapperArea').style.display='block';
+  document.getElementById('doImportBtn').style.display='flex';
+  document.getElementById('importResult').style.display='none';
+}
+
+function autoMapColumn(colName){
+  const lower=colName.toLowerCase().trim();
+  const allFields=getSections().flatMap(s=>s.fields);
+  // 1. Exact label match
+  for(const f of allFields){
+    if(f.label.toLowerCase()===lower) return f.id;
+  }
+  // 2. Keyword rules
+  const rules=[
+    {keys:['project name','proj name','name'],id:'projname'},
+    {keys:['address','street'],id:'address'},
+    {keys:['city','municipality'],id:'city'},
+    {keys:['parcel','apn','folio'],id:'parcel'},
+    {keys:['release date','release'],id:'release'},
+    {keys:['permit date','pm permit','permit issued'],id:'permit_date'},
+    {keys:['permit number','permit no','permit #'],id:'permit_number'},
+    {keys:['permit fee'],id:'permit_fee'},
+    {keys:['utilities'],id:'utilities'},
+    {keys:['model','floor plan'],id:'model'},
+    {keys:['elevation','elev'],id:'elevation'},
+    {keys:['garage'],id:'garage'},
+    {keys:['water'],id:'water'},
+    {keys:['builder','company','developer','client'],id:'builder'},
+    {keys:['subdivision','development','community'],id:'subdivision'},
+    {keys:['status','stage'],id:'proj_status'},
+    {keys:['project type','type','category'],id:'proj_type'},
+    {keys:['note','notes','comment'],id:'notes'},
+    {keys:['builders risk cancel'],id:'builders_risk_canceled'},
+    {keys:['builders risk'],id:'builders_risk'},
+    {keys:['noc'],id:'noc'},
+    {keys:['recorded deed','deed'],id:'recorded_deed'},
+    {keys:['lien'],id:'const_lien_aff'},
+    {keys:['utility pp'],id:'utility_pp'},
+    {keys:['sent to apply'],id:'sent_to_apply'},
+    {keys:['architecture'],id:'architecture'},
+    {keys:['structural opt'],id:'structural_options'},
+    {keys:['structural eng'],id:'structural_eng'},
+    {keys:['site plan','topo'],id:'site_plans_topo'},
+    {keys:['truss'],id:'truss_eng'},
+    {keys:['energy'],id:'energy_calcs'},
+    {keys:['soil'],id:'soil_test'},
+    {keys:['landscape'],id:'landscape'},
+    {keys:['product approval'],id:'product_approval'},
+    {keys:['color','material'],id:'color_material'},
+    {keys:['roofing'],id:'roofing_worksheet'},
+    {keys:['geotech'],id:'geotech_letter'},
+  ];
+  for(const rule of rules){
+    if(rule.keys.some(k=>lower.includes(k))){
+      if(allFields.find(f=>f.id===rule.id)) return rule.id;
+    }
+  }
+  // 3. Partial label match
+  for(const f of allFields){
+    if(lower.includes(f.label.toLowerCase())||f.label.toLowerCase().includes(lower))
+      return f.id;
+  }
+  return '_skip';
+}
+
+function buildMapper(){
+  const el=document.getElementById('mapperRows');
+  // Build target list: skip + every field from every section
+  const allFields=getSections().flatMap(s=>s.fields.map(f=>({...f,secLabel:s.label})));
+  const targets=[
+    {id:'_skip',    label:'— skip —'},
+    {id:'projname', label:'⭐ Project Name (display name in sidebar)'},
+    {id:'notes',    label:'Notes (project)'},
+    ...allFields.map(f=>({id:f.id, label:`${f.label}  [${f.secLabel}]`}))
+  ];
+
+  let mapped=0;
+  el.innerHTML=importHeaders.map((col,i)=>{
+    const saved=S.lastImportMapping&&S.lastImportMapping[String(i)];
+    const auto=saved||autoMapColumn(col);
+    if(auto!=='_skip') mapped++;
+    const opts=targets.map(t=>`<option value="${t.id}"${t.id===auto?' selected':''}>${x(t.label)}</option>`).join('');
+    return`<div class="mapper-grid">
+      <div class="mapper-src" title="${x(col)}">${x(col)||'(empty)'}</div>
+      <div class="mapper-arrow">→</div>
+      <select class="mapper-select${auto!=='_skip'?' mapped':''}" id="map-${i}"
+        onchange="this.className='mapper-select'+(this.value!=='_skip'?' mapped':'');updateMappedCount()">
+        ${opts}
+      </select>
+    </div>`;
+  }).join('');
+
+  document.getElementById('rowCountBadge').textContent=
+    `${importRows.length} rows · ${mapped}/${importHeaders.length} columns matched`;
+}
+
+function updateMappedCount(){
+  const mapped=importHeaders.filter((_,i)=>{
+    const s=document.getElementById('map-'+i);
+    return s&&s.value!=='_skip';
+  }).length;
+  document.getElementById('rowCountBadge').textContent=
+    `${importRows.length} rows · ${mapped}/${importHeaders.length} columns matched`;
+}
+
+function buildPreview(){
+  const preview=importRows.slice(0,3);
+  const t=document.getElementById('previewTable');
+  t.innerHTML=`<thead><tr>${importHeaders.map(h=>`<th>${x(h)}</th>`).join('')}</tr></thead>
+    <tbody>${preview.map(r=>`<tr>${importHeaders.map((_,i)=>`<td>${x(r[i]||'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
+}
+
+function setImportMode(mode){
+  importMode=mode;
+  document.getElementById('modeAdd').classList.toggle('active',mode==='add');
+  document.getElementById('modeReplace').classList.toggle('active',mode==='replace');
+}
+
+// ── Actually import ───────────────────────────────────────────────────
+function doImport(){
+  const mapping={};
+  importHeaders.forEach((_,i)=>{
+    const sel=document.getElementById('map-'+i);
+    if(sel&&sel.value!=='_skip') mapping[i]=sel.value;
+  });
+
+  if(!Object.keys(mapping).length){
+    showImportError('Map at least one column to a field first.');return;
+  }
+
+  const allFields=getSections().flatMap(s=>s.fields);
+
+  const newProjects=importRows.map(row=>{
+    const p={id:uid(),name:'',city:'',address:'',client:'',
+      notes:'',status:'active',createdAt:new Date().toISOString(),fields:blankFields()};
+
+    Object.entries(mapping).forEach(([ci,fid])=>{
+      const val=(row[+ci]||'').trim();
+      if(!val) return;
+      if(fid==='projname'){p.name=val;return;}
+      if(fid==='notes'){p.notes=val;return;}
+      const f=allFields.find(f=>f.id===fid);
+      if(!f) return;
+      if(f.type==='check'){
+        p.fields[fid]=['yes','1','true','done','x','✓'].includes(val.toLowerCase());
+      } else if(f.type==='date'){
+        p.fields[fid]=normalizeDate(val);
+      } else {
+        p.fields[fid]=val;
+      }
+    });
+
+    // If no explicit project name mapped, build from best available field
+    if(!p.name){
+      p.name = p.fields['address']||p.fields['subdivision']||p.fields['parcel']||
+               p.fields['builder']||Object.values(p.fields).find(v=>v&&typeof v==='string')||'Project';
+    }
+    // Sync shortcuts
+    p.address=p.fields['address']||'';
+    p.city=p.fields['city']||'';
+    p.client=p.fields['builder']||p.fields['subdivision']||'';
+    return p;
+  });
+
+  const valid=newProjects.filter(p=>p.name&&p.name!=='Project');
+  if(!valid.length){showImportError('No data found. Check your paste includes a header row and data rows.');return;}
+
+  if(importMode==='replace') S.projects=valid;
+  else S.projects.push(...valid);
+  S.activeId=valid[0].id;
+  // Save mapping for next time
+  S.lastImportMapping=mapping;
+  save();renderSidebar();renderMain();
+
+  const res=document.getElementById('importResult');
+  res.className='import-result success';
+  res.textContent=`✓ Imported ${valid.length} project${valid.length!==1?'s':''}. Mapping saved for next time.`;
+  res.style.display='block';
+  document.getElementById('remapArea').style.display='block';
+}
+
+function normalizeDate(raw){
+  if(!raw)return'';
+  // Excel serial number
+  if(/^\d{5}$/.test(raw.trim())){
+    const d=new Date((parseInt(raw)-25569)*86400*1000);
+    return d.toISOString().slice(0,10);
+  }
+  const d=new Date(raw);
+  if(!isNaN(d.getTime()))return d.toISOString().slice(0,10);
+  return raw;
+}
+
+function showImportError(msg){
+  const el=document.getElementById('importResult');
+  el.className='import-result error';
+  el.textContent='✕ '+msg;
+  el.style.display='block';
+}
+
+function showRemapper(){
+  // Re-show the mapper with the last loaded data (importRows/importHeaders already set)
+  if(!importHeaders.length){showImportError('No import data loaded yet. Please paste or load a file first.');return;}
+  document.getElementById('mapperArea').style.display='block';
+  document.getElementById('doImportBtn').style.display='flex';
+  document.getElementById('importResult').style.display='none';
+  buildMapper();
+  buildPreview();
+}
+
+// ── Project Modal (fully dynamic) ─────────────────────────────────────
+// Core fields always shown at the top of the modal
+const CORE_FIELDS=[
+  {id:'name',   label:'Project Name', type:'text', required:true, placeholder:'e.g. 11270 SW 62nd Cir'},
+  {id:'notes',  label:'Notes',        type:'textarea', placeholder:'Additional notes...'},
+];
+
+function renderModal(titleText, proj){
+  // proj = existing project object (edit) or null (new)
+  const secs=getSections();
+  let h=`<div class="modal-ttl"><span>${x(titleText)}</span><button class="modal-x" onclick="closeModal()">×</button></div>`;
+
+  // Project Name (always first)
+  h+=`<div class="mf">
+    <label>Project Name <span style="color:var(--red)">*</span></label>
+    <input id="mf-name" type="text" placeholder="e.g. 11270 SW 62nd Cir" value="${x(proj?proj.name:'')}"/>
+  </div>`;
+
+  // All sections + their fields
+  secs.forEach(sec=>{
+    if(!sec.fields.length) return;
+    h+=`<div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin:.875rem 0 .4rem">${sec.icon} ${x(sec.label)}</div>`;
+    // group pairs of non-textarea fields side by side
+    const fields=sec.fields;
+    let i=0;
+    while(i<fields.length){
+      const f=fields[i];
+      const fval=proj?(proj.fields[f.id]!==undefined?proj.fields[f.id]:''):'';
+      // textarea and select always full width
+      if(f.type==='textarea'||f.type==='check'){
+        h+=renderModalField(f,fval);i++;
+      } else {
+        // peek at next — if it also fits inline, pair them
+        const f2=fields[i+1];
+        const f2val=proj&&f2?(proj.fields[f2.id]!==undefined?proj.fields[f2.id]:''):'';
+        const canPair=f2&&f2.type!=='textarea'&&f2.type!=='check';
+        if(canPair){
+          h+=`<div class="mf-row">${renderModalField(f,fval)}${renderModalField(f2,f2val)}</div>`;
+          i+=2;
+        } else {
+          h+=renderModalField(f,fval);i++;
+        }
+      }
+    }
+  });
+
+  // Notes always last
+  const notesVal=proj?x(proj.notes||''):'';
+  h+=`<div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin:.875rem 0 .4rem">📝 Notes</div>
+  <div class="mf"><textarea id="mf-notes" placeholder="Additional notes..." rows="3">${notesVal}</textarea></div>`;
+
+  h+=`<div class="modal-acts">
+    <button class="btn" onclick="closeModal()">Cancel</button>
+    <button class="btn primary" onclick="saveModal()">Save project</button>
+  </div>`;
+
+  document.getElementById('modalInner').innerHTML=h;
+  setTimeout(()=>{const el=document.getElementById('mf-name');if(el)el.focus();},50);
+}
+
+function renderModalField(f, val){
+  const lbl=`<label>${x(f.label)}</label>`;
+  let inp='';
+  if(f.type==='check'){
+    inp=`<div class="mf-check-wrap" style="display:flex;align-items:center;gap:8px;padding:.4rem 0">
+      <input type="checkbox" id="mf-${f.id}" ${val?'checked':''} style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent)"/>
+      <span style="font-size:13px;color:var(--text2)">${x(f.label)}</span>
+    </div>`;
+    return `<div class="mf">${inp}</div>`;
+  } else if(f.type==='select'){
+    const opts=f.options||[];
+    inp=`<select id="mf-${f.id}">
+      <option value="">— select —</option>
+      ${opts.map(o=>`<option value="${x(o)}"${val===o?' selected':''}>${x(o)}</option>`).join('')}
+    </select>`;
+  } else if(f.type==='date'){
+    inp=`<input id="mf-${f.id}" type="date" value="${x(val)}"/>`;
+  } else if(f.type==='money'){
+    inp=`<input id="mf-${f.id}" type="number" min="0" step="0.01" value="${x(val)}" placeholder="0.00"/>`;
+  } else {
+    inp=`<input id="mf-${f.id}" type="text" value="${x(val)}" placeholder="${x(f.label)}"/>`;
+  }
+  return `<div class="mf">${lbl}${inp}</div>`;
+}
+
+function openNewModal(){
+  editingId=null;
+  renderModal('New Project', null);
+  document.getElementById('modalBg').style.display='flex';
+}
+function openEditModal(){
+  const p=curProj();if(!p)return;
+  editingId=p.id;
+  renderModal('Edit Project', p);
+  document.getElementById('modalBg').style.display='flex';
+}
+function closeModal(){document.getElementById('modalBg').style.display='none';}
+
+function saveModal(){
+  const nameEl=document.getElementById('mf-name');
+  const name=nameEl?nameEl.value.trim():'';
+  if(!name){if(nameEl){nameEl.focus();nameEl.style.border='1px solid var(--red)';}return;}
+
+  const secs=getSections();
+  const allFields=secs.flatMap(s=>s.fields);
+
+  if(editingId){
+    const p=S.projects.find(q=>q.id===editingId);
+    p.name=name;
+    p.notes=gvSafe('mf-notes');
+    allFields.forEach(f=>{
+      const el=document.getElementById('mf-'+f.id);
+      if(!el)return;
+      if(f.type==='check') p.fields[f.id]=el.checked;
+      else p.fields[f.id]=el.value;
+      // keep top-level shortcuts in sync
+      if(['city','address','parcel','water','model','elevation','garage'].includes(f.id)) p[f.id]=el.value;
+    });
+  } else {
+    const p={id:uid(),name,notes:gvSafe('mf-notes'),status:'active',
+      createdAt:new Date().toISOString(),fields:blankFields()};
+    allFields.forEach(f=>{
+      const el=document.getElementById('mf-'+f.id);
+      if(!el)return;
+      if(f.type==='check') p.fields[f.id]=el.checked;
+      else p.fields[f.id]=el.value;
+      if(['city','address','parcel','water','model','elevation','garage'].includes(f.id)) p[f.id]=el.value;
+    });
+    p.city=p.fields['city']||'';
+    p.address=p.fields['address']||'';
+    p.client=p.fields['builder']||p.fields['client']||'';
+    S.projects.push(p);S.activeId=p.id;
+  }
+  save();closeModal();renderSidebar();renderMain();
+}
+function gvSafe(id){const e=document.getElementById(id);return e?e.value:'';}
+
+
+// ── Field Editor ──────────────────────────────────────────────────────
+function openFieldEditor(){addingInSec=null;editingFieldKey=null;renderFieldEditor();document.getElementById('fePanelBg').style.display='flex';}
+function closeFieldEditor(){document.getElementById('fePanelBg').style.display='none';renderMain();}
+function fePanelBgClick(e){if(e.target===e.currentTarget)closeFieldEditor();}
+function saveFieldSettings(){
+  save(); // saves locally + triggers SharePoint push if connected
+  exportSettings(); // also downloads a local backup
+  showUploadToast('✓ Field settings saved & synced!',true);
+}
+
+function renderFieldEditor(){
+  const secs=getSections();
+  let h=`<div class="fe-hint">Drag ⠿ to reorder fields or move them between sections.</div>`;
+  secs.forEach((sec)=>{
+    h+=`<div class="fe-sec" id="fesec-${sec.id}">
+      <div class="fe-sec-head" 
+           ondragover="secDragOver(event,'${sec.id}')"
+           ondragleave="secDragLeave('${sec.id}')"
+           ondrop="secDrop(event,'${sec.id}')"
+           id="shead-${sec.id}">
+        <span class="fe-sec-icon">${sec.icon}</span>
+        <span class="fe-sec-name" id="fesn-${sec.id}" onclick="editSecName('${sec.id}')">${x(sec.label)}</span>
+        <button class="fe-sec-add" onclick="startAddField('${sec.id}')">+ Add field</button>
+        ${secs.length>1?`<button class="fe-del-btn" onclick="deleteSection('${sec.id}')">🗑</button>`:''}
+      </div>`;
+    sec.fields.forEach(f=>{
+      const isEd=editingFieldKey===sec.id+':'+f.id;
+      h+=`<div class="fe-field-row" id="ferow-${sec.id}-${f.id}" draggable="true"
+            ondragstart="dragStart('${sec.id}','${f.id}')"
+            ondragover="dragOver(event,'${sec.id}','${f.id}')"
+            ondragleave="dragLeave(event)"
+            ondrop="dragDrop(event,'${sec.id}','${f.id}')"
+            ondragend="dragEnd()">
+        <span class="fe-drag" title="Drag to reorder or move to another section">⠿</span>`;
+      if(isEd){
+        h+=`<input class="fe-name-input" id="feni-${sec.id}-${f.id}" value="${x(f.label)}"
+              onkeydown="feNameKey(event,'${sec.id}','${f.id}')"
+              onblur="feNameBlur('${sec.id}','${f.id}')"/>`;
+      } else {
+        h+=`<span class="fe-field-name">${x(f.label)}</span>`;
+      }
+      h+=`<span class="fe-field-type">${f.type}</span>`;
+      if(!isEd)h+=`<button class="fe-edit-btn" onclick="startEditFieldName('${sec.id}','${f.id}')">Rename</button>`;
+      else h+=`<button class="ie-save" style="font-size:11px;padding:3px 8px" onclick="saveFieldName('${sec.id}','${f.id}')">Save</button>`;
+      h+=`<button class="fe-del-btn" onclick="deleteField('${sec.id}','${f.id}')">✕</button></div>`;
+      // Options editor for select fields
+      if(f.type==='select'){
+        const opts=f.options||[];
+        h+=`<div class="opts-editor" style="margin:0 .5rem .4rem">
+          <div class="opts-editor-title">Dropdown options</div>
+          ${opts.map((o,oi)=>`<div class="opt-row">
+            <input class="opt-input" value="${x(o)}" onchange="updateOpt('${sec.id}','${f.id}',${oi},this.value)" onblur="updateOpt('${sec.id}','${f.id}',${oi},this.value)"/>
+            <button class="opt-del" onclick="removeOpt('${sec.id}','${f.id}',${oi})">✕</button>
+          </div>`).join('')}
+          <button class="opt-add-btn" onclick="addOpt('${sec.id}','${f.id}')">+ Add option</button>
+        </div>`;
+      }
+    });
+    if(addingInSec===sec.id){
+      h+=`<div class="fe-add-form" style="flex-direction:column;align-items:stretch;gap:8px">
+        <div style="display:flex;gap:6px;align-items:center">
+          <input class="fe-add-input" id="fe-add-name-${sec.id}" placeholder="Field name" onkeydown="feAddKey(event,'${sec.id}')"/>
+          <select class="fe-add-type" id="fe-add-type-${sec.id}" onchange="toggleOptInput('${sec.id}',this.value)">
+            <option value="check">✓ check</option>
+            <option value="select">▾ select (dropdown)</option>
+            <option value="text">T text</option>
+            <option value="date">📅 date</option>
+            <option value="money">$ money</option>
+          </select>
+          <button class="fe-add-ok" onclick="confirmAddField('${sec.id}')">Add</button>
+          <button class="fe-add-cancel" onclick="cancelAddField()">✕</button>
+        </div>
+        <div id="fe-opts-area-${sec.id}" style="display:none">
+          <div class="opts-editor">
+            <div class="opts-editor-title">Dropdown options</div>
+            <div id="fe-opts-list-${sec.id}"></div>
+            <button class="opt-add-btn" onclick="addTmpOpt('${sec.id}')">+ Add option</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    // Drop zone at bottom of section (for dropping into empty sections or at end)
+    h+=`<div class="fe-drop-end" id="dropend-${sec.id}"
+          ondragover="endDragOver(event,'${sec.id}')"
+          ondragleave="endDragLeave('${sec.id}')"
+          ondrop="endDrop(event,'${sec.id}')">Drop here to move to end of this section</div>`;
+    h+=`</div>`;
+  });
+  document.getElementById('feBody').innerHTML=h;
+  if(addingInSec){const i=document.getElementById('fe-add-name-'+addingInSec);if(i)setTimeout(()=>i.focus(),30);}
+  if(editingFieldKey){const[s,f]=editingFieldKey.split(':');const i=document.getElementById('feni-'+s+'-'+f);if(i)setTimeout(()=>{i.focus();i.select();},30);}
+}
+
+function editSecName(sid){
+  const el=document.getElementById('fesn-'+sid);if(!el)return;
+  const sec=getSections().find(s=>s.id===sid);
+  el.outerHTML=`<input class="fe-name-input" id="fesni-${sid}" value="${x(sec.label)}" style="flex:1"
+    onblur="saveSecName('${sid}')" onkeydown="if(event.key==='Enter')saveSecName('${sid}');if(event.key==='Escape')renderFieldEditor()"/>`;
+  setTimeout(()=>{const i=document.getElementById('fesni-'+sid);if(i){i.focus();i.select();}},20);
+}
+function saveSecName(sid){
+  const i=document.getElementById('fesni-'+sid);if(!i)return;
+  const v=i.value.trim();if(v){const s=getSections().find(s=>s.id===sid);if(s)s.label=v;}
+  save();renderFieldEditor();
+}
+function startEditFieldName(sid,fid){editingFieldKey=sid+':'+fid;renderFieldEditor();}
+function feNameKey(e,sid,fid){if(e.key==='Enter')saveFieldName(sid,fid);if(e.key==='Escape'){editingFieldKey=null;renderFieldEditor();}}
+function feNameBlur(sid,fid){setTimeout(()=>{if(editingFieldKey===sid+':'+fid)saveFieldName(sid,fid);},150);}
+function saveFieldName(sid,fid){
+  const i=document.getElementById('feni-'+sid+'-'+fid);const v=i?i.value.trim():'';
+  if(v){const s=getSections().find(s=>s.id===sid);const f=s&&s.fields.find(f=>f.id===fid);if(f)f.label=v;}
+  editingFieldKey=null;save();renderFieldEditor();
+}
+function startAddField(sid){addingInSec=sid;editingFieldKey=null;renderFieldEditor();}
+function cancelAddField(){addingInSec=null;renderFieldEditor();}
+function feAddKey(e,sid){if(e.key==='Enter')confirmAddField(sid);if(e.key==='Escape')cancelAddField();}
+function toggleOptInput(sid,type){
+  const area=document.getElementById('fe-opts-area-'+sid);
+  if(area)area.style.display=type==='select'?'block':'none';
+  if(type==='select'){
+    const list=document.getElementById('fe-opts-list-'+sid);
+    if(list&&!list.children.length)addTmpOpt(sid);
+  }
+}
+function addTmpOpt(sid){
+  const list=document.getElementById('fe-opts-list-'+sid);if(!list)return;
+  const row=document.createElement('div');row.className='opt-row';
+  const idx=list.children.length;
+  row.innerHTML=`<input class="opt-input" placeholder="Option ${idx+1}" id="tmpopt-${sid}-${idx}"/>
+    <button class="opt-del" onclick="this.parentElement.remove()">✕</button>`;
+  list.appendChild(row);
+  row.querySelector('input').focus();
+}
+function confirmAddField(sid){
+  const ni=document.getElementById('fe-add-name-'+sid);
+  const ti=document.getElementById('fe-add-type-'+sid);
+  const name=(ni?ni.value.trim():'');if(!name)return;
+  const type=ti?ti.value:'check';
+  const fid='f_'+uid();
+  const sec=getSections().find(s=>s.id===sid);if(!sec)return;
+  const field={id:fid,label:name,type};
+  if(type==='select'){
+    const list=document.getElementById('fe-opts-list-'+sid);
+    const opts=list?[...list.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean):[];
+    field.options=opts;
+  }
+  sec.fields.push(field);
+  S.projects.forEach(p=>{p.fields[fid]=type==='check'?false:'';});
+  addingInSec=null;save();renderFieldEditor();
+}
+// Options management for existing select fields
+function updateOpt(sid,fid,idx,val){
+  const sec=getSections().find(s=>s.id===sid);
+  const f=sec&&sec.fields.find(f=>f.id===fid);
+  if(!f)return;
+  if(!f.options)f.options=[];
+  f.options[idx]=val;
+  save();
+}
+function removeOpt(sid,fid,idx){
+  const sec=getSections().find(s=>s.id===sid);
+  const f=sec&&sec.fields.find(f=>f.id===fid);
+  if(!f||!f.options)return;
+  f.options.splice(idx,1);
+  save();renderFieldEditor();
+}
+function addOpt(sid,fid){
+  const sec=getSections().find(s=>s.id===sid);
+  const f=sec&&sec.fields.find(f=>f.id===fid);
+  if(!f)return;
+  if(!f.options)f.options=[];
+  f.options.push('');
+  save();renderFieldEditor();
+  // Focus the new input
+  setTimeout(()=>{
+    const inputs=document.querySelectorAll(`[data-optsfor="${fid}"] .opt-input`);
+    if(inputs.length)inputs[inputs.length-1].focus();
+  },50);
+}
+function deleteField(sid,fid){
+  if(!confirm('Remove this field?'))return;
+  const s=getSections().find(s=>s.id===sid);if(!s)return;
+  s.fields=s.fields.filter(f=>f.id!==fid);save();renderFieldEditor();
+}
+function deleteSection(sid){
+  if(!confirm('Delete entire section and all fields?'))return;
+  if(!S.sections)S.sections=JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+  S.sections=S.sections.filter(s=>s.id!==sid);save();renderFieldEditor();
+}
+function addSection(){
+  const name=prompt('Section name:');if(!name||!name.trim())return;
+  if(!S.sections)S.sections=JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+  S.sections.push({id:'sec_'+uid(),icon:'📌',label:name.trim(),fields:[]});
+  save();renderFieldEditor();
+}
+function dragStart(sid,fid){
+  dragSec=sid;dragFid=fid;
+  // Show all drop-end zones so user can drop into any section
+  setTimeout(()=>document.querySelectorAll('.fe-drop-end').forEach(el=>el.classList.add('visible')),0);
+}
+function dragOver(e,sid,fid){
+  e.preventDefault();e.stopPropagation();
+  document.querySelectorAll('.fe-field-row').forEach(r=>{r.classList.remove('drag-over-top');r.classList.remove('drag-over-bottom');});
+  if(dragFid===fid)return;
+  const row=document.getElementById('ferow-'+sid+'-'+fid);
+  if(row){
+    const rect=row.getBoundingClientRect();
+    const mid=rect.top+rect.height/2;
+    if(e.clientY<mid)row.classList.add('drag-over-top');
+    else row.classList.add('drag-over-bottom');
+  }
+}
+function dragLeave(e){
+  e.currentTarget.classList.remove('drag-over-top');
+  e.currentTarget.classList.remove('drag-over-bottom');
+}
+function dragDrop(e,toSid,toFid){
+  e.preventDefault();e.stopPropagation();
+  if(dragFid===toFid&&dragSec===toSid){dragEnd();return;}
+  const fromSec=getSections().find(s=>s.id===dragSec);
+  const toSec=getSections().find(s=>s.id===toSid);
+  if(!fromSec||!toSec)return;
+  const fi=fromSec.fields.findIndex(f=>f.id===dragFid);
+  if(fi<0)return;
+  const[moved]=fromSec.fields.splice(fi,1);
+  const ti=toSec.fields.findIndex(f=>f.id===toFid);
+  if(ti<0){toSec.fields.push(moved);}
+  else {
+    // Insert before or after based on mouse position
+    const row=document.getElementById('ferow-'+toSid+'-'+toFid);
+    let insertIdx=ti;
+    if(row){
+      const rect=row.getBoundingClientRect();
+      if(e.clientY>=rect.top+rect.height/2)insertIdx=ti+1;
+    }
+    toSec.fields.splice(insertIdx,0,moved);
+  }
+  save();dragEnd();renderFieldEditor();
+}
+// Section header drop (moves field to top of that section)
+function secDragOver(e,sid){
+  if(!dragFid)return;
+  e.preventDefault();e.stopPropagation();
+  document.getElementById('shead-'+sid).classList.add('drag-over');
+}
+function secDragLeave(sid){
+  document.getElementById('shead-'+sid).classList.remove('drag-over');
+}
+function secDrop(e,sid){
+  e.preventDefault();e.stopPropagation();
+  document.getElementById('shead-'+sid).classList.remove('drag-over');
+  if(!dragFid)return;
+  const fromSec=getSections().find(s=>s.id===dragSec);
+  const toSec=getSections().find(s=>s.id===sid);
+  if(!fromSec||!toSec||dragSec===sid)return;
+  const fi=fromSec.fields.findIndex(f=>f.id===dragFid);
+  if(fi<0)return;
+  const[moved]=fromSec.fields.splice(fi,1);
+  toSec.fields.unshift(moved); // add to top of section
+  save();dragEnd();renderFieldEditor();
+}
+// Bottom drop zone (moves field to end of section)
+function endDragOver(e,sid){
+  e.preventDefault();e.stopPropagation();
+  document.getElementById('dropend-'+sid).classList.add('drag-over');
+}
+function endDragLeave(sid){
+  document.getElementById('dropend-'+sid).classList.remove('drag-over');
+}
+function endDrop(e,sid){
+  e.preventDefault();e.stopPropagation();
+  document.getElementById('dropend-'+sid).classList.remove('drag-over');
+  if(!dragFid)return;
+  const fromSec=getSections().find(s=>s.id===dragSec);
+  const toSec=getSections().find(s=>s.id===sid);
+  if(!fromSec||!toSec)return;
+  const fi=fromSec.fields.findIndex(f=>f.id===dragFid);
+  if(fi<0)return;
+  const[moved]=fromSec.fields.splice(fi,1);
+  toSec.fields.push(moved);
+  save();dragEnd();renderFieldEditor();
+}
+function dragEnd(){
+  dragSec=null;dragFid=null;
+  document.querySelectorAll('.fe-field-row').forEach(r=>{r.classList.remove('drag-over-top');r.classList.remove('drag-over-bottom');});
+  document.querySelectorAll('.fe-drop-end').forEach(el=>{el.classList.remove('visible');el.classList.remove('drag-over');});
+  document.querySelectorAll('.fe-sec-head').forEach(el=>el.classList.remove('drag-over'));
+}
+
+// ── Lists Manager ─────────────────────────────────────────────────────
+function openListsManager(){
+  renderListsManager();
+  document.getElementById('listsMgrBg').style.display='flex';
+}
+function closeListsManager(){
+  document.getElementById('listsMgrBg').style.display='none';
+  renderMain(); // refresh dropdowns in project view
+}
+function renderListsManager(){
+  const secs=getSections();
+  // Collect all select fields across all sections
+  const selectFields=[];
+  secs.forEach(sec=>{
+    sec.fields.filter(f=>f.type==='select').forEach(f=>{
+      selectFields.push({sec,field:f});
+    });
+  });
+  if(!selectFields.length){
+    document.getElementById('listsMgrBody').innerHTML=
+      '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">No dropdown fields yet.<br>Add a field with type "select" in ⚙ Customize fields first.</div>';
+    return;
+  }
+  let h='';
+  selectFields.forEach(({sec,field})=>{
+    const opts=field.options||[];
+    h+=`<div class="lm-field">
+      <div class="lm-field-head">
+        <span class="lm-field-name">${x(field.label)}</span>
+        <span class="lm-field-sec">${sec.icon} ${x(sec.label)}</span>
+      </div>
+      <div class="lm-opts" id="lmopts-${field.id}">
+        ${opts.length?opts.map((o,i)=>`
+          <div class="lm-opt-tag" id="lmtag-${field.id}-${i}">
+            <input value="${x(o)}" style="width:${Math.max(40,o.length*8)}px"
+              onchange="lmUpdateOpt('${sec.id}','${field.id}',${i},this.value)"
+              onblur="lmUpdateOpt('${sec.id}','${field.id}',${i},this.value)"/>
+            <button class="lm-opt-del" onclick="lmRemoveOpt('${sec.id}','${field.id}',${i})" title="Remove">×</button>
+          </div>`).join('')
+          :'<div class="lm-empty">No options yet — add your first one below</div>'}
+      </div>
+      <div class="lm-add-opt">
+        <input class="lm-add-input" id="lmadd-${field.id}" placeholder="New option..."
+          onkeydown="if(event.key==='Enter')lmAddOpt('${sec.id}','${field.id}')"/>
+        <button class="lm-add-btn" onclick="lmAddOpt('${sec.id}','${field.id}')">+ Add</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('listsMgrBody').innerHTML=h;
+}
+function lmUpdateOpt(sid,fid,idx,val){
+  const sec=getSections().find(s=>s.id===sid);
+  const f=sec&&sec.fields.find(f=>f.id===fid);
+  if(!f)return;
+  if(!f.options)f.options=[];
+  f.options[idx]=val;
+  save();
+}
+function lmRemoveOpt(sid,fid,idx){
+  const sec=getSections().find(s=>s.id===sid);
+  const f=sec&&sec.fields.find(f=>f.id===fid);
+  if(!f||!f.options)return;
+  f.options.splice(idx,1);
+  save();renderListsManager();
+}
+function lmAddOpt(sid,fid){
+  const inp=document.getElementById('lmadd-'+fid);
+  const val=inp?inp.value.trim():'';
+  if(!val)return;
+  const sec=getSections().find(s=>s.id===sid);
+  const f=sec&&sec.fields.find(f=>f.id===fid);
+  if(!f)return;
+  if(!f.options)f.options=[];
+  f.options.push(val);
+  save();renderListsManager();
+  // re-focus the add input for fast entry
+  setTimeout(()=>{const i=document.getElementById('lmadd-'+fid);if(i){i.value='';i.focus();}},30);
+}
+
+// ── Export / Import JSON ──────────────────────────────────────────────
+function exportSettings(){
+  // Save only sections/field config — not project data
+  const settings={sections:getSections(),exportedAt:new Date().toISOString(),type:'permitflow-settings'};
+  const b=new Blob([JSON.stringify(settings,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='permitflow-settings-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+function importSettings(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(!d.sections)throw new Error('Invalid settings file');
+      if(!confirm('Load these field settings? Your project data will be kept, only the field layout will change.'))return;
+      S.sections=d.sections;
+      // Ensure all projects have any new fields
+      S.projects.forEach(p=>ensureFields(p));
+      save();renderSidebar();renderMain();
+      alert('✓ Settings loaded successfully!');
+    }catch(err){alert('Could not load settings: '+err.message);}
+  };
+  r.readAsText(f);e.target.value='';
+}
+function exportData(){
+  const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='permitflow-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+}
+function importJSON(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(!d.projects)throw new Error('Invalid format');
+      if(!confirm(`Import ${d.projects.length} project(s)? This replaces current data.`))return;
+      S=d;S.activeId=S.projects.length?S.projects[0].id:null;
+      save();renderSidebar();renderMain();
+    }catch(err){alert('Import failed: '+err.message);}
+  };
+  r.readAsText(f);e.target.value='';
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────
+function curProj(){return S.projects.find(p=>p.id===S.activeId);}
+function x(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function gv(id){return document.getElementById(id).value;}
+function fmtDate(d){if(!d)return'';const[y,m,dy]=d.split('-');const mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return`${mn[+m-1]} ${+dy}, ${y}`;}
+function slbl(s){return{active:'Active',onhold:'On Hold',completed:'Completed',pending:'Pending'}[s]||'Pending';}
+function pcls(s){return{active:'p-active',onhold:'p-onhold',completed:'p-completed',pending:'p-pending'}[s]||'p-pending';}
+
+// ── Init ──────────────────────────────────────────────────────────────
+load();
+if(!S.activeId&&S.projects.length)S.activeId=S.projects[0].id;
+renderSidebar();renderMain();
+document.getElementById('modalBg').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('importBg').addEventListener('click',function(e){if(e.target===this)closeImportModal();});
+document.getElementById('listsMgrBg').addEventListener('click',function(e){if(e.target===this)closeListsManager();});
+// Check alerts on load and every 30 minutes
+setTimeout(checkAlerts,2000);
+setInterval(checkAlerts,30*60*1000);
+</script>
+</body>
+</html>
