@@ -256,6 +256,9 @@ td.address-cell { min-width:200px; }
 .stage-name { font-size:12px; color:var(--text-muted); flex:1; min-width:120px; }
 .stage-status-select { font-size:12px; border:1px solid var(--border); border-radius:6px; padding:3px 6px; background:var(--card); cursor:pointer; outline:none; min-width:105px; }
 .stage-date-input { font-size:11px; border:1px solid var(--border); border-radius:6px; padding:3px 6px; background:var(--card); outline:none; width:110px; }
+.received-badge { display:inline-flex; align-items:center; gap:3px; font-size:11px; color:var(--success); font-weight:600; background:var(--success-bg); padding:2px 8px; border-radius:12px; margin-left:6px; }
+.correct-link { font-size:10px; color:var(--text-muted); cursor:pointer; margin-left:2px; opacity:0.6; text-decoration:underline; }
+.correct-link:hover { opacity:1; color:var(--primary); }
 
 /* ONEDRIVE UPLOAD */
 .od-upload-btn {
@@ -1228,8 +1231,7 @@ function cycleStage(e, permitId, stageName) {
     permit.stageRequestedAt[stageName] = today; // pre-fill with today; user can edit
   }
   if (next === 'complete') {
-    if (!permit.stageCompletedAt[stageName]) permit.stageCompletedAt[stageName] = today;
-    // Also set requestedAt if it was skipped (jumped straight to complete)
+    permit.stageCompletedAt[stageName] = today; // always stamp today when clicking Received
     if (!permit.stageRequestedAt[stageName]) permit.stageRequestedAt[stageName] = today;
   }
   if (next === 'not-started') {
@@ -1551,9 +1553,11 @@ function renderExpandContent(permit) {
       statusIcon = '⚪';
     }
 
-    // Two date fields: Requested (manual) + Received (auto, editable for corrections)
-    // Special case: 'submitted' shows "Applied" label; permitIssued shows just received
+    // Date rules: Phase 1 + submitted → show Requested/Applied manual input
+    // All stages when complete → show auto-captured Received (read-only + correction link)
     const isSubmission = (k === 'submitted');
+    const isPhase1 = STAGE_CONFIG[k].phase === 1;
+    const showRequestedInput = isPhase1 || isSubmission;
     const reqLabel = isSubmission ? 'Applied' : 'Requested';
     const rcvLabel = isSubmission ? 'County Received' : 'Received';
     const rcvValue = completedAt || (status==='complete'?legacyDate:'');
@@ -1564,19 +1568,25 @@ function renderExpandContent(permit) {
       <select class="stage-status-select" onchange="updateStageField('${permit.id}','${k}','status',this.value)">
         <option value="not-started" ${status==='not-started'?'selected':''}>○ Not Started</option>
         <option value="requested"   ${status==='requested'?'selected':''}>↗ ${isSubmission?'Applied':'Requested'}</option>
-        <option value="complete"    ${status==='complete'?'selected':''}>✓ Received</option>
+        <option value="complete"    ${status==='complete'?'selected':''}>✓ ${rcvLabel}</option>
         <option value="n/a"         ${status==='n/a'?'selected':''}>— N/A</option>
       </select>
       ${daysLabel}
       ${!isNA ? `
-        <label style="font-size:10px;color:var(--text-muted);margin-left:6px">${reqLabel}:</label>
-        <input type="date" class="stage-date-input" value="${requestedAt||legacyDate}" title="${reqLabel} date — enter manually"
-               onchange="updateStageField('${permit.id}','${k}','requestedAt',this.value)" style="width:120px">
-        ${status==='complete'||rcvValue ? `
-          <label style="font-size:10px;color:var(--text-muted);margin-left:6px">${rcvLabel}:</label>
-          <input type="date" class="stage-date-input" value="${rcvValue}" title="Auto-set when marked Received — edit to correct"
-                 onchange="updateStageField('${permit.id}','${k}','completedAt',this.value)" style="width:120px;background:#f0fdf4">
+        ${showRequestedInput ? `
+          <label style="font-size:10px;color:var(--text-muted);margin-left:6px">${reqLabel}:</label>
+          <input type="date" class="stage-date-input" value="${requestedAt||legacyDate}"
+                 title="Enter the ${reqLabel.toLowerCase()} date manually"
+                 onchange="updateStageField('${permit.id}','${k}','requestedAt',this.value)" style="width:120px">
         ` : ''}
+        ${rcvValue ? `
+          <span class="received-badge">✅ ${rcvLabel}: ${fmtDate(rcvValue)}</span>
+          <span class="correct-link" onclick="event.stopPropagation();toggleDateCorrection('${permit.id}','${k}')">✏ correct</span>
+          <input type="date" class="stage-date-input" id="correct-${permit.id}-${k}"
+                 value="${rcvValue}" style="display:none;width:115px;background:#f0fdf4"
+                 onchange="updateStageField('${permit.id}','${k}','completedAt',this.value)">
+        ` : ''}
+      ` : ''}
       ` : ''}
       ${hasFolder ? `
         ${isUploading ? `<span class="od-uploading">⏳ Uploading...</span>` :
@@ -1680,7 +1690,7 @@ function updateStageField(permitId, stage, field, value) {
       permit.stageRequestedAt[stage] = today;
     }
     if (value === 'complete') {
-      if (!permit.stageCompletedAt[stage]) permit.stageCompletedAt[stage] = today;
+      permit.stageCompletedAt[stage] = today; // always stamp today when selecting Received
       if (!permit.stageRequestedAt[stage]) permit.stageRequestedAt[stage] = today;
     }
     if (value === 'not-started') {
@@ -1715,6 +1725,14 @@ function updateStageField(permitId, stage, field, value) {
   const alerts = getAllAlerts();
   document.getElementById('badge-alerts').textContent = alerts.length;
   document.getElementById('bell-count').textContent = alerts.length;
+}
+
+function toggleDateCorrection(permitId, stageKey) {
+  const inp = document.getElementById('correct-' + permitId + '-' + stageKey);
+  if (!inp) return;
+  const isHidden = inp.style.display === 'none' || inp.style.display === '';
+  inp.style.display = isHidden ? 'inline-block' : 'none';
+  if (isHidden) { inp.focus(); inp.select(); }
 }
 
 function updatePermitField(permitId, field, value) {
