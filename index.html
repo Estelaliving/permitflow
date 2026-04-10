@@ -290,6 +290,9 @@ td.address-cell { min-width:200px; }
 .info-input { font-size:13px; border:1px solid var(--border); border-radius:6px; padding:4px 8px; background:var(--card); outline:none; width:100%; }
 .info-input:focus { border-color:var(--primary-light); }
 .expand-actions { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.bulk-bar { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; background:#1e3a5f; color:#fff; border-radius:10px; margin-bottom:10px; }
+.bulk-count { font-weight:700; font-size:13px; }
+.row-selected td { background:#dbeafe !important; }
 
 /* MODAL */
 .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:1000; }
@@ -512,6 +515,7 @@ let state = {
   marketFilter: '',
   expandedRow: null,
   editingId: null,
+  selectedPermits: new Set(),
   settings: { clientId: '821a7b2f-4375-4b80-8a01-6ae79db4aab6', tenantId: 'common' },
   // OneDrive
   msalInstance: null,
@@ -527,7 +531,14 @@ function sanitizeDateVal(v) {
   const d = new Date(v);
   return isNaN(d.getTime()) ? null : v;
 }
+function sanitizeTextVal(v) {
+  if (!v && v !== 0) return '';
+  const s = String(v).trim();
+  if (['NaT','nan','NaN','None','none','null','undefined','N/A'].includes(s)) return '';
+  return s;
+}
 function sanitizePermit(p) {
+  // Clean date fields
   const dateMaps = ['stageDates','stageRequestedAt','stageCompletedAt','stageUpdatedAt'];
   dateMaps.forEach(map => {
     if (p[map] && typeof p[map] === 'object') {
@@ -535,6 +546,11 @@ function sanitizePermit(p) {
     }
   });
   p.releaseDate = sanitizeDateVal(p.releaseDate);
+  // Clean text fields that may contain NaT/nan from Excel exports
+  ['lotNumber','parcelId','address','model','plan','garage','elevation',
+   'options','notes','permitNumber','permitFee','utilities'].forEach(f => {
+    if (p[f] !== undefined) p[f] = sanitizeTextVal(p[f]);
+  });
   return p;
 }
 
@@ -1265,6 +1281,12 @@ function filterCommunity(c) {
 //  RENDER
 // ══════════════════════════════════════════════════
 function render() {
+  // Save focused element so inputs (search, etc.) keep focus after re-render
+  const focusedId  = document.activeElement ? document.activeElement.id : null;
+  const focusedVal = document.activeElement ? document.activeElement.value : null;
+  const selStart   = document.activeElement ? document.activeElement.selectionStart : null;
+  const selEnd     = document.activeElement ? document.activeElement.selectionEnd   : null;
+
   const alerts = getAllAlerts();
   document.getElementById('badge-alerts').textContent = alerts.length;
   document.getElementById('bell-count').textContent = alerts.length;
@@ -1274,6 +1296,15 @@ function render() {
   if (state.view === 'dashboard') renderDashboard(content, alerts);
   else if (state.view === 'alerts') renderAlertsView(content, alerts);
   else renderPermitsView(content, alerts);
+
+  // Restore focus + cursor position after DOM rebuild
+  if (focusedId) {
+    const el = document.getElementById(focusedId);
+    if (el && typeof el.focus === 'function') {
+      el.focus();
+      try { if (selStart !== null) el.setSelectionRange(selStart, selEnd); } catch(e) {}
+    }
+  }
 }
 
 function renderDashboard(el, alerts) {
@@ -1363,7 +1394,7 @@ function renderPermitsView(el, alerts) {
         <div class="filter-field">
           <label class="filter-label">🔍 Search</label>
           <div class="filter-search">
-            <input type="text" placeholder="Address, lot, model, permit #..." value="${state.search}"
+            <input type="text" id="search-input" placeholder="Address, lot, model, permit #..." value="${state.search}"
               oninput="state.search=this.value;state.expandedRow=null;render()">
           </div>
         </div>
@@ -1430,6 +1461,16 @@ function renderPermitsView(el, alerts) {
       <span class="records-count">Showing ${filtered.length} of ${state.permits.length} permits</span>
     </div>
     
+    ${state.selectedPermits.size > 0 ? `
+    <div class="bulk-bar">
+      <span class="bulk-count">${state.selectedPermits.size} permit${state.selectedPermits.size>1?'s':''} selected</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-sm btn-outline" onclick="bulkEditCommunity()">🏘 Change Community</button>
+        <button class="btn btn-sm btn-outline" onclick="bulkEditStatus()">🔄 Change Status</button>
+        <button class="btn btn-sm btn-danger" onclick="bulkDelete()">🗑 Delete Selected</button>
+        <button class="btn btn-sm btn-outline" onclick="clearSelection()">✕ Clear Selection</button>
+      </div>
+    </div>` : ''}
     <div class="table-container">
       ${renderTableCore(filtered, alerts, false)}
     </div>`;
@@ -1448,7 +1489,7 @@ function renderTableCore(permits, allAlerts, compact) {
   return `<div class="table-scroll"><table>
     <thead>
       <tr>
-        <th style="width:24px"></th>
+        <th style="width:24px"><input type="checkbox" id="select-all-cb" title="Select all" onchange="toggleSelectAll(this.checked)" style="cursor:pointer"></th>
         <th>Address / Lot</th>
         ${!compact?'<th>Community</th>':''}
         <th>Model · Elevation</th>
@@ -1476,8 +1517,10 @@ function renderPermitRow(permit, allAlerts, compact) {
   const pct = total > 0 ? Math.round((done/total)*100) : 0;
   const stageKeys = Object.keys(STAGE_CONFIG);
   let rows = `
-    <tr class="${rowCls} ${isExpanded?'expanded':''}" id="row-${permit.id}" onclick="toggleRow('${permit.id}')">
-      <td style="font-size:14px;text-align:center;color:var(--text-muted)">${isExpanded?'▾':'▸'}</td>
+    <tr class="${rowCls} ${isExpanded?'expanded':''} ${state.selectedPermits.has(permit.id)?'row-selected':''}" id="row-${permit.id}" onclick="toggleRow('${permit.id}')">
+      <td style="text-align:center" onclick="event.stopPropagation()">
+        <input type="checkbox" class="permit-cb" ${state.selectedPermits.has(permit.id)?'checked':''} onchange="toggleSelectPermit('${permit.id}',this.checked)" style="cursor:pointer;width:15px;height:15px">
+      </td>
       <td class="address-cell">
         ${permit.lotNumber?`<span class="lot-badge">Lot ${permit.lotNumber}</span>`:''}
         <div class="address-main">${permit.address.split(',')[0]}</div>
@@ -1821,6 +1864,77 @@ function refreshExpandRow(permitId) {
     const hasWarning = pAlerts.some(a=>a.type==='warning');
     rowEl.className = (hasCritical?'has-critical':hasWarning?'has-alert':'') + ' expanded';
   }
+}
+
+
+// ══════════════════════════════════════════════════
+//  BULK SELECTION
+// ══════════════════════════════════════════════════
+function toggleSelectPermit(id, checked) {
+  if (checked) state.selectedPermits.add(id);
+  else state.selectedPermits.delete(id);
+  render();
+}
+function toggleSelectAll(checked) {
+  const visible = getFilteredPermits();
+  if (checked) visible.forEach(p => state.selectedPermits.add(p.id));
+  else state.selectedPermits.clear();
+  render();
+}
+function clearSelection() {
+  state.selectedPermits.clear();
+  render();
+}
+function getFilteredPermits() {
+  return state.permits.filter(p => {
+    if (state.community !== 'All' && p.community !== state.community) return false;
+    if (state.statusFilter !== 'all' && p.overallStatus !== state.statusFilter) return false;
+    if (state.docsFilter !== 'all' && (p.docsStatus||'collecting') !== state.docsFilter) return false;
+    if (state.marketFilter && p.market !== state.marketFilter) return false;
+    if (state.modelFilter && p.model !== state.modelFilter) return false;
+    if (state.elevationFilter && p.elevation !== state.elevationFilter) return false;
+    if (state.search) {
+      const q = state.search.toLowerCase();
+      return (p.address||'').toLowerCase().includes(q) || (p.lotNumber||'').toLowerCase().includes(q) ||
+             (p.model||'').toLowerCase().includes(q) || (p.permitNumber||'').toLowerCase().includes(q) ||
+             (p.community||'').toLowerCase().includes(q) || (p.elevation||'').toLowerCase().includes(q);
+    }
+    return true;
+  });
+}
+function bulkDelete() {
+  const count = state.selectedPermits.size;
+  if (!confirm(`Delete ${count} selected permit${count>1?'s':''}? This cannot be undone.`)) return;
+  state.permits = state.permits.filter(p => !state.selectedPermits.has(p.id));
+  state.selectedPermits.clear();
+  saveData(); render();
+  showToast(`🗑 ${count} permit${count>1?'s':''} deleted.`);
+}
+function bulkEditCommunity() {
+  const opts = COMMUNITIES.filter(c=>c!=='All').map(c=>`${c}`).join('\n');
+  const choice = prompt(`Change community for ${state.selectedPermits.size} permits.\nEnter community name:\n\n${COMMUNITIES.filter(c=>c!=='All').join(', ')}`);
+  if (!choice) return;
+  const matched = COMMUNITIES.find(c => c.toLowerCase() === choice.trim().toLowerCase());
+  if (!matched) { alert('Community not found. Please type the exact name.'); return; }
+  state.permits.forEach(p => {
+    if (state.selectedPermits.has(p.id)) { p.community = matched; p.stageLastModified = new Date().toISOString().split('T')[0]; }
+  });
+  state.selectedPermits.clear();
+  saveData(); render();
+  showToast(`✅ Community updated to "${matched}".`);
+}
+function bulkEditStatus() {
+  const choice = prompt('Change overall status for selected permits.\nEnter: active, submitted, permitted, or co');
+  if (!choice) return;
+  const valid = ['active','submitted','permitted','co'];
+  const s = choice.trim().toLowerCase();
+  if (!valid.includes(s)) { alert('Invalid status. Use: active, submitted, permitted, or co'); return; }
+  state.permits.forEach(p => {
+    if (state.selectedPermits.has(p.id)) { p.overallStatus = s; p.stageLastModified = new Date().toISOString().split('T')[0]; }
+  });
+  state.selectedPermits.clear();
+  saveData(); render();
+  showToast(`✅ Status updated to "${s}".`);
 }
 
 function toggleRow(id) { state.expandedRow = state.expandedRow===id ? null : id; render(); }
