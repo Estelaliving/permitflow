@@ -1587,7 +1587,6 @@ function renderExpandContent(permit) {
                  onchange="updateStageField('${permit.id}','${k}','completedAt',this.value)">
         ` : ''}
       ` : ''}
-      ` : ''}
       ${hasFolder ? `
         ${isUploading ? `<span class="od-uploading">⏳ Uploading...</span>` :
           `<button class="od-upload-btn" onclick="triggerFileUpload('${permit.id}','${k}')" title="${odConnected ? 'Upload to OneDrive' : 'Attach file (saves locally until OneDrive is connected)'}">
