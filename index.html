@@ -1611,19 +1611,90 @@ function renderExpandContent(permit) {
   }
 
   return `<div class="expand-content">
-    <div class="permit-info-grid">
-      <div class="info-field"><span class="info-label">Full Address</span><span class="info-value">${permit.address}</span></div>
-      <div class="info-field"><span class="info-label">Parcel ID</span><span class="info-value" style="font-family:monospace;font-size:11px">${permit.parcelId||'—'}</span></div>
-      <div class="info-field"><span class="info-label">Permit Number</span>
-        <input class="info-input" value="${permit.permitNumber||''}" placeholder="Enter permit #" onchange="updatePermitField('${permit.id}','permitNumber',this.value)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <span style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Permit Information — all fields editable</span>
+      <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openEditModal('${permit.id}')" style="font-size:11px">✏ Edit in Form</button>
+    </div>
+    <div class="permit-info-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="info-field" style="grid-column:1/-1">
+        <span class="info-label">Full Address</span>
+        <input class="info-input" value="${permit.address||''}" placeholder="Full address"
+               onchange="updatePermitField('${permit.id}','address',this.value)">
       </div>
-      <div class="info-field"><span class="info-label">Model · Plan</span><span class="info-value">${permit.model} · ${permit.plan||'—'}</span></div>
-      <div class="info-field"><span class="info-label">Garage · Elevation</span><span class="info-value">${permit.garage} · ${permit.elevation}</span></div>
-      <div class="info-field"><span class="info-label">Options</span><span class="info-value" style="font-size:12px">${permit.options||'—'}</span></div>
-      <div class="info-field"><span class="info-label">Submitted Date</span><span class="info-value">${fmtDate(permit.stageDates?.submitted)}</span></div>
-      <div class="info-field"><span class="info-label">Permit Issued</span><span class="info-value">${fmtDate(permit.stageDates?.permitIssued)}</span></div>
-      <div class="info-field"><span class="info-label">Notes</span>
-        <input class="info-input" value="${permit.notes||''}" placeholder="Add notes..." onchange="updatePermitField('${permit.id}','notes',this.value)">
+      <div class="info-field">
+        <span class="info-label">Parcel ID</span>
+        <input class="info-input" style="font-family:monospace;font-size:12px" value="${permit.parcelId||''}" placeholder="Enter parcel ID"
+               onchange="updatePermitField('${permit.id}','parcelId',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Lot Number</span>
+        <input class="info-input" value="${permit.lotNumber||''}" placeholder="Lot #"
+               onchange="updatePermitField('${permit.id}','lotNumber',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Permit Number</span>
+        <input class="info-input" value="${permit.permitNumber||''}" placeholder="Enter permit #"
+               onchange="updatePermitField('${permit.id}','permitNumber',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Model</span>
+        <input class="info-input" value="${permit.model||''}" placeholder="e.g. Palomino"
+               onchange="updatePermitField('${permit.id}','model',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Plan</span>
+        <input class="info-input" value="${permit.plan||''}" placeholder="e.g. Plan 4 - 2147"
+               onchange="updatePermitField('${permit.id}','plan',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Garage Orientation</span>
+        <select class="info-input" onchange="updatePermitField('${permit.id}','garage',this.value)">
+          <option value="">Select...</option>
+          <option value="Left Hand" ${(permit.garage||'')==='Left Hand'?'selected':''}>Left Hand (2 Car)</option>
+          <option value="Right Hand" ${(permit.garage||'')==='Right Hand'?'selected':''}>Right Hand (2 Car)</option>
+          <option value="3 Car - LH" ${(permit.garage||'')==='3 Car - LH'?'selected':''}>3 Car Left Hand</option>
+          <option value="3 Car - RH" ${(permit.garage||'')==='3 Car - RH'?'selected':''}>3 Car Right Hand</option>
+        </select>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Elevation</span>
+        <select class="info-input" onchange="updatePermitField('${permit.id}','elevation',this.value)">
+          <option value="">Select...</option>
+          <option value="Farmhouse" ${(permit.elevation||'')==='Farmhouse'?'selected':''}>Farmhouse</option>
+          <option value="Transitional" ${(permit.elevation||'')==='Transitional'?'selected':''}>Transitional</option>
+          <option value="A2 Stone/Stucco" ${(permit.elevation||'')==='A2 Stone/Stucco'?'selected':''}>A2 Stone/Stucco</option>
+          <option value="A4 Wood/Stucco/Bands" ${(permit.elevation||'')==='A4 Wood/Stucco/Bands'?'selected':''}>A4 Wood/Stucco/Bands</option>
+        </select>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Release Date</span>
+        <input type="date" class="info-input" value="${permit.releaseDate||''}"
+               onchange="updatePermitField('${permit.id}','releaseDate',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Permit Fee</span>
+        <input class="info-input" value="${permit.permitFee||''}" placeholder="$ 0.00"
+               onchange="updatePermitField('${permit.id}','permitFee',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Utilities</span>
+        <input class="info-input" value="${permit.utilities||''}" placeholder="Utility provider / status"
+               onchange="updatePermitField('${permit.id}','utilities',this.value)">
+      </div>
+      <div class="info-field" style="display:flex;flex-direction:row;align-items:center;gap:8px;padding-top:16px">
+        <input type="checkbox" id="cb-br-${permit.id}" ${permit.buildersRisk?'checked':''}
+               onchange="updatePermitField('${permit.id}','buildersRisk',this.checked)" style="width:16px;height:16px;cursor:pointer">
+        <label for="cb-br-${permit.id}" style="font-size:12px;font-weight:600;cursor:pointer;color:var(--text)">Builder's Risk Insurance</label>
+      </div>
+      <div class="info-field" style="grid-column:1/-1">
+        <span class="info-label">Options / Special Features</span>
+        <input class="info-input" value="${permit.options||''}" placeholder="Double doors, extra windows, etc."
+               onchange="updatePermitField('${permit.id}','options',this.value)">
+      </div>
+      <div class="info-field" style="grid-column:1/-1">
+        <span class="info-label">Notes</span>
+        <input class="info-input" value="${permit.notes||''}" placeholder="Add notes..."
+               onchange="updatePermitField('${permit.id}','notes',this.value)">
       </div>
     </div>
     
@@ -1855,6 +1926,12 @@ function buildModalForm(permit) {
     </div>
     <div class="form-field"><label class="form-label">Release Date</label><input type="date" class="form-input" id="f-releaseDate" value="${v('releaseDate')}"></div>
     <div class="form-field"><label class="form-label">Permit Number</label><input class="form-input" id="f-permitNumber" value="${v('permitNumber')}"></div>
+    <div class="form-field"><label class="form-label">Permit Fee</label><input class="form-input" id="f-permitFee" value="${v('permitFee')}" placeholder="$ 0.00"></div>
+    <div class="form-field"><label class="form-label">Utilities</label><input class="form-input" id="f-utilities" value="${v('utilities')}" placeholder="Utility provider / status"></div>
+    <div class="form-field" style="display:flex;align-items:center;gap:8px;padding-top:20px">
+      <input type="checkbox" id="f-buildersRisk" ${permit&&permit.buildersRisk?'checked':''} style="width:16px;height:16px;cursor:pointer">
+      <label for="f-buildersRisk" style="font-size:13px;font-weight:600;cursor:pointer">Builder's Risk Insurance</label>
+    </div>
     <div class="form-field" style="grid-column:1/-1"><label class="form-label">Options / Special Features</label><input class="form-input" id="f-options" value="${v('options')}"></div>
     <div class="form-field" style="grid-column:1/-1"><label class="form-label">Notes</label><textarea class="form-input" id="f-notes" rows="2">${v('notes')}</textarea></div>
   </div>
@@ -1875,16 +1952,18 @@ function saveModal() {
   const addr = document.getElementById('f-address').value.trim();
   if (!addr) { alert('Address is required.'); return; }
   const today = new Date().toISOString().split('T')[0];
-  const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','releaseDate','permitNumber','options','notes'];
+  const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','releaseDate','permitNumber','permitFee','utilities','options','notes'];
   if (state.editingId) {
     const permit = state.permits.find(p=>p.id===state.editingId);
     if (permit) {
       fields.forEach(f => { const el = document.getElementById('f-'+f); if(el) permit[f]=el.value; });
+      const brEl = document.getElementById('f-buildersRisk'); if(brEl) permit.buildersRisk = brEl.checked;
       permit.stageLastModified = today;
     }
   } else {
     const newPermit = { id:'permit-'+Date.now(), overallStatus:'active', stageLastModified:today, stageUpdatedAt:{}, stageDates:{}, buildersRisk:false, stages:{} };
     fields.forEach(f => { const el = document.getElementById('f-'+f); if(el) newPermit[f]=el.value||''; });
+    const brEl = document.getElementById('f-buildersRisk'); if(brEl) newPermit.buildersRisk = brEl.checked;
     for (const k of Object.keys(STAGE_CONFIG)) {
       const sel = document.getElementById('fs-'+k);
       newPermit.stages[k] = sel ? sel.value : 'not-started';
