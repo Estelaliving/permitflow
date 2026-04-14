@@ -1050,16 +1050,18 @@ function getPermitFolderPath(permit) {
     return 'Estela Living/Sabana Reserve/Vertical Development - Construction/Permits/' + lotFolder;
   }
 
-  // All SFD communities: Estela Living/Single Family Development/[Community]/Vertical Developemnet - Construction/[Address]
-  // NOTE: "Developemnet" is intentional — matches the typo in the existing OneDrive folder name
-  let communityFolder;
-  if (comm === 'Ocala Waterways')           communityFolder = 'Ocala/OW';
-  else if (comm === 'Marion Oaks')          communityFolder = 'Ocala/MO';
-  else if (comm === 'Juliette Falls')       communityFolder = 'Ocala/JF';
-  else if (comm === 'Palm Coast Scattered') communityFolder = 'Palm Coast';
-  else if (comm === 'Sawmill Branch')       communityFolder = 'Sawmill Branch';
-  else                                       communityFolder = comm;
+  // Palm Coast: addresses sit directly inside Palm Coast/ -- no Vertical Development subfolder
+  if (comm === 'Palm Coast Scattered') {
+    return 'Estela Living/Single Family Development/Palm Coast/' + safeAddress;
+  }
 
+  // Ocala communities: Single Family Development/Ocala/[Community]/Vertical Developemnet - Construction/[Address]
+  if (comm === 'Ocala Waterways' || comm === 'Marion Oaks' || comm === 'Juliette Falls') {
+    return 'Estela Living/Single Family Development/Ocala/' + comm + '/Vertical Developemnet - Construction/' + safeAddress;
+  }
+
+  // All other SFD communities (Sawmill Branch, etc.)
+  const communityFolder = comm === 'Sawmill Branch' ? 'Sawmill Branch' : comm;
   return 'Estela Living/Single Family Development/' + communityFolder + '/Vertical Developemnet - Construction/' + safeAddress;
 }
   const parts = folderPath.split('/');
