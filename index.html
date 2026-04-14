@@ -849,51 +849,36 @@ function initMSAL() {
   } catch(e) { console.warn('MSAL init failed:', e); }
 }
 
-function saveAndConnect() {
-  const cid = document.getElementById("settings-client-id")?.value?.trim();
+async function saveAndConnect() {
+  const cid = document.getElementById('settings-client-id')?.value?.trim();
   if (cid) state.settings.clientId = cid;
-  localStorage.setItem("estela_settings_v1", JSON.stringify(state.settings));
+  localStorage.setItem('estela_settings_v1', JSON.stringify(state.settings));
   initMSAL();
+  if (!state.msalInstance) {
+    showToast('❌ Microsoft login library failed to load. Check your internet and refresh the page.');
+    return;
+  }
   closeSettings();
-  loginOneDrive(); // called synchronously to preserve user-gesture for popup
-}
-
-async function toggleOneDrive() {
-  if (!state.settings.clientId) { openSettings(); return; }
-  if (state.odAccount) { logoutOneDrive(); return; }
   await loginOneDrive();
 }
 
 async function loginOneDrive() {
   if (!state.msalInstance) { initMSAL(); }
-  if (!state.msalInstance) { openSettings(); return; }
+  if (!state.msalInstance) {
+    alert('❌ Microsoft login library is not loaded.\n\nPlease refresh the page and try again. If the problem continues, check your internet connection.');
+    return;
+  }
   try {
-    // Try popup first; if blocked fall back to redirect
-    const result = await state.msalInstance.loginPopup({ scopes: ['Files.ReadWrite', 'User.Read'] });
-    state.odAccount = result.account;
-    state.odToken = result.accessToken;
-    updateODButton();
-    updateSyncBadge('syncing');
-    showToast('✅ Connected as ' + state.odAccount.name + ' — setting up OneDrive folder...');
-    try { await ensureFolder(await getODToken(), ONEDRIVE_ROOT); } catch(e) { console.warn('Root folder init:', e); }
-    const loaded = await loadFromOneDriveDB();
-    if (loaded) showToast('✅ Shared permit database loaded — ' + state.permits.length + ' permits synced.');
-    else showToast('✅ Connected as ' + state.odAccount.name + ' · Folder: Estela Living - Permit Tracker');
-    startDBPolling();
-    render();
+    showToast('⏳ Opening Microsoft login — please wait...');
+    // Use redirect (page navigates to Microsoft and back) — never blocked by browser
+    await state.msalInstance.loginRedirect({ scopes: ['Files.ReadWrite', 'User.Read'] });
+    // Page will navigate away. When it returns, handleRedirectPromise() in initMSAL() will
+    // detect the login result and complete the connection automatically.
   } catch(e) {
-    console.error('Login failed', e);
-    if (e.errorCode === 'popup_window_error' || e.errorCode === 'empty_window_error' || e.errorCode === 'popup_blocked') {
-      // Popup blocked → fall back to redirect (navigates away and comes back)
-      showToast('⏳ Popup blocked — redirecting to Microsoft login...');
-      setTimeout(() => {
-        state.msalInstance.loginRedirect({ scopes: ['Files.ReadWrite', 'User.Read'] });
-      }, 1000);
-    } else if (e.errorCode === 'user_cancelled') {
-      showToast('ℹ️ Login cancelled.');
-    } else {
-      showToast('❌ Login failed: ' + (e.errorMessage || e.message || e.errorCode || 'unknown error'));
-    }
+    console.error('loginRedirect failed:', e);
+    const msg = e.errorMessage || e.message || e.errorCode || String(e);
+    showToast('❌ Login failed: ' + msg);
+    alert('OneDrive login failed:\n\n' + msg + '\n\nMake sure the Azure App "Estela Permit Tracker" has redirect URI:\nhttps://estelaliving.github.io/permitflow/\nregistered under Authentication → Single-page application.');
   }
 }
 
