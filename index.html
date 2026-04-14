@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -928,22 +928,27 @@ async function ensureFolder(token, folderPath) {
     const parentPath = currentPath;
     currentPath = currentPath ? currentPath + '/' + part : part;
     const encodedPath = encodeURIComponent(currentPath).replace(/%2F/g, '/');
-    // Check if folder exists
     const checkRes = await fetch(
       'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedPath,
       { headers: { 'Authorization': 'Bearer ' + token } }
     );
+    if (checkRes.ok) continue;
     if (checkRes.status === 404) {
-      // Create folder
-      const parentEncoded = parentPath ? 'root:/' + encodeURIComponent(parentPath).replace(/%2F/g, '/') + ':' : 'root';
-      await fetch(
+      const parentEncoded = parentPath
+        ? 'root:/' + encodeURIComponent(parentPath).replace(/%2F/g, '/') + ':'
+        : 'root';
+      const createRes = await fetch(
         'https://graph.microsoft.com/v1.0/me/drive/' + parentEncoded + '/children',
         {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: part, folder: {}, "@microsoft.graph.conflictBehavior": "rename" })
+          body: JSON.stringify({ name: part, folder: {}, "@microsoft.graph.conflictBehavior": "fail" })
         }
       );
+      if (!createRes.ok && createRes.status !== 409) {
+        const errText = await createRes.text();
+        throw new Error('Could not create folder "' + part + '": ' + createRes.status + ' — ' + errText);
+      }
     }
   }
 }
@@ -951,120 +956,92 @@ async function ensureFolder(token, folderPath) {
 async function uploadFileToOneDrive(permitId, stageKey, file) {
   const permit = state.permits.find(p => p.id === permitId);
   if (!permit) return;
-  
   const token = await getODToken();
   if (!token) { showToast('❌ Not connected to OneDrive. Click "Connect OneDrive" first.'); return; }
-  
   const basePath = getPermitFolderPath(permit);
   const stageCfg = STAGE_CONFIG[stageKey];
   const subFolder = stageCfg?.folder;
   const fullPath = subFolder ? basePath + '/' + subFolder : basePath;
-  
-  // Mark uploading
   if (!state.odUploading) state.odUploading = {};
   state.odUploading[permitId + '_' + stageKey] = true;
   refreshExpandRow(permitId);
-  
   try {
     await ensureFolder(token, fullPath);
-    
-    const encodedFilePath = encodeURIComponent(fullPath + '/' + file.name).replace(/%2F/g, '/');
-    const uploadRes = await fetch(
-      'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFilePath + ':/content',
-      {
-        method: 'PUT',
-        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': file.type || 'application/octet-stream' },
-        body: file
+    const filePath = fullPath + '/' + file.name;
+    const encodedFilePath = encodeURIComponent(filePath).replace(/%2F/g, '/');
+    let data;
+    if (file.size > 4 * 1024 * 1024) {
+      // Large file >4MB: use upload session
+      const sessionRes = await fetch(
+        'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFilePath + ':/createUploadSession',
+        {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ item: { "@microsoft.graph.conflictBehavior": "replace", name: file.name } })
+        }
+      );
+      if (!sessionRes.ok) {
+        const e = await sessionRes.text();
+        throw new Error('Session failed (' + sessionRes.status + '): ' + e);
       }
-    );
-    
-    if (uploadRes.ok) {
-      const data = await uploadRes.json();
-      // Store file info
+      const { uploadUrl } = await sessionRes.json();
+      const chunkSize = 5 * 1024 * 1024;
+      let start = 0;
+      while (start < file.size) {
+        const end = Math.min(start + chunkSize, file.size);
+        const chunk = file.slice(start, end);
+        const r = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Length': String(end - start),
+            'Content-Range': 'bytes ' + start + '-' + (end - 1) + '/' + file.size
+          },
+          body: chunk
+        });
+        if (r.status === 200 || r.status === 201) { data = await r.json(); break; }
+        else if (r.status !== 202) {
+          const e = await r.text();
+          throw new Error('Chunk failed (' + r.status + '): ' + e);
+        }
+        start = end;
+      }
+    } else {
+      // Small file <4MB: simple PUT
+      const uploadRes = await fetch(
+        'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFilePath + ':/content',
+        {
+          method: 'PUT',
+          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': file.type || 'application/octet-stream' },
+          body: file
+        }
+      );
+      if (!uploadRes.ok) {
+        const e = await uploadRes.text();
+        throw new Error('Upload failed (' + uploadRes.status + '): ' + e);
+      }
+      data = await uploadRes.json();
+    }
+    if (data) {
       if (!state.odFiles[permitId]) state.odFiles[permitId] = {};
       if (!state.odFiles[permitId][stageKey]) state.odFiles[permitId][stageKey] = [];
+      state.odFiles[permitId][stageKey] = state.odFiles[permitId][stageKey].filter(f => f.name !== file.name);
       state.odFiles[permitId][stageKey].push({ name: file.name, webUrl: data.webUrl, id: data.id });
       saveOdFiles();
-      
-      // Auto-update stage status to 'complete' when file uploaded
       permit.stages[stageKey] = 'complete';
       if (!permit.stageUpdatedAt) permit.stageUpdatedAt = {};
       permit.stageUpdatedAt[stageKey] = new Date().toISOString().split('T')[0];
       updateOverallStatus(permit);
       saveData();
-      
       showToast('✅ ' + file.name + ' uploaded to OneDrive!');
-    } else {
-      const err = await uploadRes.text();
-      showToast('❌ Upload failed: ' + uploadRes.status);
-      console.error(err);
     }
   } catch(e) {
-    showToast('❌ Upload error: ' + e.message);
-    console.error(e);
+    showToast('❌ ' + e.message);
+    console.error('OneDrive upload error:', e);
   }
-  
   delete state.odUploading[permitId + '_' + stageKey];
   refreshExpandRow(permitId);
 }
 
-function triggerFileUpload(permitId, stageKey) {
-  const input = document.getElementById('hidden-file-input');
-  input.onchange = async (e) => {
-    const files = Array.from(e.target.files);
-    for (const file of files) {
-      if (state.odAccount) {
-        // OneDrive connected → upload to cloud
-        await uploadFileToOneDrive(permitId, stageKey, file);
-      } else {
-        // Not connected → save locally in IndexedDB
-        const ok = await saveFileLocally(permitId, stageKey, file);
-        if (ok) {
-          // Auto-mark stage as complete
-          const permit = state.permits.find(p => p.id === permitId);
-          if (permit && permit.stages[stageKey] !== 'complete') {
-            permit.stages[stageKey] = 'complete';
-            if (!permit.stageUpdatedAt) permit.stageUpdatedAt = {};
-            permit.stageUpdatedAt[stageKey] = new Date().toISOString().split('T')[0];
-            updateOverallStatus(permit);
-            saveData();
-          }
-          showToast('📎 ' + file.name + ' saved locally. Connect OneDrive to sync to the cloud.');
-          refreshExpandRow(permitId);
-        } else {
-          showToast('❌ Could not save file. Try a smaller file or clear some browser storage.');
-        }
-      }
-    }
-    input.value = '';
-  };
-  input.click();
-}
-
-async function handleDroppedFiles(permitId, stageKey, fileList) {
-  const files = Array.from(fileList);
-  for (const file of files) {
-    if (state.odAccount) {
-      await uploadFileToOneDrive(permitId, stageKey, file);
-    } else {
-      const ok = await saveFileLocally(permitId, stageKey, file);
-      if (ok) {
-        const permit = state.permits.find(p => p.id === permitId);
-        if (permit && permit.stages[stageKey] !== 'complete') {
-          permit.stages[stageKey] = 'complete';
-          if (!permit.stageUpdatedAt) permit.stageUpdatedAt = {};
-          permit.stageUpdatedAt[stageKey] = new Date().toISOString().split('T')[0];
-          updateOverallStatus(permit);
-          saveData();
-        }
-        showToast('ðŸ“Ž ' + file.name + ' saved locally. Connect OneDrive to sync to the cloud.');
-        refreshExpandRow(permitId);
-      } else {
-        showToast('âŒ Could not save file. Try a smaller file or clear some browser storage.');
-      }
-    }
-  }
-}
 async function openPermitFolder(permitId) {
   const permit = state.permits.find(p => p.id === permitId);
   if (!permit) return;
