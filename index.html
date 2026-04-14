@@ -575,6 +575,7 @@ function loadData() {
 }
 
 function saveData() {
+  localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
   // Debounced sync to OneDrive shared DB (2s after last change)
   clearTimeout(state._syncTimer);
   state._syncTimer = setTimeout(() => syncToOneDriveDB(), 2000);
