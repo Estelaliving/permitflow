@@ -83,7 +83,10 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background:var(--bg); color:v
   border:1px solid var(--border); background:var(--card); transition:all 0.15s;
 }
 .od-btn:hover { background:var(--bg); }
-.od-btn.connected { background:#e8f4fd; border-color:#0078d4; color:#0078d4; }
+.od-btn.connected { background:#0078d4; border-color:#005a9e; color:#fff; }
+.od-btn.connected:hover { background:#005a9e; }
+.od-status-strip { display:none; background:#e8f4fd; border-bottom:1px solid #90caf9; padding:4px 20px; font-size:11px; color:#0078d4; font-weight:600; align-items:center; gap:8px; }
+.od-status-strip.visible { display:flex; }
 .od-btn .od-icon { font-size:16px; }
 .avatar { width:32px; height:32px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
 
@@ -407,6 +410,12 @@ td.address-cell { min-width:200px; }
 
 <!-- MAIN -->
 <div id="main">
+  <div id="od-status-strip" class="od-status-strip">
+    <span>☁️</span>
+    <span id="od-status-text">Connected to OneDrive</span>
+    <span id="od-status-user" style="opacity:0.75"></span>
+    <span style="margin-left:auto;cursor:pointer;opacity:0.6;font-size:10px;text-decoration:underline" onclick="toggleOneDrive()">Disconnect</span>
+  </div>
   <div id="topbar">
     <div class="topbar-title" id="topbar-title">Dashboard</div>
     <div class="topbar-right">
@@ -917,15 +926,22 @@ async function getODToken() {
 function updateODButton() {
   const btn = document.getElementById('od-topbar-btn');
   const label = document.getElementById('od-topbar-label');
-  if (!btn || !label) return;
+  const strip = document.getElementById('od-status-strip');
+  const stripText = document.getElementById('od-status-text');
+  const stripUser = document.getElementById('od-status-user');
   if (state.odAccount) {
-    btn.classList.add('connected');
-    label.textContent = '✓ ' + (state.odAccount.name || 'Connected');
+    if (btn) { btn.classList.add('connected'); btn.title = 'Connected — click to disconnect'; }
+    if (label) label.textContent = '✓ ' + (state.odAccount.username || state.odAccount.name || 'Connected');
+    if (strip) strip.classList.add('visible');
+    if (stripText) stripText.textContent = '✅ Connected to OneDrive as';
+    if (stripUser) stripUser.textContent = state.odAccount.username || state.odAccount.name || '';
   } else {
-    btn.classList.remove('connected');
-    label.textContent = 'Connect OneDrive';
+    if (btn) { btn.classList.remove('connected'); btn.title = 'Connect to OneDrive'; }
+    if (label) label.textContent = 'Connect OneDrive';
+    if (strip) strip.classList.remove('visible');
   }
 }
+
 
 function getPermitFolderPath(permit) {
   // Community → OneDrive subfolder routing
