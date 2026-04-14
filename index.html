@@ -1193,6 +1193,52 @@ async function uploadFileToOneDrive(permitId, stageKey, file) {
   refreshExpandRow(permitId);
 }
 
+
+// ══════════════════════════════════════════════════
+//  FILE ATTACHMENT — click or drag-and-drop
+// ══════════════════════════════════════════════════
+async function attachFiles(permitId, stageKey, fileList) {
+  const files = Array.from(fileList);
+  if (!files.length) return;
+  for (const file of files) {
+    if (state.odAccount) {
+      // OneDrive connected — upload to cloud
+      await uploadFileToOneDrive(permitId, stageKey, file);
+    } else {
+      // No OneDrive — save locally in IndexedDB
+      const ok = await saveFileLocally(permitId, stageKey, file);
+      if (ok) {
+        const permit = state.permits.find(p => p.id === permitId);
+        if (permit && permit.stages[stageKey] !== 'complete') {
+          permit.stages[stageKey] = 'complete';
+          if (!permit.stageUpdatedAt) permit.stageUpdatedAt = {};
+          permit.stageUpdatedAt[stageKey] = new Date().toISOString().split('T')[0];
+          updateOverallStatus(permit);
+          saveData();
+        }
+        showToast('📎 ' + file.name + ' saved. Connect OneDrive to sync to the cloud.');
+        refreshExpandRow(permitId);
+      } else {
+        showToast('❌ Could not save ' + file.name + '. Try a smaller file.');
+      }
+    }
+  }
+}
+
+function triggerFileUpload(permitId, stageKey) {
+  const input = document.getElementById('hidden-file-input');
+  if (!input) { showToast('❌ File input not found. Refresh the page.'); return; }
+  input.onchange = async (e) => {
+    if (e.target.files.length) await attachFiles(permitId, stageKey, e.target.files);
+    input.value = '';
+  };
+  input.click();
+}
+
+async function handleDroppedFiles(permitId, stageKey, fileList) {
+  await attachFiles(permitId, stageKey, fileList);
+}
+
 async function openPermitFolder(permitId) {
   const permit = state.permits.find(p => p.id === permitId);
   if (!permit) return;
