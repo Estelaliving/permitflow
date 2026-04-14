@@ -874,23 +874,37 @@ async function saveAndConnect() {
   await loginOneDrive();
 }
 
+function clearMSALInteractionLock() {
+  try {
+    Object.keys(sessionStorage).forEach(k => {
+      if (k.startsWith('msal.') || k.includes('interaction.status') || k.includes('login.windows')) {
+        sessionStorage.removeItem(k);
+      }
+    });
+    Object.keys(localStorage).forEach(k => {
+      if (k.includes('interaction.status')) localStorage.removeItem(k);
+    });
+  } catch(e) {}
+}
+
 async function loginOneDrive() {
   if (!state.msalInstance) { initMSAL(); }
   if (!state.msalInstance) {
-    alert('❌ Microsoft login library is not loaded.\n\nPlease refresh the page and try again. If the problem continues, check your internet connection.');
+    showToast('❌ Microsoft login library not loaded. Refresh the page and try again.');
     return;
   }
+  clearMSALInteractionLock();
   try {
-    showToast('⏳ Opening Microsoft login — please wait...');
-    // Use redirect (page navigates to Microsoft and back) — never blocked by browser
+    showToast('⏳ Redirecting to Microsoft login...');
     await state.msalInstance.loginRedirect({ scopes: ['Files.ReadWrite', 'User.Read'] });
-    // Page will navigate away. When it returns, handleRedirectPromise() in initMSAL() will
-    // detect the login result and complete the connection automatically.
   } catch(e) {
     console.error('loginRedirect failed:', e);
-    const msg = e.errorMessage || e.message || e.errorCode || String(e);
-    showToast('❌ Login failed: ' + msg);
-    alert('OneDrive login failed:\n\n' + msg + '\n\nMake sure the Azure App "Estela Permit Tracker" has redirect URI:\nhttps://estelaliving.github.io/permitflow/\nregistered under Authentication → Single-page application.');
+    if (e.errorCode === 'interaction_in_progress') {
+      clearMSALInteractionLock();
+      showToast('🔄 Login lock cleared — please click Connect OneDrive once more.');
+    } else {
+      showToast('❌ Login error: ' + (e.errorMessage || e.message || e.errorCode || 'unknown'));
+    }
   }
 }
 
@@ -913,10 +927,18 @@ async function getODToken() {
     });
     return result.accessToken;
   } catch(e) {
-    try {
-      const result = await state.msalInstance.acquireTokenPopup({ scopes: ['Files.ReadWrite'] });
-      return result.accessToken;
-    } catch(e2) { return null; }
+    if (e.errorCode === 'interaction_in_progress') {
+      clearMSALInteractionLock();
+      // Retry silent after clearing the lock
+      try {
+        const retry = await state.msalInstance.acquireTokenSilent({
+          scopes: ['Files.ReadWrite'], account: state.odAccount
+        });
+        return retry.accessToken;
+      } catch(e3) { return null; }
+    }
+    // Silent failed for another reason — skip popup (would also throw interaction_in_progress)
+    return null;
   }
 }
 
