@@ -1055,9 +1055,9 @@ function getPermitFolderPath(permit) {
     return 'Estela Living/Single Family Development/Palm Coast/' + safeAddress;
   }
 
-  // Ocala communities: Single Family Development/Ocala/[Community]/Vertical Developemnet - Construction/[Address]
+  // Ocala communities: addresses sit directly inside community folder — no Vertical Development subfolder
   if (comm === 'Ocala Waterways' || comm === 'Marion Oaks' || comm === 'Juliette Falls') {
-    return 'Estela Living/Single Family Development/Ocala/' + comm + '/Vertical Developemnet - Construction/' + safeAddress;
+    return 'Estela Living/Single Family Development/Ocala/' + comm + '/' + safeAddress;
   }
 
   // All other SFD communities (Sawmill Branch, etc.)
