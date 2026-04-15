@@ -919,7 +919,7 @@ function initMSAL() {
         updateODButton();
         updateSyncBadge('syncing');
         showToast('✅ Connected as ' + state.odAccount.name + ' — loading shared database...');
-        try { await ensureFolder(await getODToken(), ONEDRIVE_ROOT); } catch(e) {}
+        try { await getEstelaLivingDriveId(await getODToken()); } catch(e) {}
         const loaded = await loadFromOneDriveDB();
         if (loaded) showToast('✅ ' + state.permits.length + ' permits synced from OneDrive.');
         else showToast('✅ Connected to OneDrive · ' + state.odAccount.name);
@@ -971,7 +971,7 @@ async function loginOneDrive() {
   clearMSALInteractionLock();
   try {
     showToast('⏳ Redirecting to Microsoft login...');
-    await state.msalInstance.loginRedirect({ scopes: ['Files.ReadWrite', 'User.Read'] });
+    await state.msalInstance.loginRedirect({ scopes: ['Files.ReadWrite.All', 'User.Read'] });
   } catch(e) {
     console.error('loginRedirect failed:', e);
     if (e.errorCode === 'interaction_in_progress') {
@@ -998,7 +998,7 @@ async function getODToken() {
   if (!state.msalInstance || !state.odAccount) return null;
   try {
     const result = await state.msalInstance.acquireTokenSilent({
-      scopes: ['Files.ReadWrite'], account: state.odAccount
+      scopes: ['Files.ReadWrite.All'], account: state.odAccount
     });
     return result.accessToken;
   } catch(e) {
@@ -1007,7 +1007,7 @@ async function getODToken() {
       // Retry silent after clearing the lock
       try {
         const retry = await state.msalInstance.acquireTokenSilent({
-          scopes: ['Files.ReadWrite'], account: state.odAccount
+          scopes: ['Files.ReadWrite.All'], account: state.odAccount
         });
         return retry.accessToken;
       } catch(e3) { return null; }
@@ -1035,6 +1035,26 @@ function updateODButton() {
     if (strip) strip.classList.remove('visible');
   }
 }
+// Cache for the Rafael Celis shared drive ID (contains all Estela Living files)
+let _estelaLivingDriveId = null;
+
+async function getEstelaLivingDriveId(token) {
+  if (_estelaLivingDriveId) return _estelaLivingDriveId;
+  const cached = localStorage.getItem('estela_drive_id_v1');
+  if (cached) { _estelaLivingDriveId = cached; return _estelaLivingDriveId; }
+
+  // Rafael Celis' personal SharePoint site holds the shared Estela Living files
+  const res = await fetch(
+    'https://graph.microsoft.com/v1.0/sites/estelaliving-my.sharepoint.com:/personal/rcelis_estelaliving_com:/drive',
+    { headers: { 'Authorization': 'Bearer ' + token } }
+  );
+  if (!res.ok) throw new Error('Could not access Estela Living shared drive (' + res.status + '). Make sure you have access to Rafael Celis shared files.');
+  const data = await res.json();
+  _estelaLivingDriveId = data.id;
+  localStorage.setItem('estela_drive_id_v1', _estelaLivingDriveId);
+  return _estelaLivingDriveId;
+}
+
 
 
 function getPermitFolderPath(permit) {
@@ -1047,30 +1067,28 @@ function getPermitFolderPath(permit) {
   if (comm === 'Sabana Reserve') {
     // Sabana Reserve: Estela Living/Sabana Reserve/Vertical Development - Construction/Permits/Lot [number]
     const lotFolder = lotNum ? 'Lot ' + lotNum : safeAddress.substring(0, 20);
-    return 'Estela Living/Sabana Reserve/Vertical Development - Construction/Permits/' + lotFolder;
+    return 'Sabana Reserve/Vertical Development - Construction/Permits/' + lotFolder;
   }
 
   // Palm Coast: addresses sit directly inside Palm Coast/ -- no Vertical Development subfolder
   if (comm === 'Palm Coast Scattered') {
-    return 'Estela Living/Single Family Development/Palm Coast/' + safeAddress;
+    return 'Single Family Development/Palm Coast/' + safeAddress;
   }
 
   // Ocala communities: addresses sit directly inside community folder — no Vertical Development subfolder
   if (comm === 'Ocala Waterways' || comm === 'Marion Oaks' || comm === 'Juliette Falls') {
-    return 'Estela Living/Single Family Development/Ocala/' + comm + '/' + safeAddress;
+    return 'Single Family Development/Ocala/' + comm + '/' + safeAddress;
   }
 
   // All other SFD communities (Sawmill Branch, etc.)
   const communityFolder = comm === 'Sawmill Branch' ? 'Sawmill Branch' : comm;
-  return 'Estela Living/Single Family Development/' + communityFolder + '/Vertical Developemnet - Construction/' + safeAddress;
+  return 'Single Family Development/' + communityFolder + '/Vertical Developemnet - Construction/' + safeAddress;
 }
-async function ensureFolder(token, folderPath) {
+async function ensureFolder(token, driveId, folderPath) {
+  const base = 'https://graph.microsoft.com/v1.0/drives/' + driveId;
   // First check if the full folder already exists — if so, nothing to do
   const encodedFull = encodeURIComponent(folderPath).replace(/%2F/g, '/');
-  const existsRes = await fetch(
-    'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFull,
-    { headers: { 'Authorization': 'Bearer ' + token } }
-  );
+  const existsRes = await fetch(base + '/root:/' + encodedFull, { headers: { 'Authorization': 'Bearer ' + token } });
   if (existsRes.ok) return; // folder exists, skip creation
 
   // Folder missing — walk each segment and create any that don't exist yet
@@ -1080,17 +1098,14 @@ async function ensureFolder(token, folderPath) {
     const parentPath = currentPath;
     currentPath = currentPath ? currentPath + '/' + part : part;
     const encodedPath = encodeURIComponent(currentPath).replace(/%2F/g, '/');
-    const checkRes = await fetch(
-      'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedPath,
-      { headers: { 'Authorization': 'Bearer ' + token } }
-    );
+    const checkRes = await fetch(base + '/root:/' + encodedPath, { headers: { 'Authorization': 'Bearer ' + token } });
     if (checkRes.ok) continue;
     if (checkRes.status === 404) {
       const parentEncoded = parentPath
         ? 'root:/' + encodeURIComponent(parentPath).replace(/%2F/g, '/') + ':'
         : 'root';
       const createRes = await fetch(
-        'https://graph.microsoft.com/v1.0/me/drive/' + parentEncoded + '/children',
+        base + '/' + parentEncoded + '/children',
         {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -1117,15 +1132,16 @@ async function uploadFileToOneDrive(permitId, stageKey, file) {
   if (!state.odUploading) state.odUploading = {};
   state.odUploading[permitId + '_' + stageKey] = true;
   refreshExpandRow(permitId);
-  try {
-    await ensureFolder(token, fullPath);
+  const driveId = await getEstelaLivingDriveId(token);
+  const driveBase = 'https://graph.microsoft.com/v1.0/drives/' + driveId;
+    await ensureFolder(token, driveId, fullPath);
     const filePath = fullPath + '/' + file.name;
     const encodedFilePath = encodeURIComponent(filePath).replace(/%2F/g, '/');
     let data;
     if (file.size > 4 * 1024 * 1024) {
       // Large file >4MB: use upload session
       const sessionRes = await fetch(
-        'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFilePath + ':/createUploadSession',
+        driveBase + '/root:/' + encodedFilePath + ':/createUploadSession',
         {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -1160,7 +1176,7 @@ async function uploadFileToOneDrive(permitId, stageKey, file) {
     } else {
       // Small file <4MB: simple PUT
       const uploadRes = await fetch(
-        'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFilePath + ':/content',
+        driveBase + '/root:/' + encodedFilePath + ':/content',
         {
           method: 'PUT',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': file.type || 'application/octet-stream' },
@@ -1248,10 +1264,10 @@ async function openPermitFolder(permitId) {
   if (!token) { showToast('Connect to OneDrive first.'); return; }
   
   const folderPath = getPermitFolderPath(permit);
-  try {
-    await ensureFolder(token, folderPath);
+    const driveId2 = await getEstelaLivingDriveId(token);
+    await ensureFolder(token, driveId2, folderPath);
     const encodedPath = encodeURIComponent(folderPath).replace(/%2F/g, '/');
-    const res = await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedPath, {
+    const res = await fetch('https://graph.microsoft.com/v1.0/drives/' + driveId2 + '/root:/' + encodedPath, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     if (res.ok) {
@@ -2179,15 +2195,16 @@ async function createAllFolders() {
   const token = await getODToken();
   if (!token) { showToast('Connect to OneDrive first.'); return; }
   const permits = getFilteredPermits();
+  const driveId3 = await getEstelaLivingDriveId(token);
   showToast('⏳ Creating folders for ' + permits.length + ' permits...');
   let created = 0;
   for (const p of permits) {
     const basePath = getPermitFolderPath(p);
-    await ensureFolder(token, basePath);
+    await ensureFolder(token, driveId3, basePath);
     // Create subfolders for applicable stages
     for (const [k, cfg] of Object.entries(STAGE_CONFIG)) {
       if (cfg.folder && p.stages[k] !== 'n/a') {
-        await ensureFolder(token, basePath + '/' + cfg.folder);
+        await ensureFolder(token, driveId3, basePath + '/' + cfg.folder);
       }
     }
     created++;
