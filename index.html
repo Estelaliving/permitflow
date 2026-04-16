@@ -1134,6 +1134,7 @@ async function uploadFileToOneDrive(permitId, stageKey, file) {
   refreshExpandRow(permitId);
   const driveId = await getEstelaLivingDriveId(token);
   const driveBase = 'https://graph.microsoft.com/v1.0/drives/' + driveId;
+  try {
     await ensureFolder(token, driveId, fullPath);
     const filePath = fullPath + '/' + file.name;
     const encodedFilePath = encodeURIComponent(filePath).replace(/%2F/g, '/');
