@@ -919,7 +919,6 @@ function initMSAL() {
         updateODButton();
         updateSyncBadge('syncing');
         showToast('✅ Connected as ' + state.odAccount.name + ' — loading shared database...');
-        try { await getEstelaLivingDriveId(await getODToken()); } catch(e) {}
         const loaded = await loadFromOneDriveDB();
         if (loaded) showToast('✅ ' + state.permits.length + ' permits synced from OneDrive.');
         else showToast('✅ Connected to OneDrive · ' + state.odAccount.name);
@@ -1067,25 +1066,25 @@ function getPermitFolderPath(permit) {
   if (comm === 'Sabana Reserve') {
     // Sabana Reserve: Estela Living/Sabana Reserve/Vertical Development - Construction/Permits/Lot [number]
     const lotFolder = lotNum ? 'Lot ' + lotNum : safeAddress.substring(0, 20);
-    return 'Sabana Reserve/Vertical Development - Construction/Permits/' + lotFolder;
+    return 'Estela Living/Sabana Reserve/Vertical Development - Construction/Permits/' + lotFolder;
   }
 
   // Palm Coast: addresses sit directly inside Palm Coast/ -- no Vertical Development subfolder
   if (comm === 'Palm Coast Scattered') {
-    return 'Single Family Development/Palm Coast/' + safeAddress;
+    return 'Estela Living/Single Family Development/Palm Coast/' + safeAddress;
   }
 
   // Ocala communities: addresses sit directly inside community folder — no Vertical Development subfolder
   if (comm === 'Ocala Waterways' || comm === 'Marion Oaks' || comm === 'Juliette Falls') {
-    return 'Single Family Development/Ocala/' + comm + '/' + safeAddress;
+    return 'Estela Living/Single Family Development/Ocala/' + comm + '/' + safeAddress;
   }
 
   // All other SFD communities (Sawmill Branch, etc.)
   const communityFolder = comm === 'Sawmill Branch' ? 'Sawmill Branch' : comm;
-  return 'Single Family Development/' + communityFolder + '/Vertical Developemnet - Construction/' + safeAddress;
+  return 'Estela Living/Single Family Development/' + communityFolder + '/Vertical Developemnet - Construction/' + safeAddress;
 }
-async function ensureFolder(token, driveId, folderPath) {
-  const base = 'https://graph.microsoft.com/v1.0/drives/' + driveId;
+async function ensureFolder(token, folderPath) {
+  const base = 'https://graph.microsoft.com/v1.0/me/drive';
   // First check if the full folder already exists — if so, nothing to do
   const encodedFull = encodeURIComponent(folderPath).replace(/%2F/g, '/');
   const existsRes = await fetch(base + '/root:/' + encodedFull, { headers: { 'Authorization': 'Bearer ' + token } });
@@ -1132,17 +1131,15 @@ async function uploadFileToOneDrive(permitId, stageKey, file) {
   if (!state.odUploading) state.odUploading = {};
   state.odUploading[permitId + '_' + stageKey] = true;
   refreshExpandRow(permitId);
-  const driveId = await getEstelaLivingDriveId(token);
-  const driveBase = 'https://graph.microsoft.com/v1.0/drives/' + driveId;
   try {
-    await ensureFolder(token, driveId, fullPath);
+    await ensureFolder(token, fullPath);
     const filePath = fullPath + '/' + file.name;
     const encodedFilePath = encodeURIComponent(filePath).replace(/%2F/g, '/');
     let data;
     if (file.size > 4 * 1024 * 1024) {
       // Large file >4MB: use upload session
       const sessionRes = await fetch(
-        driveBase + '/root:/' + encodedFilePath + ':/createUploadSession',
+        'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFilePath + ':/createUploadSession',
         {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -1177,7 +1174,7 @@ async function uploadFileToOneDrive(permitId, stageKey, file) {
     } else {
       // Small file <4MB: simple PUT
       const uploadRes = await fetch(
-        driveBase + '/root:/' + encodedFilePath + ':/content',
+        'https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedFilePath + ':/content',
         {
           method: 'PUT',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': file.type || 'application/octet-stream' },
@@ -1266,10 +1263,9 @@ async function openPermitFolder(permitId) {
   
   const folderPath = getPermitFolderPath(permit);
   try {
-    const driveId2 = await getEstelaLivingDriveId(token);
-    await ensureFolder(token, driveId2, folderPath);
+    await ensureFolder(token, folderPath);
     const encodedPath = encodeURIComponent(folderPath).replace(/%2F/g, '/');
-    const res = await fetch('https://graph.microsoft.com/v1.0/drives/' + driveId2 + '/root:/' + encodedPath, {
+    const res = await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/' + encodedPath, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     if (res.ok) {
@@ -2197,16 +2193,15 @@ async function createAllFolders() {
   const token = await getODToken();
   if (!token) { showToast('Connect to OneDrive first.'); return; }
   const permits = getFilteredPermits();
-  const driveId3 = await getEstelaLivingDriveId(token);
   showToast('⏳ Creating folders for ' + permits.length + ' permits...');
   let created = 0;
   for (const p of permits) {
     const basePath = getPermitFolderPath(p);
-    await ensureFolder(token, driveId3, basePath);
+    await ensureFolder(token, basePath);
     // Create subfolders for applicable stages
     for (const [k, cfg] of Object.entries(STAGE_CONFIG)) {
       if (cfg.folder && p.stages[k] !== 'n/a') {
-        await ensureFolder(token, driveId3, basePath + '/' + cfg.folder);
+        await ensureFolder(token, basePath + '/' + cfg.folder);
       }
     }
     created++;
