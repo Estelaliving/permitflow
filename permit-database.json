@@ -1,7 +1,7 @@
 {
-  "version": 1778188652474,
-  "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T21:17:32.474Z",
+  "version": 1778189883556,
+  "updatedBy": "Team member",
+  "updatedAt": "2026-05-07T21:38:03.556Z",
   "permits": [
     {
       "id": "permit-1",
@@ -14,7 +14,7 @@
       "plan": "Plan 4 - 2147",
       "garage": "Left Hand",
       "elevation": "Farmhouse",
-      "options": "",
+      "options": "Double Doors at Flex",
       "permitNumber": "",
       "releaseDate": null,
       "stages": {
@@ -36,12 +36,11 @@
         "subCOI": "not-started",
         "omReview": "not-started",
         "submitted": "complete",
-        "planReview": "requested",
-        "resubmittal": "complete",
+        "planReview": "not-started",
+        "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "requested"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-02-02",
@@ -51,11 +50,7 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "powerService": "2026-05-04",
-        "planReview": "2026-05-04",
-        "resubmittal": "2026-05-04"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
       "overallStatus": "permitted",
       "drawingReview": {
@@ -65,74 +60,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "stageRequestedAt": {
-        "powerService": "2026-05-04",
-        "planReview": "2026-05-04",
-        "resubmittal": "2026-05-04"
-      },
-      "stageCompletedAt": {
-        "resubmittal": "2026-05-04"
-      },
-      "stageRounds": {
-        "architecture": [
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          },
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          },
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          }
-        ],
-        "planReview": [],
-        "resubmittal": [
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          },
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          },
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          }
-        ],
-        "ra_engineering": [
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          },
-          {
-            "sent": "2026-05-04",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          }
-        ]
-      },
-      "reviewAgencies": [],
-      "_ts": 1778180447574
+      "permitStatus": "issued"
     },
     {
       "id": "permit-2",
@@ -169,7 +97,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "complete",
+        "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -181,11 +109,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "permitIssued": "2026-05-06"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -193,13 +119,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "stageRequestedAt": {
-        "permitIssued": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "permitIssued": "2026-05-02"
-      }
+      "permitStatus": "applied"
     },
     {
       "id": "permit-3",
@@ -212,8 +132,8 @@
       "plan": "Plan 5-2182",
       "garage": "Left Hand",
       "elevation": "Transitional",
-      "options": "5th Bedroom and bath in Flex, 00015 · Bedroom 5 and Bath 3 I.L.O Flex, 85050 · Stone & Shadow Interior Package, 86010 · Neutral Ground Exterior Package",
-      "permitNumber": "2026030840",
+      "options": "5th Bedroom and bath in Flex",
+      "permitNumber": "",
       "releaseDate": "2026-01-20",
       "stages": {
         "architecture": "complete",
@@ -236,7 +156,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "complete",
+        "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -248,11 +168,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "permitIssued": "2026-05-06"
-      },
-      "stageLastModified": "2026-05-06",
-      "overallStatus": "permitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -260,18 +178,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "_ts": 1778080811028,
-      "stageRequestedAt": {
-        "permitIssued": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "permitIssued": "2026-05-07"
-      },
-      "projectManager": "JPARKER",
-      "customFields": {
-        "cf_mot27ztm": "ESTELA LIVING LLC"
-      }
+      "permitStatus": "applied"
     },
     {
       "id": "permit-4",
@@ -308,7 +215,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "complete",
+        "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -320,11 +227,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "permitIssued": "2026-05-07"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -332,13 +237,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "stageRequestedAt": {
-        "permitIssued": "2026-05-07"
-      },
-      "stageCompletedAt": {
-        "permitIssued": "2026-05-08"
-      }
+      "permitStatus": "applied"
     },
     {
       "id": "permit-5",
@@ -375,7 +274,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "complete",
+        "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -387,11 +286,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "permitIssued": "2026-05-06"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -399,13 +296,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "stageRequestedAt": {
-        "permitIssued": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "permitIssued": "2026-04-25"
-      }
+      "permitStatus": "applied"
     },
     {
       "id": "permit-6",
@@ -442,7 +333,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "complete",
+        "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -454,11 +345,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "permitIssued": "2026-05-06"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -466,13 +355,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "stageRequestedAt": {
-        "permitIssued": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "permitIssued": "2026-04-30"
-      }
+      "permitStatus": "applied"
     },
     {
       "id": "permit-7",
@@ -483,10 +366,10 @@
       "address": "9 Patriots Ct. Palm Coast, FL",
       "model": "Appaloosa",
       "plan": "Plan 5-2182",
-      "garage": "3 Car - LH",
+      "garage": "Left Hand 3Car",
       "elevation": "Transitional",
       "options": "5th Bedroom and bath in Flex",
-      "permitNumber": "2026050014",
+      "permitNumber": "",
       "releaseDate": null,
       "stages": {
         "architecture": "not-started",
@@ -499,16 +382,16 @@
         "productApproval": "n/a",
         "colorMaterial": "n/a",
         "roofingWorksheet": "n/a",
-        "utilityPP": "requested",
-        "geotechLetter": "requested",
+        "utilityPP": "n/a",
+        "geotechLetter": "n/a",
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
-        "resubmittal": "requested",
+        "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
@@ -521,15 +404,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "submitted": "2026-05-04",
-        "planReview": "2026-05-04",
-        "utilityPP": "2026-05-04",
-        "geotechLetter": "2026-05-04",
-        "resubmittal": "2026-05-04"
-      },
-      "stageLastModified": "2026-05-05",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -537,55 +414,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "resubmit",
-      "_ts": 1777925230328,
-      "projectManager": "JParker",
-      "stageRequestedAt": {
-        "submitted": "2026-05-01",
-        "utilityPP": "2026-05-04",
-        "geotechLetter": "2026-05-04",
-        "resubmittal": "2026-05-04"
-      },
-      "stageCompletedAt": {
-        "submitted": "2026-05-04",
-        "utilityPP": "2026-05-04"
-      },
-      "stageRounds": {
-        "planReview": [],
-        "geotechLetter": [
-          {
-            "sent": "2026-05-04",
-            "received": "2026-05-04",
-            "result": "accepted",
-            "note": ""
-          },
-          {
-            "sent": "2026-05-05",
-            "received": "2026-05-06",
-            "result": "accepted",
-            "note": ""
-          }
-        ],
-        "resubmittal": [],
-        "ra_mechanical": [
-          {
-            "sent": "2026-05-04",
-            "received": "2026-05-04",
-            "result": "pending",
-            "note": "Waiting for Palm Coast Portal "
-          }
-        ]
-      },
-      "reviewAgencies": [
-        "mechanical"
-      ],
-      "agencyStatuses": {
-        "mechanical": "in-progress"
-      },
-      "estWeeks": "",
-      "customFields": {
-        "cf_mot27ztm": ""
-      }
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-8",
@@ -2215,7 +2044,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "complete",
+        "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -2227,11 +2056,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "permitIssued": "2026-05-07"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -2239,13 +2066,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "stageRequestedAt": {
-        "permitIssued": "2026-05-07"
-      },
-      "stageCompletedAt": {
-        "permitIssued": "2026-04-18"
-      }
+      "permitStatus": "applied"
     },
     {
       "id": "permit-36",
@@ -2322,11 +2143,11 @@
       "releaseDate": null,
       "stages": {
         "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "requested",
-        "energyCalcs": "requested",
+        "sitePlan": "complete",
+        "trussEng": "complete",
+        "energyCalcs": "complete",
         "soilTest": "n/a",
-        "structuralEng": "requested",
+        "structuralEng": "complete",
         "landscape": "n/a",
         "productApproval": "n/a",
         "colorMaterial": "n/a",
@@ -2341,7 +2162,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "requested",
+        "permitIssued": "complete",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -2353,16 +2174,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "architecture": "2026-05-06",
-        "sitePlan": "2026-05-06",
-        "structuralEng": "2026-05-06",
-        "trussEng": "2026-05-06",
-        "energyCalcs": "2026-05-06",
-        "permitIssued": "2026-05-07"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "submitted",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -2370,27 +2184,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "stageRequestedAt": {
-        "architecture": "2026-05-01",
-        "sitePlan": "2026-05-05",
-        "structuralEng": "2026-05-01",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-06",
-        "permitIssued": "2026-05-07"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-05-02"
-      },
-      "stageNotes": {
-        "structuralEng": "MODIFICATIONS REQUEST",
-        "architecture": "MODIFICATIONS REQUEST",
-        "trussEng": "MODIFICATIONS REQUEST"
-      },
-      "_ts": 1778086281121,
-      "stageRounds": {
-        "permitIssued": []
-      }
+      "permitStatus": "issued"
     },
     {
       "id": "permit-38",
@@ -2427,7 +2221,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "not-started",
+        "permitIssued": "complete",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -2439,11 +2233,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "permitIssued": "2026-05-07"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "submitted",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -2451,9 +2243,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "stageRequestedAt": {},
-      "stageCompletedAt": {}
+      "permitStatus": "issued"
     },
     {
       "id": "permit-39",
@@ -2867,6 +2657,65 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied"
+    },
+    {
+      "id": "permit-46",
+      "community": "Sabana Reserve",
+      "market": "Ocala",
+      "lotNumber": "",
+      "parcelId": "",
+      "address": "",
+      "model": "",
+      "plan": "",
+      "garage": "",
+      "elevation": "",
+      "options": "NaT, NaT",
+      "permitNumber": "",
+      "releaseDate": null,
+      "stages": {
+        "architecture": "not-started",
+        "sitePlan": "not-started",
+        "trussEng": "not-started",
+        "energyCalcs": "not-started",
+        "soilTest": "n/a",
+        "structuralEng": "not-started",
+        "landscape": "n/a",
+        "productApproval": "n/a",
+        "colorMaterial": "n/a",
+        "roofingWorksheet": "n/a",
+        "utilityPP": "n/a",
+        "geotechLetter": "n/a",
+        "constLienAff": "n/a",
+        "noc": "n/a",
+        "recordedDeed": "n/a",
+        "subCOI": "not-started",
+        "omReview": "not-started",
+        "submitted": "not-started",
+        "planReview": "not-started",
+        "resubmittal": "n/a",
+        "permitIssued": "not-started",
+        "inspections": "not-started",
+        "co": "not-started"
+      },
+      "stageDates": {
+        "submitted": null,
+        "permitIssued": null
+      },
+      "notes": "",
+      "permitFee": "",
+      "utilities": "",
+      "buildersRisk": false,
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
+      },
+      "docsStatus": "collecting",
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-47",
@@ -5358,7 +5207,7 @@
       "garage": "RIGHT HAND",
       "elevation": "A2 Stone/Stucco",
       "options": "",
-      "permitNumber": "2026030834",
+      "permitNumber": "",
       "releaseDate": "2026-02-16",
       "stages": {
         "architecture": "complete",
@@ -5378,9 +5227,9 @@
         "recordedDeed": "complete",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
-        "planReview": "n/a",
-        "resubmittal": "complete",
+        "submitted": "submitted",
+        "planReview": "not-started",
+        "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
@@ -5393,13 +5242,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "submitted": "2026-05-04",
-        "resubmittal": "2026-05-05",
-        "planReview": "2026-05-05"
-      },
-      "stageLastModified": "2026-05-04",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -5407,36 +5252,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "resubmit",
-      "_ts": 1777926283361,
-      "stageRequestedAt": {
-        "submitted": "2026-03-20",
-        "resubmittal": "2026-05-05"
-      },
-      "stageCompletedAt": {
-        "submitted": "2026-05-04",
-        "resubmittal": "2026-05-06"
-      },
-      "reviewAgencies": [
-        "stormwater"
-      ],
-      "agencyNotes": {
-        "stormwater": "Interior swale on the left side was shifted on revised grading plan. Lo2 is impacting this lot past the 5' easement. Please move inteior swale on the left side to the 5' easement."
-      },
-      "stageRounds": {
-        "ra_stormwater": [
-          {
-            "sent": "2026-05-04",
-            "received": "2026-05-05",
-            "result": "pending",
-            "note": ""
-          }
-        ]
-      },
-      "agencyStatuses": {
-        "stormwater": "in-progress"
-      },
-      "projectManager": "JPARKER"
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-90",
@@ -5568,7 +5384,7 @@
       "garage": "RIGHT HAND",
       "elevation": "A2 Stone/Stucco",
       "options": "",
-      "permitNumber": "2026040489",
+      "permitNumber": "",
       "releaseDate": "2026-03-10",
       "stages": {
         "architecture": "complete",
@@ -5588,10 +5404,10 @@
         "recordedDeed": "not-started",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "complete",
+        "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -5603,12 +5419,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "submitted": "2026-05-04",
-        "permitIssued": "2026-05-06"
-      },
-      "stageLastModified": "2026-05-04",
-      "overallStatus": "permitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -5616,20 +5429,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "_ts": 1777926373181,
-      "projectManager": "JHUMPHREYS",
-      "stageRequestedAt": {
-        "submitted": "2026-04-09",
-        "permitIssued": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "submitted": "2026-05-04",
-        "permitIssued": "2026-05-07"
-      },
-      "customFields": {
-        "cf_mot27ztm": "Estela Specs 3 LLC"
-      }
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-93",
@@ -5643,7 +5443,7 @@
       "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
       "options": "",
-      "permitNumber": "2026050015",
+      "permitNumber": "",
       "releaseDate": "2026-03-20",
       "stages": {
         "architecture": "complete",
@@ -5663,7 +5463,7 @@
         "recordedDeed": "not-started",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -5678,11 +5478,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "submitted": "2026-05-04"
-      },
-      "stageLastModified": "2026-05-04",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -5690,15 +5488,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "_ts": 1777926523651,
-      "projectManager": "JHUMPHREYS",
-      "stageRequestedAt": {
-        "submitted": "2026-05-01"
-      },
-      "stageCompletedAt": {
-        "submitted": "2026-05-04"
-      }
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-94",
@@ -5711,246 +5501,8 @@
       "plan": "",
       "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "86060 · Pearl Series Exterior Package, 85025 · Modern Praire Interior Package",
-      "permitNumber": "2026050144",
-      "releaseDate": "2026-03-20",
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "complete",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "complete",
-        "structuralEng": "complete",
-        "landscape": "complete",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "complete",
-        "planReview": "requested",
-        "resubmittal": "n/a",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started"
-      },
-      "stageDates": {
-        "submitted": null,
-        "permitIssued": null
-      },
-      "notes": "Owner - Estela Specs 6 LLC",
-      "permitFee": "",
-      "utilities": "",
-      "buildersRisk": false,
-      "stageUpdatedAt": {
-        "sitePlan": "2026-05-05",
-        "soilTest": "2026-05-05",
-        "landscape": "2026-05-05",
-        "submitted": "2026-05-05",
-        "planReview": "2026-05-06"
-      },
-      "stageLastModified": "2026-05-05",
-      "overallStatus": "submitted",
-      "drawingReview": {
-        "checks": {
-          "architecture_address": true,
-          "architecture_garage": true,
-          "architecture_modelElev": true,
-          "architecture_garageCars": true,
-          "architecture_options": true,
-          "architecture_location": true,
-          "sitePlan_address": true,
-          "sitePlan_garage": true,
-          "sitePlan_location": true,
-          "sitePlan_modelElev": true,
-          "sitePlan_garageCars": true,
-          "sitePlan_options": true,
-          "energyCalcs_address": true,
-          "energyCalcs_garage": true,
-          "structuralEng_address": true,
-          "structuralEng_garage": true,
-          "energyCalcs_location": true,
-          "structuralEng_location": true,
-          "energyCalcs_modelElev": true,
-          "structuralEng_modelElev": true,
-          "energyCalcs_garageCars": true,
-          "structuralEng_garageCars": true,
-          "energyCalcs_options": true,
-          "structuralEng_options": true,
-          "landscape_address": true,
-          "landscape_garage": true,
-          "landscape_location": true,
-          "landscape_modelElev": true,
-          "landscape_garageCars": true,
-          "landscape_options": true,
-          "soilTest_address": true,
-          "soilTest_garage": true,
-          "soilTest_location": true,
-          "soilTest_modelElev": true,
-          "soilTest_garageCars": true,
-          "soilTest_options": true,
-          "trussEng_address": true,
-          "trussEng_garage": true,
-          "trussEng_location": true,
-          "trussEng_modelElev": true,
-          "trussEng_garageCars": true,
-          "trussEng_options": true
-        },
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "review",
-      "projectManager": "JHUMPHREYS",
-      "_ts": 1778084700837,
-      "customFields": {
-        "cf_moqipv0t": "Jim Humphreys"
-      },
-      "stageNotes": {
-        "energyCalcs": ""
-      },
-      "stageRequestedAt": {
-        "energyCalcs": "2026-04-23",
-        "sitePlan": "2026-03-24",
-        "soilTest": "2026-05-01",
-        "landscape": "2026-05-01",
-        "submitted": "2026-05-05",
-        "planReview": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "sitePlan": "2026-05-02",
-        "soilTest": "2026-05-02",
-        "landscape": "2026-05-06",
-        "submitted": "2026-05-05"
-      },
-      "estWeeks": "",
-      "reviewAgencies": [
-        "mechanical"
-      ],
-      "stageRounds": {
-        "ra_mechanical": [
-          {
-            "sent": "2026-05-06",
-            "received": "2026-05-06",
-            "result": "pending",
-            "note": "Waiting for the city to upload"
-          }
-        ]
-      }
-    },
-    {
-      "id": "permit-95",
-      "community": "Palm Coast Scattered",
-      "market": "Palm Coast",
-      "lotNumber": "",
-      "parcelId": "07-11-31-7012-00180-0590",
-      "address": "56 Barkley Ln, Palm Coast, FL",
-      "model": "Heron X-3Car",
-      "plan": "",
-      "garage": "Left Hand",
-      "elevation": "A2 Stone/Stucco",
       "options": "",
-      "permitNumber": "2026041013",
-      "releaseDate": "2026-03-20",
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "complete",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "complete",
-        "planReview": "not-started",
-        "resubmittal": "complete",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started"
-      },
-      "stageDates": {
-        "submitted": null,
-        "permitIssued": null
-      },
-      "notes": "",
-      "permitFee": "",
-      "utilities": "",
-      "buildersRisk": false,
-      "stageUpdatedAt": {
-        "submitted": "2026-05-04",
-        "resubmittal": "2026-05-06",
-        "sitePlan": "2026-05-06"
-      },
-      "stageLastModified": "2026-05-04",
-      "overallStatus": "submitted",
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "resubmit",
-      "_ts": 1777926441879,
-      "stageRequestedAt": {
-        "submitted": "2026-04-23",
-        "resubmittal": "2026-05-06",
-        "sitePlan": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "submitted": "2026-05-04",
-        "resubmittal": "2026-05-07",
-        "sitePlan": "2026-05-06"
-      },
-      "reviewAgencies": [
-        "stormwater"
-      ],
-      "agencyNotes": {
-        "stormwater": ""
-      },
-      "stageRounds": {
-        "ra_stormwater": [
-          {
-            "sent": "2026-04-29",
-            "received": "2026-04-30",
-            "result": "pending",
-            "note": "Waiting for PC portal"
-          }
-        ]
-      },
-      "agencyStatuses": {
-        "stormwater": "in-progress"
-      },
-      "projectManager": "JPARKER"
-    },
-    {
-      "id": "permit-96",
-      "community": "Palm Coast Scattered",
-      "market": "Palm Coast",
-      "lotNumber": "",
-      "parcelId": "07-11-31-7037-01190-0020",
-      "address": "8 Lewisdale Pl, Palm Coast, FL",
-      "model": "Heron X-2Car",
-      "plan": "",
-      "garage": "Left Hand",
-      "elevation": "A2 Stone/Stucco",
-      "options": "",
-      "permitNumber": "2026041330",
+      "permitNumber": "",
       "releaseDate": "2026-03-20",
       "stages": {
         "architecture": "complete",
@@ -5970,7 +5522,7 @@
         "recordedDeed": "not-started",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -5985,11 +5537,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "submitted": "2026-05-04"
-      },
-      "stageLastModified": "2026-05-04",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -5997,44 +5547,125 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "_ts": 1778179320761,
-      "stageRequestedAt": {
-        "submitted": "2026-04-30"
+      "permitStatus": "presubmit"
+    },
+    {
+      "id": "permit-95",
+      "community": "Palm Coast Scattered",
+      "market": "Palm Coast",
+      "lotNumber": "",
+      "parcelId": "07-11-31-7012-00180-0590",
+      "address": "56 Barkley Ln, Palm Coast, FL",
+      "model": "Heron X-3Car",
+      "plan": "",
+      "garage": "Left Hand",
+      "elevation": "A2 Stone/Stucco",
+      "options": "",
+      "permitNumber": "",
+      "releaseDate": "2026-03-20",
+      "stages": {
+        "architecture": "complete",
+        "sitePlan": "requested",
+        "trussEng": "complete",
+        "energyCalcs": "complete",
+        "soilTest": "requested",
+        "structuralEng": "complete",
+        "landscape": "not-started",
+        "productApproval": "not-started",
+        "colorMaterial": "not-started",
+        "roofingWorksheet": "not-started",
+        "utilityPP": "not-started",
+        "geotechLetter": "not-started",
+        "constLienAff": "not-started",
+        "noc": "not-started",
+        "recordedDeed": "not-started",
+        "subCOI": "not-started",
+        "omReview": "not-started",
+        "submitted": "not-started",
+        "planReview": "not-started",
+        "resubmittal": "n/a",
+        "permitIssued": "not-started",
+        "inspections": "not-started",
+        "co": "not-started"
       },
-      "stageCompletedAt": {
-        "submitted": "2026-05-04"
+      "stageDates": {
+        "submitted": null,
+        "permitIssued": null
       },
-      "stageNotes": {
-        "submitted": ""
+      "notes": "",
+      "permitFee": "",
+      "utilities": "",
+      "buildersRisk": false,
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       },
-      "reviewAgencies": [
-        "mechanical",
-        "stormwater"
-      ],
-      "stageRounds": {
-        "ra_mechanical": [
-          {
-            "sent": "2026-05-01",
-            "received": "2026-05-01",
-            "result": "pending",
-            "note": "Sent to the city on 5/7/2026"
-          }
-        ],
-        "ra_stormwater": [
-          {
-            "sent": "2026-05-07",
-            "received": "2026-05-07",
-            "result": "pending",
-            "note": "Sent to the city on 5/7/2026"
-          }
-        ]
+      "docsStatus": "collecting",
+      "permitStatus": "presubmit"
+    },
+    {
+      "id": "permit-96",
+      "community": "Palm Coast Scattered",
+      "market": "Palm Coast",
+      "lotNumber": "",
+      "parcelId": "07-11-31-7037-01190-0020",
+      "address": "8 Lewisdale Pl, Palm Coast, FL",
+      "model": "Heron X-2Car",
+      "plan": "",
+      "garage": "Left Hand",
+      "elevation": "A2 Stone/Stucco",
+      "options": "",
+      "permitNumber": "",
+      "releaseDate": "2026-03-20",
+      "stages": {
+        "architecture": "complete",
+        "sitePlan": "requested",
+        "trussEng": "complete",
+        "energyCalcs": "complete",
+        "soilTest": "requested",
+        "structuralEng": "complete",
+        "landscape": "not-started",
+        "productApproval": "not-started",
+        "colorMaterial": "not-started",
+        "roofingWorksheet": "not-started",
+        "utilityPP": "not-started",
+        "geotechLetter": "not-started",
+        "constLienAff": "not-started",
+        "noc": "not-started",
+        "recordedDeed": "not-started",
+        "subCOI": "not-started",
+        "omReview": "not-started",
+        "submitted": "not-started",
+        "planReview": "not-started",
+        "resubmittal": "n/a",
+        "permitIssued": "not-started",
+        "inspections": "not-started",
+        "co": "not-started"
       },
-      "agencyStatuses": {
-        "mechanical": "complete",
-        "stormwater": "complete"
+      "stageDates": {
+        "submitted": null,
+        "permitIssued": null
       },
-      "projectManager": "JPARKER"
+      "notes": "",
+      "permitFee": "",
+      "utilities": "",
+      "buildersRisk": false,
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
+      },
+      "docsStatus": "collecting",
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-97",
@@ -6047,17 +5678,17 @@
       "plan": "",
       "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "86055 · Stone Series Exterior Package, 85025 · Modern Praire Interior Package",
-      "permitNumber": "2026050140",
+      "options": "",
+      "permitNumber": "",
       "releaseDate": "2026-04-01",
       "stages": {
-        "architecture": "complete",
-        "sitePlan": "complete",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "complete",
-        "structuralEng": "complete",
-        "landscape": "complete",
+        "architecture": "not-started",
+        "sitePlan": "not-started",
+        "trussEng": "not-started",
+        "energyCalcs": "not-started",
+        "soilTest": "not-started",
+        "structuralEng": "not-started",
+        "landscape": "not-started",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
         "roofingWorksheet": "not-started",
@@ -6068,7 +5699,7 @@
         "recordedDeed": "not-started",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -6079,22 +5710,13 @@
         "submitted": null,
         "permitIssued": null
       },
-      "notes": "Owner - ESTELA SPECS 9 LLC",
+      "notes": "",
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "architecture": "2026-05-05",
-        "sitePlan": "2026-05-05",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-05",
-        "soilTest": "2026-05-05",
-        "structuralEng": "2026-05-05",
-        "landscape": "2026-05-05",
-        "submitted": "2026-05-05"
-      },
-      "stageLastModified": "2026-05-05",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -6102,32 +5724,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "projectManager": "JPARKER",
-      "_ts": 1778009541559,
-      "customFields": {
-        "cf_moqipv0t": "Joshua Parker"
-      },
-      "stageRequestedAt": {
-        "architecture": "2026-04-13",
-        "sitePlan": "2026-05-04",
-        "trussEng": "2026-04-16",
-        "energyCalcs": "2026-04-21",
-        "soilTest": "2026-05-05",
-        "structuralEng": "2026-04-20",
-        "landscape": "2026-05-05",
-        "submitted": "2026-05-05"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-05-05",
-        "sitePlan": "2026-05-05",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-05",
-        "soilTest": "2026-05-05",
-        "structuralEng": "2026-05-05",
-        "landscape": "2026-05-05",
-        "submitted": "2026-05-05"
-      }
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-98",
@@ -6177,7 +5774,7 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {},
-      "stageLastModified": "2026-05-04",
+      "stageLastModified": "2026-04-08",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -6186,9 +5783,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "projectManager": "JPARKER",
-      "_ts": 1777926628922
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-99",
@@ -6238,7 +5833,7 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {},
-      "stageLastModified": "2026-05-04",
+      "stageLastModified": "2026-04-08",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -6247,9 +5842,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "projectManager": "JPARKER",
-      "_ts": 1777926650151
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-100",
@@ -6262,24 +5855,24 @@
       "plan": "",
       "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "85030 · Farm & Foundry Interior Package, 86060 · Pearl Series Exterior Package",
+      "options": "",
       "permitNumber": "",
       "releaseDate": "2026-04-02",
       "stages": {
-        "architecture": "complete",
-        "sitePlan": "complete",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "requested",
+        "architecture": "not-started",
+        "sitePlan": "not-started",
+        "trussEng": "not-started",
+        "energyCalcs": "not-started",
+        "soilTest": "not-started",
+        "structuralEng": "not-started",
+        "landscape": "not-started",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
         "roofingWorksheet": "not-started",
         "utilityPP": "not-started",
         "geotechLetter": "not-started",
         "constLienAff": "not-started",
-        "noc": "requested",
+        "noc": "not-started",
         "recordedDeed": "not-started",
         "subCOI": "not-started",
         "omReview": "not-started",
@@ -6294,21 +5887,12 @@
         "submitted": null,
         "permitIssued": null
       },
-      "notes": "Owner - Estela Specs 7 LLC",
+      "notes": "",
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "architecture": "2026-05-05",
-        "sitePlan": "2026-05-05",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-05",
-        "soilTest": "2026-05-05",
-        "structuralEng": "2026-05-05",
-        "landscape": "2026-05-05",
-        "noc": "2026-05-05"
-      },
-      "stageLastModified": "2026-05-05",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -6317,29 +5901,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "projectManager": "JPARKER",
-      "_ts": 1778001119578,
-      "customFields": {
-        "cf_moqipv0t": "Joshua Parker"
-      },
-      "stageRequestedAt": {
-        "architecture": "2026-04-13",
-        "sitePlan": "2026-04-13",
-        "trussEng": "2026-04-13",
-        "energyCalcs": "2026-04-13",
-        "soilTest": "2026-04-13",
-        "structuralEng": "2026-04-14",
-        "landscape": "2026-05-05",
-        "noc": "2026-05-05"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-04-15",
-        "trussEng": "2026-04-15",
-        "structuralEng": "2026-04-18",
-        "energyCalcs": "2026-04-22",
-        "sitePlan": "2026-05-06"
-      }
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-101",
@@ -6411,17 +5973,17 @@
       "plan": "",
       "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "85055 · Sable & Sand Interior Package, 86060 · Pearl Series Exterior Package",
-      "permitNumber": "2026050124",
+      "options": "",
+      "permitNumber": "",
       "releaseDate": null,
       "stages": {
-        "architecture": "complete",
-        "sitePlan": "complete",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "complete",
+        "architecture": "not-started",
+        "sitePlan": "not-started",
+        "trussEng": "not-started",
+        "energyCalcs": "not-started",
+        "soilTest": "not-started",
+        "structuralEng": "not-started",
+        "landscape": "not-started",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
         "roofingWorksheet": "not-started",
@@ -6432,7 +5994,7 @@
         "recordedDeed": "not-started",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -6447,18 +6009,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "architecture": "2026-05-05",
-        "sitePlan": "2026-05-05",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-05",
-        "soilTest": "2026-05-05",
-        "structuralEng": "2026-05-05",
-        "landscape": "2026-05-05",
-        "submitted": "2026-05-05"
-      },
-      "stageLastModified": "2026-05-05",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -6466,47 +6019,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "projectManager": "JPARKER",
-      "_ts": 1778184316207,
-      "stageRequestedAt": {
-        "architecture": "2026-04-15",
-        "sitePlan": "2026-04-27",
-        "trussEng": "2026-04-15",
-        "energyCalcs": "2026-04-21",
-        "soilTest": "2026-05-05",
-        "structuralEng": "2026-05-04",
-        "landscape": "2026-05-05",
-        "submitted": "2026-05-05"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-05-05",
-        "sitePlan": "2026-05-05",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-05",
-        "structuralEng": "2026-05-05",
-        "landscape": "2026-05-05",
-        "submitted": "2026-05-05"
-      },
-      "customFields": {
-        "cf_moqipv0t": "Joshua Parker"
-      },
-      "reviewAgencies": [
-        "zoning"
-      ],
-      "stageRounds": {
-        "ra_zoning": [
-          {
-            "sent": "2026-05-07",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          }
-        ]
-      },
-      "agencyStatuses": {
-        "zoning": "in-progress"
-      }
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-103",
@@ -6604,8 +6117,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "requested"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-02-04",
@@ -6615,9 +6127,7 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {
-        "powerService": "2026-05-07"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
       "overallStatus": "permitted",
       "drawingReview": {
@@ -6627,27 +6137,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued",
-      "stageRequestedAt": {
-        "powerService": "2026-05-07"
-      },
-      "stageCompletedAt": {},
-      "stageRounds": {
-        "powerService": [
-          {
-            "sent": "2026-05-07",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          },
-          {
-            "sent": "2026-05-07",
-            "received": "",
-            "result": "pending",
-            "note": ""
-          }
-        ]
-      }
+      "permitStatus": "issued"
     },
     {
       "id": "permit-105",
@@ -11024,18 +10514,18 @@
       "address": "00 SW 110th St, Ocala, FL",
       "model": "Heron X-3Car",
       "plan": "",
-      "garage": "3 Car - RH",
+      "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "85050 · Stone & Shadow Interior Package, 86060 · Pearl Series Exterior Package",
-      "permitNumber": "BLDR-26-05-13619",
+      "options": "",
+      "permitNumber": "",
       "releaseDate": "2026-03-31",
       "stages": {
-        "architecture": "complete",
-        "sitePlan": "complete",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "complete",
-        "structuralEng": "complete",
+        "architecture": "not-started",
+        "sitePlan": "not-started",
+        "trussEng": "not-started",
+        "energyCalcs": "not-started",
+        "soilTest": "not-started",
+        "structuralEng": "not-started",
         "landscape": "n/a",
         "productApproval": "n/a",
         "colorMaterial": "n/a",
@@ -11047,7 +10537,7 @@
         "recordedDeed": "n/a",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -11062,85 +10552,17 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "submitted": "2026-05-07",
-        "architecture": "2026-05-07",
-        "sitePlan": "2026-05-07",
-        "trussEng": "2026-05-07",
-        "energyCalcs": "2026-05-07",
-        "soilTest": "2026-05-07",
-        "structuralEng": "2026-05-07"
-      },
-      "stageLastModified": "2026-05-07",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {},
+      "stageLastModified": "2026-04-08",
+      "overallStatus": "active",
       "drawingReview": {
-        "checks": {
-          "architecture_address": true,
-          "sitePlan_address": true,
-          "trussEng_address": true,
-          "energyCalcs_address": true,
-          "soilTest_address": true,
-          "structuralEng_address": true,
-          "architecture_garage": true,
-          "sitePlan_garage": true,
-          "trussEng_garage": true,
-          "energyCalcs_garage": true,
-          "soilTest_garage": true,
-          "structuralEng_garage": true,
-          "architecture_location": true,
-          "sitePlan_location": true,
-          "trussEng_location": true,
-          "energyCalcs_location": true,
-          "soilTest_location": true,
-          "structuralEng_location": true,
-          "architecture_modelElev": true,
-          "sitePlan_modelElev": true,
-          "trussEng_modelElev": true,
-          "energyCalcs_modelElev": true,
-          "soilTest_modelElev": true,
-          "structuralEng_modelElev": true,
-          "architecture_garageCars": true,
-          "sitePlan_garageCars": true,
-          "trussEng_garageCars": true,
-          "energyCalcs_garageCars": true,
-          "soilTest_garageCars": true,
-          "structuralEng_garageCars": true,
-          "architecture_options": true,
-          "sitePlan_options": true,
-          "trussEng_options": true,
-          "energyCalcs_options": true,
-          "soilTest_options": true,
-          "structuralEng_options": true
-        },
+        "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "stageRequestedAt": {
-        "submitted": "2026-05-07",
-        "architecture": "2026-04-13",
-        "sitePlan": "2026-04-13",
-        "trussEng": "2026-04-13",
-        "energyCalcs": "2026-04-13",
-        "soilTest": "2026-04-28",
-        "structuralEng": "2026-04-14"
-      },
-      "stageCompletedAt": {
-        "submitted": "2026-05-07",
-        "architecture": "2026-04-16",
-        "trussEng": "2026-04-15",
-        "energyCalcs": "2026-04-22",
-        "sitePlan": "2026-04-29",
-        "soilTest": "2026-05-06",
-        "structuralEng": "2026-04-18"
-      },
-      "_ts": 1778188011925,
-      "projectManager": "Jeffrey Gwinn",
-      "customFields": {
-        "cf_mot27ztm": "Estela Specs 9 LLC"
-      }
+      "permitStatus": "presubmit"
     },
     {
       "id": "permit-180",
@@ -11495,787 +10917,6 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "issued"
-    },
-    {
-      "id": "permit-1777927002892",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-04",
-      "stageUpdatedAt": {
-        "sitePlan": "2026-05-04",
-        "soilTest": "2026-05-04",
-        "landscape": "2026-05-04",
-        "productApproval": "2026-05-04",
-        "colorMaterial": "2026-05-04",
-        "roofingWorksheet": "2026-05-04",
-        "utilityPP": "2026-05-04",
-        "geotechLetter": "2026-05-04",
-        "constLienAff": "2026-05-04",
-        "noc": "2026-05-04",
-        "recordedDeed": "2026-05-04",
-        "subCOI": "2026-05-04",
-        "omReview": "2026-05-04",
-        "submitted": "2026-05-04",
-        "planReview": "2026-05-04",
-        "resubmittal": "2026-05-04",
-        "permitIssued": "2026-05-04",
-        "inspections": "2026-05-04",
-        "co": "2026-05-04",
-        "powerService": "2026-05-04",
-        "utilityConn": "2026-05-04"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Palm Coast Scattered",
-      "market": "Palm Coast",
-      "address": "68 Lake Success Dr",
-      "lotNumber": "",
-      "parcelId": "07-11-31-7037-00830-0030",
-      "model": "Heron X",
-      "plan": "",
-      "garage": "3 Car - RH",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "JPARKER",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "85045 · Classic Current Interior Package, 86070 · Olive Series Exterior Package",
-      "notes": "",
-      "customFields": {
-        "cf_moqipv0t": "Joshua Parker"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "sitePlan": "2026-04-28",
-        "soilTest": "2026-04-28"
-      },
-      "stageCompletedAt": {},
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
-    },
-    {
-      "id": "permit-1777927402647",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-04",
-      "stageUpdatedAt": {
-        "sitePlan": "2026-05-04",
-        "soilTest": "2026-05-04",
-        "landscape": "2026-05-04",
-        "productApproval": "2026-05-04",
-        "colorMaterial": "2026-05-04",
-        "roofingWorksheet": "2026-05-04",
-        "utilityPP": "2026-05-04",
-        "geotechLetter": "2026-05-04",
-        "constLienAff": "2026-05-04",
-        "noc": "2026-05-04",
-        "recordedDeed": "2026-05-04",
-        "subCOI": "2026-05-04",
-        "omReview": "2026-05-04",
-        "submitted": "2026-05-04",
-        "planReview": "2026-05-04",
-        "resubmittal": "2026-05-04",
-        "permitIssued": "2026-05-04",
-        "inspections": "2026-05-04",
-        "co": "2026-05-04",
-        "powerService": "2026-05-04",
-        "utilityConn": "2026-05-04"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Palm Coast Scattered",
-      "market": "Palm Coast",
-      "address": "47 Louisiana Dr",
-      "lotNumber": "",
-      "parcelId": "07-11-31-7037-01060-0110",
-      "model": "Exuma X",
-      "plan": "",
-      "garage": "Left Hand",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "JPARKER",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "85030 · Farm & Foundry Interior Package, 86050 · Dove Series Exterior Package",
-      "notes": "",
-      "customFields": {
-        "cf_moqipv0t": "Joshua Parker"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "sitePlan": "2026-04-28",
-        "soilTest": "2026-04-28"
-      },
-      "stageCompletedAt": {},
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
-    },
-    {
-      "id": "permit-1777927735765",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-04",
-      "stageUpdatedAt": {
-        "sitePlan": "2026-05-04",
-        "energyCalcs": "2026-05-04",
-        "soilTest": "2026-05-04",
-        "structuralEng": "2026-05-05",
-        "landscape": "2026-05-04",
-        "productApproval": "2026-05-04",
-        "colorMaterial": "2026-05-04",
-        "roofingWorksheet": "2026-05-04",
-        "utilityPP": "2026-05-04",
-        "geotechLetter": "2026-05-04",
-        "constLienAff": "2026-05-04",
-        "noc": "2026-05-04",
-        "recordedDeed": "2026-05-04",
-        "subCOI": "2026-05-04",
-        "omReview": "2026-05-04",
-        "submitted": "2026-05-04",
-        "planReview": "2026-05-04",
-        "resubmittal": "2026-05-04",
-        "permitIssued": "2026-05-04",
-        "inspections": "2026-05-04",
-        "co": "2026-05-04",
-        "powerService": "2026-05-04",
-        "utilityConn": "2026-05-04"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Palm Coast Scattered",
-      "market": "Palm Coast",
-      "address": "160 Laramie Dr",
-      "lotNumber": "",
-      "parcelId": "07-11-31-7037-00550-0050",
-      "model": "Exuma X",
-      "plan": "",
-      "garage": "3 Car - LH",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "JPARKER",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "85050 · Stone & Shadow Interior Package, 86050 · Dove Series Exterior Package",
-      "notes": "",
-      "customFields": {
-        "cf_moqipv0t": "Joshua Parker"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "sitePlan": "2026-04-28",
-        "energyCalcs": "2026-04-28",
-        "soilTest": "2026-04-28",
-        "structuralEng": "2026-05-04"
-      },
-      "stageCompletedAt": {
-        "energyCalcs": "2026-05-04",
-        "structuralEng": "2026-05-06"
-      },
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
-    },
-    {
-      "id": "permit-1777928392636",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-04",
-      "stageUpdatedAt": {
-        "sitePlan": "2026-05-04",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-04",
-        "soilTest": "2026-05-04",
-        "structuralEng": "2026-05-07",
-        "landscape": "2026-05-04",
-        "productApproval": "2026-05-04",
-        "colorMaterial": "2026-05-04",
-        "roofingWorksheet": "2026-05-04",
-        "utilityPP": "2026-05-04",
-        "geotechLetter": "2026-05-04",
-        "constLienAff": "2026-05-04",
-        "noc": "2026-05-04",
-        "recordedDeed": "2026-05-04",
-        "subCOI": "2026-05-04",
-        "omReview": "2026-05-04",
-        "submitted": "2026-05-04",
-        "planReview": "2026-05-04",
-        "resubmittal": "2026-05-04",
-        "permitIssued": "2026-05-04",
-        "inspections": "2026-05-04",
-        "co": "2026-05-04",
-        "powerService": "2026-05-04",
-        "utilityConn": "2026-05-04"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "complete",
-        "energyCalcs": "requested",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Palm Coast Scattered",
-      "market": "Palm Coast",
-      "address": "106 Ramblewood Dr",
-      "lotNumber": "",
-      "parcelId": "07-11-31-7030-00760-0020",
-      "model": "Bimini X",
-      "plan": "",
-      "garage": "Left Hand",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "JHUMPHREYS",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "85025 · Modern Praire Interior Package, 86065 · Cloud Series Exterior Package",
-      "notes": "",
-      "customFields": {
-        "cf_moqipv0t": "Jim Humphreys"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "sitePlan": "2026-05-01",
-        "trussEng": "2026-05-01",
-        "energyCalcs": "2026-05-01",
-        "soilTest": "2026-05-01",
-        "architecture": "2026-05-01",
-        "structuralEng": "2026-05-05"
-      },
-      "stageCompletedAt": {
-        "trussEng": "2026-05-06",
-        "structuralEng": "2026-05-08"
-      },
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
-    },
-    {
-      "id": "permit-1778013299526",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-05",
-      "stageUpdatedAt": {
-        "architecture": "2026-05-05",
-        "sitePlan": "2026-05-05",
-        "trussEng": "2026-05-05",
-        "energyCalcs": "2026-05-06",
-        "soilTest": "2026-05-05",
-        "structuralEng": "2026-05-05",
-        "landscape": "2026-05-05",
-        "productApproval": "2026-05-05",
-        "colorMaterial": "2026-05-05",
-        "roofingWorksheet": "2026-05-05",
-        "utilityPP": "2026-05-05",
-        "geotechLetter": "2026-05-05",
-        "constLienAff": "2026-05-05",
-        "noc": "2026-05-05",
-        "recordedDeed": "2026-05-05",
-        "subCOI": "2026-05-05",
-        "omReview": "2026-05-05",
-        "submitted": "2026-05-05",
-        "planReview": "2026-05-05",
-        "resubmittal": "2026-05-05",
-        "permitIssued": "2026-05-05",
-        "inspections": "2026-05-05",
-        "co": "2026-05-05",
-        "powerService": "2026-05-05",
-        "utilityConn": "2026-05-05"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Ocala Waterways",
-      "market": "Ocala",
-      "address": "00 SW 111th Pl, Ocala FL 34476",
-      "lotNumber": "242",
-      "parcelId": "3579-003-056",
-      "model": "Exuma X",
-      "plan": "",
-      "garage": "3 Car - LH",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "Jeffrey Gwinn",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "85045 · Classic Current Interior Package, 86060 · Pearl Series Exterior Package",
-      "notes": "Water - WELL",
-      "customFields": {
-        "cf_mot27ztm": "Estela Specs 9 LLC"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "architecture": "2026-04-28",
-        "sitePlan": "2026-04-28",
-        "trussEng": "2026-04-28",
-        "energyCalcs": "2026-04-28",
-        "soilTest": "2026-04-28",
-        "structuralEng": "2026-05-04"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-05-01",
-        "trussEng": "2026-05-05",
-        "structuralEng": "2026-05-06",
-        "energyCalcs": "2026-05-07"
-      },
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
-    },
-    {
-      "id": "permit-1778082803717",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-06",
-      "stageUpdatedAt": {
-        "architecture": "2026-05-06",
-        "sitePlan": "2026-05-06",
-        "trussEng": "2026-05-06",
-        "energyCalcs": "2026-05-06",
-        "soilTest": "2026-05-06",
-        "structuralEng": "2026-05-06",
-        "landscape": "2026-05-06",
-        "productApproval": "2026-05-06",
-        "colorMaterial": "2026-05-06",
-        "roofingWorksheet": "2026-05-06",
-        "utilityPP": "2026-05-06",
-        "geotechLetter": "2026-05-06",
-        "constLienAff": "2026-05-06",
-        "noc": "2026-05-06",
-        "recordedDeed": "2026-05-06",
-        "subCOI": "2026-05-06",
-        "omReview": "2026-05-06",
-        "submitted": "2026-05-06",
-        "planReview": "2026-05-06",
-        "resubmittal": "2026-05-06",
-        "permitIssued": "2026-05-06",
-        "inspections": "2026-05-06",
-        "co": "2026-05-06",
-        "powerService": "2026-05-06",
-        "utilityConn": "2026-05-06"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "requested",
-        "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Ocala Waterways",
-      "market": "Ocala",
-      "address": "00 SW 39th Ter, Ocala, FL 34476",
-      "lotNumber": "241",
-      "parcelId": "3507-008-022",
-      "model": "Exuma X",
-      "plan": "",
-      "garage": "Left Hand",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "Jeffrey Gwinn",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "85030 · Farm & Foundry Interior Package, 86050 · Dove Series Exterior Package",
-      "notes": "WATER - City",
-      "customFields": {
-        "cf_mot27ztm": "Estela Specs 9 LLC"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "architecture": "2026-04-29",
-        "sitePlan": "2026-04-29",
-        "trussEng": "2026-05-06",
-        "energyCalcs": "2026-04-28",
-        "soilTest": "2026-04-28",
-        "structuralEng": "2026-05-01"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-05-01",
-        "trussEng": "2026-05-06",
-        "structuralEng": "2026-05-05",
-        "energyCalcs": "2026-05-07"
-      },
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
-    },
-    {
-      "id": "permit-1778092895039",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-06",
-      "stageUpdatedAt": {
-        "architecture": "2026-05-07",
-        "sitePlan": "2026-05-06",
-        "trussEng": "2026-05-06",
-        "energyCalcs": "2026-05-06",
-        "soilTest": "2026-05-06",
-        "structuralEng": "2026-05-06",
-        "landscape": "2026-05-06",
-        "productApproval": "2026-05-06",
-        "colorMaterial": "2026-05-06",
-        "roofingWorksheet": "2026-05-06",
-        "utilityPP": "2026-05-06",
-        "geotechLetter": "2026-05-06",
-        "constLienAff": "2026-05-06",
-        "noc": "2026-05-06",
-        "recordedDeed": "2026-05-06",
-        "subCOI": "2026-05-06",
-        "omReview": "2026-05-06",
-        "submitted": "2026-05-06",
-        "planReview": "2026-05-06",
-        "resubmittal": "2026-05-06",
-        "permitIssued": "2026-05-06",
-        "inspections": "2026-05-06",
-        "co": "2026-05-06",
-        "powerService": "2026-05-06",
-        "utilityConn": "2026-05-06"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "requested",
-        "energyCalcs": "requested",
-        "soilTest": "requested",
-        "structuralEng": "not-started",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Ocala Waterways",
-      "market": "Ocala",
-      "address": "00 SW 41st Ave Ocala, FL",
-      "lotNumber": "245",
-      "parcelId": "3578-009-006",
-      "model": "Exuma X",
-      "plan": "",
-      "garage": "3 Car - RH",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "Jeffrey Gwinn",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "86055 · Stone Series Exterior Package, 85030 · Farm & Foundry Interior Package",
-      "notes": "Water- CITY",
-      "customFields": {
-        "cf_mot27ztm": "Estela Specs 1 LLC"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "architecture": "2026-05-06",
-        "sitePlan": "2026-05-06",
-        "trussEng": "2026-05-06",
-        "energyCalcs": "2026-05-06",
-        "soilTest": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-05-08"
-      },
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
-    },
-    {
-      "id": "permit-1778093026231",
-      "overallStatus": "active",
-      "stageLastModified": "2026-05-06",
-      "stageUpdatedAt": {
-        "architecture": "2026-05-07",
-        "sitePlan": "2026-05-06",
-        "trussEng": "2026-05-06",
-        "energyCalcs": "2026-05-06",
-        "soilTest": "2026-05-06",
-        "structuralEng": "2026-05-06",
-        "landscape": "2026-05-06",
-        "productApproval": "2026-05-06",
-        "colorMaterial": "2026-05-06",
-        "roofingWorksheet": "2026-05-06",
-        "utilityPP": "2026-05-06",
-        "geotechLetter": "2026-05-06",
-        "constLienAff": "2026-05-06",
-        "noc": "2026-05-06",
-        "recordedDeed": "2026-05-06",
-        "subCOI": "2026-05-06",
-        "omReview": "2026-05-06",
-        "submitted": "2026-05-06",
-        "planReview": "2026-05-06",
-        "resubmittal": "2026-05-06",
-        "permitIssued": "2026-05-06",
-        "inspections": "2026-05-06",
-        "co": "2026-05-06",
-        "powerService": "2026-05-06",
-        "utilityConn": "2026-05-06"
-      },
-      "stageDates": {},
-      "buildersRisk": false,
-      "stages": {
-        "architecture": "complete",
-        "sitePlan": "requested",
-        "trussEng": "requested",
-        "energyCalcs": "requested",
-        "soilTest": "requested",
-        "structuralEng": "not-started",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "not-started",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "powerService": "not-started",
-        "utilityConn": "not-started"
-      },
-      "community": "Ocala Waterways",
-      "market": "Ocala",
-      "address": "00 SW 41st Ave Ocala, FL",
-      "lotNumber": "247",
-      "parcelId": "3578-030-017",
-      "model": "Heron X",
-      "plan": "",
-      "garage": "Left Hand",
-      "elevation": "A2 Stone/Stucco",
-      "projectManager": "Jeffrey Gwinn",
-      "estWeeks": "",
-      "permitNumber": "",
-      "permitFee": "",
-      "utilities": "",
-      "options": "86050 · Dove Series Exterior Package, 85025 · Modern Praire Interior Package",
-      "notes": "Water - CITY",
-      "customFields": {
-        "cf_mot27ztm": "Estela Specs 1 LLC"
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "stageRequestedAt": {
-        "architecture": "2026-05-06",
-        "sitePlan": "2026-05-06",
-        "trussEng": "2026-05-06",
-        "energyCalcs": "2026-05-06",
-        "soilTest": "2026-05-06"
-      },
-      "stageCompletedAt": {
-        "architecture": "2026-05-08"
-      },
-      "releaseDate": null,
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      }
     }
   ],
   "stageConfig": {
@@ -12418,12 +11059,7 @@
       "folder": "Utilities"
     }
   },
-  "customFields": [
-    {
-      "key": "cf_mot27ztm",
-      "label": "OWNER"
-    }
-  ],
+  "customFields": [],
   "optionsList": [
     "00005 · Extended Covered Patio - Per Plan",
     "00007 · Covered Patio - Per Plan",
