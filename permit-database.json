@@ -1,7 +1,7 @@
 {
-  "version": 1778166640135,
+  "version": 1778166643261,
   "updatedBy": "Luis Grimaldi",
-  "updatedAt": "2026-05-07T15:10:40.136Z",
+  "updatedAt": "2026-05-07T15:10:43.261Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12256,18 +12256,6 @@
       "phase": 2,
       "sla": 5,
       "folder": "Permits"
-    },
-    "planReview": {
-      "label": "Plan Review Comments",
-      "phase": 3,
-      "sla": 5,
-      "folder": "Plan Review"
-    },
-    "resubmittal": {
-      "label": "Resubmittal",
-      "phase": 3,
-      "sla": 3,
-      "folder": "Resubmittal"
     },
     "permitIssued": {
       "label": "Permit Issued",
