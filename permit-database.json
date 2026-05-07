@@ -1,7 +1,7 @@
 {
-  "version": 1778187943647,
+  "version": 1778188014077,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T21:05:43.647Z",
+  "updatedAt": "2026-05-07T21:06:54.077Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11026,7 +11026,7 @@
       "plan": "",
       "garage": "3 Car - RH",
       "elevation": "A2 Stone/Stucco",
-      "options": "",
+      "options": "85050 · Stone & Shadow Interior Package",
       "permitNumber": "BLDR-26-05-13619",
       "releaseDate": "2026-03-31",
       "stages": {
@@ -11081,7 +11081,8 @@
       "stageCompletedAt": {
         "submitted": "2026-05-07"
       },
-      "_ts": 1778187941634
+      "_ts": 1778188011925,
+      "projectManager": "Jeffrey Gwinn"
     },
     {
       "id": "permit-180",
