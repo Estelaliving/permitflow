@@ -1,7 +1,7 @@
 {
-  "version": 1778179341602,
+  "version": 1778179348486,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T18:42:21.602Z",
+  "updatedAt": "2026-05-07T18:42:28.486Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6011,7 +6011,7 @@
           {
             "sent": "2026-05-01",
             "received": "2026-05-01",
-            "result": "approved",
+            "result": "pending",
             "note": "waiting for PC portal"
           }
         ],
@@ -6019,7 +6019,7 @@
           {
             "sent": "2026-05-07",
             "received": "2026-05-07",
-            "result": "approved",
+            "result": "pending",
             "note": ""
           }
         ]
