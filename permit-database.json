@@ -1,7 +1,7 @@
 {
-  "version": 1778161125151,
+  "version": 1778161151284,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T13:38:45.151Z",
+  "updatedAt": "2026-05-07T13:39:11.284Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6062,7 +6062,7 @@
             "sent": "2026-05-07",
             "received": "",
             "result": "pending",
-            "note": ""
+            "note": "Waiting for Alliance (Katina)"
           }
         ]
       },
