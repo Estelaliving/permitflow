@@ -1,7 +1,7 @@
 {
-  "version": 1778100768320,
+  "version": 1778161121594,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-06T20:52:48.320Z",
+  "updatedAt": "2026-05-07T13:38:41.594Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6034,7 +6034,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1777926482981,
+      "_ts": 1778161119579,
       "stageRequestedAt": {
         "submitted": "2026-04-30"
       },
@@ -6045,7 +6045,8 @@
         "submitted": ""
       },
       "reviewAgencies": [
-        "mechanical"
+        "mechanical",
+        "stormwater"
       ],
       "stageRounds": {
         "ra_mechanical": [
@@ -11988,6 +11989,13 @@
         "trussEng": "2026-05-06",
         "structuralEng": "2026-05-05",
         "energyCalcs": "2026-05-07"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     },
     {
@@ -12078,7 +12086,14 @@
         "energyCalcs": "2026-05-06",
         "soilTest": "2026-05-06"
       },
-      "stageCompletedAt": {}
+      "stageCompletedAt": {},
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
+      }
     },
     {
       "id": "permit-1778093026231",
@@ -12168,7 +12183,14 @@
         "energyCalcs": "2026-05-06",
         "soilTest": "2026-05-06"
       },
-      "stageCompletedAt": {}
+      "stageCompletedAt": {},
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
+      }
     }
   ],
   "stageConfig": {
