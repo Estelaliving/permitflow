@@ -1,7 +1,7 @@
 {
-  "version": 1778188241056,
+  "version": 1778188270592,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T21:10:41.056Z",
+  "updatedAt": "2026-05-07T21:11:10.592Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11030,7 +11030,7 @@
       "permitNumber": "BLDR-26-05-13619",
       "releaseDate": "2026-03-31",
       "stages": {
-        "architecture": "complete",
+        "architecture": "requested",
         "sitePlan": "not-started",
         "trussEng": "not-started",
         "energyCalcs": "not-started",
