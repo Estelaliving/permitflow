@@ -1,7 +1,7 @@
 {
-  "version": 1778166669747,
-  "updatedBy": "Luis Grimaldi",
-  "updatedAt": "2026-05-07T15:11:09.747Z",
+  "version": 1778166934640,
+  "updatedBy": "Natalia Massola",
+  "updatedAt": "2026-05-07T15:15:34.640Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11661,7 +11661,7 @@
         "trussEng": "2026-05-05",
         "energyCalcs": "2026-05-04",
         "soilTest": "2026-05-04",
-        "structuralEng": "2026-05-05",
+        "structuralEng": "2026-05-07",
         "landscape": "2026-05-04",
         "productApproval": "2026-05-04",
         "colorMaterial": "2026-05-04",
@@ -11690,7 +11690,7 @@
         "trussEng": "complete",
         "energyCalcs": "requested",
         "soilTest": "requested",
-        "structuralEng": "requested",
+        "structuralEng": "complete",
         "landscape": "not-started",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
@@ -11741,7 +11741,8 @@
         "structuralEng": "2026-05-05"
       },
       "stageCompletedAt": {
-        "trussEng": "2026-05-06"
+        "trussEng": "2026-05-06",
+        "structuralEng": "2026-05-07"
       },
       "releaseDate": null,
       "drawingReview": {
