@@ -1,7 +1,7 @@
 {
-  "version": 1778161157571,
-  "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T13:39:17.571Z",
+  "version": 1778166606558,
+  "updatedBy": "Luis Grimaldi",
+  "updatedAt": "2026-05-07T15:10:06.558Z",
   "permits": [
     {
       "id": "permit-1",
@@ -2844,65 +2844,6 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied"
-    },
-    {
-      "id": "permit-46",
-      "community": "Sabana Reserve",
-      "market": "Ocala",
-      "lotNumber": "",
-      "parcelId": "",
-      "address": "",
-      "model": "",
-      "plan": "",
-      "garage": "",
-      "elevation": "",
-      "options": "NaT, NaT",
-      "permitNumber": "",
-      "releaseDate": null,
-      "stages": {
-        "architecture": "not-started",
-        "sitePlan": "not-started",
-        "trussEng": "not-started",
-        "energyCalcs": "not-started",
-        "soilTest": "n/a",
-        "structuralEng": "not-started",
-        "landscape": "n/a",
-        "productApproval": "n/a",
-        "colorMaterial": "n/a",
-        "roofingWorksheet": "n/a",
-        "utilityPP": "n/a",
-        "geotechLetter": "n/a",
-        "constLienAff": "n/a",
-        "noc": "n/a",
-        "recordedDeed": "n/a",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "n/a",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started"
-      },
-      "stageDates": {
-        "submitted": null,
-        "permitIssued": null
-      },
-      "notes": "",
-      "permitFee": "",
-      "utilities": "",
-      "buildersRisk": false,
-      "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
-      "overallStatus": "active",
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit"
     },
     {
       "id": "permit-47",
