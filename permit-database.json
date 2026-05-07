@@ -1,7 +1,7 @@
 {
-  "version": 1778188345754,
+  "version": 1778188353458,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T21:12:25.754Z",
+  "updatedAt": "2026-05-07T21:12:33.458Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11091,7 +11091,7 @@
       "stageCompletedAt": {
         "submitted": "2026-05-07",
         "architecture": "2026-05-07",
-        "trussEng": "2026-05-07"
+        "trussEng": "2026-04-15"
       },
       "_ts": 1778188011925,
       "projectManager": "Jeffrey Gwinn",
