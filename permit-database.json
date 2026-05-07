@@ -1,7 +1,7 @@
 {
-  "version": 1778188014077,
+  "version": 1778188019158,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T21:06:54.077Z",
+  "updatedAt": "2026-05-07T21:06:59.158Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11026,7 +11026,7 @@
       "plan": "",
       "garage": "3 Car - RH",
       "elevation": "A2 Stone/Stucco",
-      "options": "85050 · Stone & Shadow Interior Package",
+      "options": "85050 · Stone & Shadow Interior Package, 86060 · Pearl Series Exterior Package",
       "permitNumber": "BLDR-26-05-13619",
       "releaseDate": "2026-03-31",
       "stages": {
