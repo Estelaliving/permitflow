@@ -1,7 +1,7 @@
 {
-  "version": 1778180353053,
+  "version": 1778180449577,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T18:59:13.053Z",
+  "updatedAt": "2026-05-07T19:00:49.577Z",
   "permits": [
     {
       "id": "permit-1",
@@ -131,10 +131,8 @@
           }
         ]
       },
-      "reviewAgencies": [
-        "engineering"
-      ],
-      "_ts": 1777916479235
+      "reviewAgencies": [],
+      "_ts": 1778180447574
     },
     {
       "id": "permit-2",
