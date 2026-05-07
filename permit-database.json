@@ -1,7 +1,7 @@
 {
-  "version": 1778168881264,
-  "updatedBy": "Luis Grimaldi",
-  "updatedAt": "2026-05-07T15:48:01.264Z",
+  "version": 1778170682917,
+  "updatedBy": "Natalia Massola",
+  "updatedAt": "2026-05-07T16:18:02.917Z",
   "permits": [
     {
       "id": "permit-1",
@@ -310,7 +310,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "not-started",
+        "permitIssued": "complete",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -322,9 +322,11 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "permitIssued": "2026-05-07"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "submitted",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -332,7 +334,13 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied"
+      "permitStatus": "issued",
+      "stageRequestedAt": {
+        "permitIssued": "2026-05-07"
+      },
+      "stageCompletedAt": {
+        "permitIssued": "2026-05-07"
+      }
     },
     {
       "id": "permit-5",
