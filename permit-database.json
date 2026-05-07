@@ -1,7 +1,7 @@
 {
-  "version": 1778168308667,
-  "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-07T15:38:28.667Z",
+  "version": 1778168881264,
+  "updatedBy": "Luis Grimaldi",
+  "updatedAt": "2026-05-07T15:48:01.264Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6574,7 +6574,8 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started"
+        "co": "not-started",
+        "powerService": "requested"
       },
       "stageDates": {
         "submitted": "2025-02-04",
@@ -6584,7 +6585,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "powerService": "2026-05-07"
+      },
       "stageLastModified": "2026-04-08",
       "overallStatus": "permitted",
       "drawingReview": {
@@ -6594,7 +6597,27 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "permitStatus": "issued",
+      "stageRequestedAt": {
+        "powerService": "2026-05-07"
+      },
+      "stageCompletedAt": {},
+      "stageRounds": {
+        "powerService": [
+          {
+            "sent": "2026-05-07",
+            "received": "",
+            "result": "pending",
+            "note": ""
+          },
+          {
+            "sent": "2026-05-07",
+            "received": "",
+            "result": "pending",
+            "note": ""
+          }
+        ]
+      }
     },
     {
       "id": "permit-105",
