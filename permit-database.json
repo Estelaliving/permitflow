@@ -1,7 +1,7 @@
 {
-  "version": 1778271633130,
+  "version": 1778271759382,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:20:33.130Z",
+  "updatedAt": "2026-05-08T20:22:39.382Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6473,65 +6473,6 @@
         "recordedDeed": "",
         "productApproval": ""
       }
-    },
-    {
-      "id": "permit-101",
-      "community": "Palm Coast Scattered",
-      "market": "Palm Coast",
-      "lotNumber": "",
-      "parcelId": "07-11-31-7019-00220-0070",
-      "address": "2 Wateing PL, Palm Coast, FL",
-      "model": "Exuma X-3Car",
-      "plan": "",
-      "garage": "Left Hand",
-      "elevation": "A2 Stone/Stucco",
-      "options": "",
-      "permitNumber": "",
-      "releaseDate": null,
-      "stages": {
-        "architecture": "not-started",
-        "sitePlan": "not-started",
-        "trussEng": "not-started",
-        "energyCalcs": "not-started",
-        "soilTest": "not-started",
-        "structuralEng": "not-started",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
-        "subCOI": "not-started",
-        "omReview": "not-started",
-        "submitted": "not-started",
-        "planReview": "not-started",
-        "resubmittal": "n/a",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started"
-      },
-      "stageDates": {
-        "submitted": null,
-        "permitIssued": null
-      },
-      "notes": "",
-      "permitFee": "",
-      "utilities": "",
-      "buildersRisk": false,
-      "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
-      "overallStatus": "active",
-      "drawingReview": {
-        "checks": {},
-        "notes": "",
-        "completedAt": null,
-        "completedBy": ""
-      },
-      "docsStatus": "collecting",
-      "permitStatus": "presubmit"
     },
     {
       "id": "permit-102",
