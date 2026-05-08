@@ -1,7 +1,7 @@
 {
-  "version": 1778268388165,
+  "version": 1778268396832,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:26:28.165Z",
+  "updatedAt": "2026-05-08T19:26:36.832Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6030,7 +6030,7 @@
         "trussEng": "complete",
         "energyCalcs": "requested",
         "soilTest": "requested",
-        "structuralEng": "requested",
+        "structuralEng": "complete",
         "landscape": "not-started",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
@@ -6090,7 +6090,8 @@
       },
       "stageCompletedAt": {
         "architecture": "2026-04-14",
-        "trussEng": "2026-04-17"
+        "trussEng": "2026-04-17",
+        "structuralEng": "2026-05-08"
       }
     },
     {
