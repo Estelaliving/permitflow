@@ -1,7 +1,7 @@
 {
-  "version": 1778268251063,
+  "version": 1778268257116,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:24:11.063Z",
+  "updatedAt": "2026-05-08T19:24:17.116Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6076,7 +6076,7 @@
       },
       "projectManager": "Joshua Parker",
       "stageRequestedAt": {
-        "architecture": "2026-05-08"
+        "architecture": "2026-04-13"
       },
       "stageCompletedAt": {}
     },
