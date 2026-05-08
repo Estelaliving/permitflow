@@ -1,7 +1,7 @@
 {
-  "version": 1778268593341,
+  "version": 1778268664621,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:29:53.341Z",
+  "updatedAt": "2026-05-08T19:31:04.621Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5636,7 +5636,7 @@
         "sitePlan": "requested",
         "trussEng": "complete",
         "energyCalcs": "complete",
-        "soilTest": "requested",
+        "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
         "productApproval": "complete",
@@ -5674,7 +5674,8 @@
         "geotechLetter": "2026-05-08",
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
-        "recordedDeed": "2026-05-08"
+        "recordedDeed": "2026-05-08",
+        "soilTest": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "submitted",
@@ -5701,7 +5702,8 @@
         "geotechLetter": "",
         "constLienAff": "",
         "noc": "",
-        "recordedDeed": ""
+        "recordedDeed": "",
+        "soilTest": "2026-05-08"
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
@@ -5713,7 +5715,8 @@
         "geotechLetter": "",
         "constLienAff": "",
         "noc": "",
-        "recordedDeed": ""
+        "recordedDeed": "",
+        "soilTest": "2026-05-08"
       },
       "reviewAgencies": [
         "mechanical",
