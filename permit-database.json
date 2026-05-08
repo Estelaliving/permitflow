@@ -1,7 +1,7 @@
 {
-  "version": 1778273526465,
+  "version": 1778273538146,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:52:06.465Z",
+  "updatedAt": "2026-05-08T20:52:18.146Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12115,10 +12115,10 @@
       "address": "00 SW 39th Ter, Ocala, FL 34476",
       "lotNumber": "",
       "parcelId": "3507-008-022",
-      "model": "",
+      "model": "Exuma X",
       "plan": "",
       "garage": "",
-      "elevation": "",
+      "elevation": "A2 Stone/Stucco",
       "projectManager": "",
       "estWeeks": "",
       "permitNumber": "",
@@ -12131,7 +12131,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
-      "_ts": 1778273524462
+      "_ts": 1778273536138
     },
     {
       "id": "permit-1778272370270",
