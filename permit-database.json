@@ -1,7 +1,7 @@
 {
-  "version": 1778265720104,
+  "version": 1778265724159,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T18:42:00.104Z",
+  "updatedAt": "2026-05-08T18:42:04.159Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5414,7 +5414,7 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
@@ -5441,7 +5441,8 @@
       "buildersRisk": false,
       "stageUpdatedAt": {
         "permitIssued": "2026-05-08",
-        "soilTest": "2026-05-08"
+        "soilTest": "2026-05-08",
+        "productApproval": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "permitted",
@@ -5459,11 +5460,13 @@
       },
       "stageRequestedAt": {
         "permitIssued": "2026-05-08",
-        "soilTest": ""
+        "soilTest": "",
+        "productApproval": "2026-05-08"
       },
       "stageCompletedAt": {
         "permitIssued": "2026-05-07",
-        "soilTest": ""
+        "soilTest": "",
+        "productApproval": "2026-05-08"
       },
       "projectManager": "Jim Humphreys"
     },
