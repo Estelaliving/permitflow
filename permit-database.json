@@ -1,7 +1,7 @@
 {
-  "version": 1778270085429,
+  "version": 1778270090215,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:54:45.429Z",
+  "updatedAt": "2026-05-08T19:54:50.215Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6544,7 +6544,7 @@
       "plan": "",
       "garage": "3 Car - LH",
       "elevation": "A2 Stone/Stucco",
-      "options": "86060 · Pearl Series Exterior Package",
+      "options": "86060 · Pearl Series Exterior Package, 85055 · Sable & Sand Interior Package",
       "permitNumber": "2026050124",
       "releaseDate": null,
       "stages": {
