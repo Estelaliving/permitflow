@@ -1,7 +1,7 @@
 {
-  "version": 1778275175696,
+  "version": 1778275766733,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T21:19:35.696Z",
+  "updatedAt": "2026-05-08T21:29:26.733Z",
   "permits": [
     {
       "id": "permit-1",
@@ -423,7 +423,7 @@
       "garage": "Left Hand 3Car",
       "elevation": "Transitional",
       "options": "5th Bedroom and bath in Flex",
-      "permitNumber": "",
+      "permitNumber": "2026050014",
       "releaseDate": null,
       "stages": {
         "architecture": "not-started",
@@ -443,7 +443,7 @@
         "recordedDeed": "n/a",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "not-started",
+        "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -458,9 +458,11 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
-      "overallStatus": "active",
+      "stageUpdatedAt": {
+        "submitted": "2026-05-08"
+      },
+      "stageLastModified": "2026-05-08",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -468,12 +470,18 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
+      "permitStatus": "applied",
       "stageNotes": {
         "permitIssued": ""
       },
-      "_ts": 1778265801712,
-      "reviewAgencies": []
+      "_ts": 1778275763947,
+      "reviewAgencies": [],
+      "stageRequestedAt": {
+        "submitted": "2026-05-08"
+      },
+      "stageCompletedAt": {
+        "submitted": "2026-05-08"
+      }
     },
     {
       "id": "permit-8",
