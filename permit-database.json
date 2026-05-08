@@ -1,7 +1,7 @@
 {
-  "version": 1778269704404,
+  "version": 1778269719349,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:48:24.404Z",
+  "updatedAt": "2026-05-08T19:48:39.349Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6372,7 +6372,7 @@
       "plan": "",
       "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "",
+      "options": "86060 · Pearl Series Exterior Package",
       "permitNumber": "",
       "releaseDate": "2026-04-02",
       "stages": {
@@ -6420,7 +6420,10 @@
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
       "projectManager": "Joshua Parker",
-      "_ts": 1778269702397
+      "_ts": 1778269702397,
+      "customFields": {
+        "cf_mot27ztm": "Estela Specs 7 LLC"
+      }
     },
     {
       "id": "permit-101",
