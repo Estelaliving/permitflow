@@ -1,7 +1,7 @@
 {
-  "version": 1778267231217,
+  "version": 1778267257107,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:07:11.217Z",
+  "updatedAt": "2026-05-08T19:07:37.107Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5802,7 +5802,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778267158085,
+      "_ts": 1778267253641,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
       },
@@ -5833,7 +5833,20 @@
         "noc": "",
         "recordedDeed": ""
       },
-      "projectManager": "Joshua Parker"
+      "projectManager": "Joshua Parker",
+      "reviewAgencies": [
+        "mechanical"
+      ],
+      "stageRounds": {
+        "ra_mechanical": [
+          {
+            "sent": "2026-05-08",
+            "received": "",
+            "result": "pending",
+            "note": ""
+          }
+        ]
+      }
     },
     {
       "id": "permit-97",
