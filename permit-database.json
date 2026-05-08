@@ -1,7 +1,7 @@
 {
-  "version": 1778267918585,
+  "version": 1778267929726,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:18:38.585Z",
+  "updatedAt": "2026-05-08T19:18:49.726Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5649,7 +5649,7 @@
         "recordedDeed": "not-started",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "not-started",
+        "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -5664,9 +5664,11 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "submitted": "2026-05-08"
+      },
       "stageLastModified": "2026-05-08",
-      "overallStatus": "active",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -5674,12 +5676,18 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
+      "permitStatus": "applied",
       "_ts": 1778267906724,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 6 LLC"
       },
-      "projectManager": "Jim Humphreys"
+      "projectManager": "Jim Humphreys",
+      "stageRequestedAt": {
+        "submitted": "2026-05-08"
+      },
+      "stageCompletedAt": {
+        "submitted": "2026-05-08"
+      }
     },
     {
       "id": "permit-95",
