@@ -1,7 +1,7 @@
 {
-  "version": 1778265494704,
+  "version": 1778265550986,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T18:38:14.704Z",
+  "updatedAt": "2026-05-08T18:39:10.986Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5427,7 +5427,7 @@
         "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "not-started",
+        "permitIssued": "complete",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -5439,9 +5439,11 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "permitIssued": "2026-05-08"
+      },
       "stageLastModified": "2026-05-08",
-      "overallStatus": "active",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -5449,8 +5451,17 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
-      "_ts": 1778265492688
+      "permitStatus": "issued",
+      "_ts": 1778265492688,
+      "customFields": {
+        "cf_mot27ztm": "ESTELA SPECS 3 LLC"
+      },
+      "stageRequestedAt": {
+        "permitIssued": "2026-05-08"
+      },
+      "stageCompletedAt": {
+        "permitIssued": "2026-05-08"
+      }
     },
     {
       "id": "permit-93",
