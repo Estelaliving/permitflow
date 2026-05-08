@@ -1,7 +1,7 @@
 {
-  "version": 1778269932489,
+  "version": 1778269944910,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:52:12.489Z",
+  "updatedAt": "2026-05-08T19:52:24.910Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6384,13 +6384,13 @@
         "structuralEng": "complete",
         "landscape": "complete",
         "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
+        "colorMaterial": "complete",
+        "roofingWorksheet": "complete",
+        "utilityPP": "complete",
+        "geotechLetter": "complete",
+        "constLienAff": "complete",
+        "noc": "complete",
+        "recordedDeed": "complete",
         "subCOI": "not-started",
         "omReview": "not-started",
         "submitted": "not-started",
@@ -6415,7 +6415,14 @@
         "energyCalcs": "2026-05-08",
         "soilTest": "2026-05-08",
         "landscape": "2026-05-08",
-        "structuralEng": "2026-05-08"
+        "structuralEng": "2026-05-08",
+        "colorMaterial": "2026-05-08",
+        "roofingWorksheet": "2026-05-08",
+        "geotechLetter": "2026-05-08",
+        "utilityPP": "2026-05-08",
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "active",
@@ -6439,7 +6446,14 @@
         "energyCalcs": "2026-04-13",
         "soilTest": "2026-04-13",
         "landscape": "2026-05-08",
-        "structuralEng": "2026-04-14"
+        "structuralEng": "2026-04-14",
+        "colorMaterial": "2026-05-08",
+        "roofingWorksheet": "2026-05-08",
+        "geotechLetter": "2026-05-08",
+        "utilityPP": "2026-05-08",
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       },
       "stageCompletedAt": {
         "landscape": "2026-05-09",
@@ -6447,7 +6461,14 @@
         "energyCalcs": "2026-04-22",
         "structuralEng": "2026-04-18",
         "architecture": "2026-04-15",
-        "trussEng": "2026-04-15"
+        "trussEng": "2026-04-15",
+        "colorMaterial": "2026-05-08",
+        "roofingWorksheet": "2026-05-08",
+        "geotechLetter": "2026-05-08",
+        "utilityPP": "2026-05-08",
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       }
     },
     {
