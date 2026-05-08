@@ -1,7 +1,7 @@
 {
-  "version": 1778268812666,
+  "version": 1778268820926,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:33:32.666Z",
+  "updatedAt": "2026-05-08T19:33:40.926Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6143,7 +6143,7 @@
       "plan": "",
       "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "",
+      "options": "86055 · Stone Series Exterior Package",
       "permitNumber": "",
       "releaseDate": "2026-04-02",
       "stages": {
