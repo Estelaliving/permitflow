@@ -1,7 +1,7 @@
 {
-  "version": 1778267993629,
+  "version": 1778267997693,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:19:53.629Z",
+  "updatedAt": "2026-05-08T19:19:57.693Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5705,7 +5705,7 @@
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
-        "landscape": "2026-05-08",
+        "landscape": "",
         "productApproval": "2026-05-08",
         "colorMaterial": "2026-05-08",
         "roofingWorksheet": "2026-05-08",
