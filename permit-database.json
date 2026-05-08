@@ -1,7 +1,7 @@
 {
-  "version": 1778272383691,
+  "version": 1778272480962,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:33:03.691Z",
+  "updatedAt": "2026-05-08T20:34:40.962Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11196,7 +11196,7 @@
       "plan": "",
       "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "",
+      "options": "86055 · Stone Series Exterior Package",
       "permitNumber": "",
       "releaseDate": "2026-04-01",
       "stages": {
@@ -11233,7 +11233,7 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
+      "stageLastModified": "2026-05-08",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -11242,7 +11242,9 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit"
+      "permitStatus": "presubmit",
+      "projectManager": "Jeffrey Gwinn",
+      "_ts": 1778272478843
     },
     {
       "id": "permit-181",
