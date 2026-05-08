@@ -1,7 +1,7 @@
 {
-  "version": 1778273098260,
+  "version": 1778273119216,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:44:58.260Z",
+  "updatedAt": "2026-05-08T20:45:19.216Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11194,7 +11194,7 @@
       "_ts": 1778272906676,
       "projectManager": "Jeffrey Gwinn",
       "stageRequestedAt": {
-        "architecture": "2026-05-08",
+        "architecture": "2026-04-13",
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
