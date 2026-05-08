@@ -1,7 +1,7 @@
 {
-  "version": 1778269606490,
+  "version": 1778269609835,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:46:46.490Z",
+  "updatedAt": "2026-05-08T19:46:49.835Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6337,8 +6337,8 @@
         "utilityPP": "2026-05-08",
         "geotechLetter": "2026-05-08",
         "constLienAff": "2026-05-08",
-        "noc": "2026-05-08",
-        "recordedDeed": "2026-05-08",
+        "noc": "",
+        "recordedDeed": "",
         "subCOI": "2026-05-08"
       },
       "stageCompletedAt": {
