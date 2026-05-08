@@ -1,7 +1,7 @@
 {
-  "version": 1778265731106,
+  "version": 1778265738602,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T18:42:11.106Z",
+  "updatedAt": "2026-05-08T18:42:18.602Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5419,9 +5419,9 @@
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
+        "constLienAff": "complete",
+        "noc": "complete",
+        "recordedDeed": "complete",
         "subCOI": "not-started",
         "omReview": "not-started",
         "submitted": "not-started",
@@ -5442,7 +5442,10 @@
       "stageUpdatedAt": {
         "permitIssued": "2026-05-08",
         "soilTest": "2026-05-08",
-        "productApproval": "2026-05-08"
+        "productApproval": "2026-05-08",
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "permitted",
@@ -5461,12 +5464,18 @@
       "stageRequestedAt": {
         "permitIssued": "2026-05-08",
         "soilTest": "",
-        "productApproval": ""
+        "productApproval": "",
+        "constLienAff": "",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       },
       "stageCompletedAt": {
         "permitIssued": "2026-05-07",
         "soilTest": "",
-        "productApproval": ""
+        "productApproval": "",
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       },
       "projectManager": "Jim Humphreys"
     },
