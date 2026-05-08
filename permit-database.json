@@ -1,7 +1,7 @@
 {
-  "version": 1778269741516,
+  "version": 1778269748010,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:49:01.516Z",
+  "updatedAt": "2026-05-08T19:49:08.010Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6431,7 +6431,7 @@
         "cf_mot27ztm": "Estela Specs 7 LLC"
       },
       "stageRequestedAt": {
-        "architecture": "2026-05-08",
+        "architecture": "2026-04-13",
         "sitePlan": "2026-05-08",
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
