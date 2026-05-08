@@ -1,7 +1,7 @@
 {
-  "version": 1778269318612,
+  "version": 1778269340370,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:41:58.612Z",
+  "updatedAt": "2026-05-08T19:42:20.370Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6260,11 +6260,11 @@
       "permitNumber": "",
       "releaseDate": "2026-04-02",
       "stages": {
-        "architecture": "not-started",
-        "sitePlan": "not-started",
-        "trussEng": "not-started",
-        "energyCalcs": "not-started",
-        "soilTest": "not-started",
+        "architecture": "requested",
+        "sitePlan": "requested",
+        "trussEng": "requested",
+        "energyCalcs": "requested",
+        "soilTest": "requested",
         "structuralEng": "not-started",
         "landscape": "not-started",
         "productApproval": "not-started",
@@ -6292,7 +6292,13 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-08",
+        "sitePlan": "2026-05-08",
+        "trussEng": "2026-05-08",
+        "energyCalcs": "2026-05-08",
+        "soilTest": "2026-05-08"
+      },
       "stageLastModified": "2026-05-08",
       "overallStatus": "active",
       "drawingReview": {
@@ -6304,7 +6310,18 @@
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
       "_ts": 1778269311719,
-      "projectManager": "Joshua Parker"
+      "projectManager": "Joshua Parker",
+      "customFields": {
+        "cf_mot27ztm": "Estela Especs 7 LLC"
+      },
+      "stageRequestedAt": {
+        "architecture": "2026-05-08",
+        "sitePlan": "2026-05-08",
+        "trussEng": "2026-05-08",
+        "energyCalcs": "2026-05-08",
+        "soilTest": "2026-05-08"
+      },
+      "stageCompletedAt": {}
     },
     {
       "id": "permit-100",
