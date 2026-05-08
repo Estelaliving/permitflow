@@ -1,7 +1,7 @@
 {
-  "version": 1778273301771,
+  "version": 1778273326961,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:48:21.771Z",
+  "updatedAt": "2026-05-08T20:48:46.961Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12031,8 +12031,8 @@
       "permitNumber": "",
       "permitFee": "",
       "utilities": "",
-      "options": "",
-      "notes": "",
+      "options": "86060 · Pearl Series Exterior Package",
+      "notes": "WATER - WELL",
       "customFields": {
         "cf_mot27ztm": ""
       },
@@ -12047,7 +12047,7 @@
         "structuralEng": "2026-05-08"
       },
       "stageCompletedAt": {},
-      "_ts": 1778273299767
+      "_ts": 1778273324866
     },
     {
       "id": "permit-1778272354838",
