@@ -1,7 +1,7 @@
 {
-  "version": 1778271759382,
+  "version": 1778271857536,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:22:39.382Z",
+  "updatedAt": "2026-05-08T20:24:17.536Z",
   "permits": [
     {
       "id": "permit-1",
@@ -1790,7 +1790,7 @@
       "garage": "Right Hand",
       "elevation": "Farmhouse",
       "options": "",
-      "permitNumber": "",
+      "permitNumber": "BLDR-26-04-11007",
       "releaseDate": null,
       "stages": {
         "architecture": "complete",
@@ -1826,7 +1826,7 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
+      "stageLastModified": "2026-05-08",
       "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
@@ -1835,7 +1835,8 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "permitStatus": "issued",
+      "_ts": 1778271855517
     },
     {
       "id": "permit-32",
