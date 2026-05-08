@@ -1,7 +1,7 @@
 {
-  "version": 1778274944051,
+  "version": 1778275109876,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T21:15:44.051Z",
+  "updatedAt": "2026-05-08T21:18:29.876Z",
   "permits": [
     {
       "id": "permit-1",
@@ -307,7 +307,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "not-started",
+        "permitIssued": "complete",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -319,9 +319,11 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "permitIssued": "2026-05-08"
+      },
       "stageLastModified": "2026-05-08",
-      "overallStatus": "submitted",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -329,10 +331,16 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
+      "permitStatus": "issued",
       "_ts": 1778274933490,
       "customFields": {
         "cf_mot27ztm": "ESTELA LIVING LLC"
+      },
+      "stageRequestedAt": {
+        "permitIssued": "2026-05-08"
+      },
+      "stageCompletedAt": {
+        "permitIssued": "2026-05-08"
       }
     },
     {
