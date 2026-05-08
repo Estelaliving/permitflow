@@ -1,7 +1,7 @@
 {
-  "version": 1778265631911,
+  "version": 1778265712607,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T18:40:31.911Z",
+  "updatedAt": "2026-05-08T18:41:52.607Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5411,7 +5411,7 @@
         "sitePlan": "complete",
         "trussEng": "complete",
         "energyCalcs": "complete",
-        "soilTest": "requested",
+        "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
         "productApproval": "not-started",
@@ -5435,12 +5435,13 @@
         "submitted": null,
         "permitIssued": null
       },
-      "notes": "",
+      "notes": "Jamie sent the vendors request.",
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {
-        "permitIssued": "2026-05-08"
+        "permitIssued": "2026-05-08",
+        "soilTest": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "permitted",
@@ -5452,15 +5453,17 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "issued",
-      "_ts": 1778265610130,
+      "_ts": 1778265709633,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 3 LLC"
       },
       "stageRequestedAt": {
-        "permitIssued": "2026-05-08"
+        "permitIssued": "2026-05-08",
+        "soilTest": ""
       },
       "stageCompletedAt": {
-        "permitIssued": "2026-05-07"
+        "permitIssued": "2026-05-07",
+        "soilTest": "2026-05-08"
       },
       "projectManager": "Jim Humphreys"
     },
