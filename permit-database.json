@@ -1,7 +1,7 @@
 {
-  "version": 1778269622652,
+  "version": 1778269629012,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:47:02.652Z",
+  "updatedAt": "2026-05-08T19:47:09.012Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6348,7 +6348,7 @@
         "energyCalcs": "2026-04-22",
         "sitePlan": "2026-05-07",
         "landscape": "2026-05-09",
-        "colorMaterial": "2026-05-08",
+        "colorMaterial": "",
         "roofingWorksheet": "2026-05-08",
         "utilityPP": "2026-05-08",
         "geotechLetter": "2026-05-08",
