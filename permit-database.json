@@ -1,7 +1,7 @@
 {
-  "version": 1778265907635,
+  "version": 1778266007425,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T18:45:07.635Z",
+  "updatedAt": "2026-05-08T18:46:47.425Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5626,7 +5626,7 @@
         "energyCalcs": "complete",
         "soilTest": "requested",
         "structuralEng": "complete",
-        "landscape": "not-started",
+        "landscape": "requested",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
         "roofingWorksheet": "not-started",
@@ -5652,7 +5652,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "landscape": "2026-05-08"
+      },
       "stageLastModified": "2026-05-08",
       "overallStatus": "active",
       "drawingReview": {
@@ -5667,7 +5669,11 @@
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
       },
-      "projectManager": "Joshua Parker"
+      "projectManager": "Joshua Parker",
+      "stageRequestedAt": {
+        "landscape": "2026-05-08"
+      },
+      "stageCompletedAt": {}
     },
     {
       "id": "permit-96",
