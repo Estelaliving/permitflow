@@ -1,7 +1,7 @@
 {
-  "version": 1778268281901,
+  "version": 1778268284711,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:24:41.901Z",
+  "updatedAt": "2026-05-08T19:24:44.711Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6029,7 +6029,7 @@
         "sitePlan": "requested",
         "trussEng": "requested",
         "energyCalcs": "requested",
-        "soilTest": "not-started",
+        "soilTest": "requested",
         "structuralEng": "not-started",
         "landscape": "not-started",
         "productApproval": "not-started",
@@ -6061,7 +6061,8 @@
         "architecture": "2026-05-08",
         "sitePlan": "2026-05-08",
         "trussEng": "2026-05-08",
-        "energyCalcs": "2026-05-08"
+        "energyCalcs": "2026-05-08",
+        "soilTest": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "active",
@@ -6082,7 +6083,8 @@
         "architecture": "2026-04-13",
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
-        "energyCalcs": "2026-04-13"
+        "energyCalcs": "2026-04-13",
+        "soilTest": "2026-05-08"
       },
       "stageCompletedAt": {}
     },
