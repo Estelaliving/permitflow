@@ -1,7 +1,7 @@
 {
-  "version": 1778272134320,
+  "version": 1778272170594,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:28:54.320Z",
+  "updatedAt": "2026-05-08T20:29:30.594Z",
   "permits": [
     {
       "id": "permit-1",
@@ -2640,7 +2640,7 @@
       "garage": "Left Hand",
       "elevation": "Farmhouse",
       "options": "Summer kitchen Pre-plumb, Laundry Pre-plumb and Sink + double doors at flex",
-      "permitNumber": "",
+      "permitNumber": "BLDR-26-04-11007",
       "releaseDate": null,
       "stages": {
         "architecture": "complete",
@@ -2686,7 +2686,11 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778272132305
+      "_ts": 1778272166836,
+      "stageRequestedAt": {
+        "submitted": "2026-04-08"
+      },
+      "stageCompletedAt": {}
     },
     {
       "id": "permit-46",
