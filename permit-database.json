@@ -1,7 +1,7 @@
 {
-  "version": 1778274481529,
+  "version": 1778274489742,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T21:08:01.529Z",
+  "updatedAt": "2026-05-08T21:08:09.742Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12308,7 +12308,7 @@
       "permitNumber": "",
       "permitFee": "",
       "utilities": "",
-      "options": "86050 · Dove Series Exterior Package",
+      "options": "86050 · Dove Series Exterior Package, 85025 · Modern Praire Interior Package",
       "notes": "WATER - CITY",
       "customFields": {
         "cf_mot27ztm": ""
