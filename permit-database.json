@@ -1,7 +1,7 @@
 {
-  "version": 1778267377791,
+  "version": 1778267418679,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:09:37.791Z",
+  "updatedAt": "2026-05-08T19:10:18.679Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5498,7 +5498,7 @@
       "plan": "",
       "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "",
+      "options": "86070 · Olive Series Exterior Package",
       "permitNumber": "2026050015",
       "releaseDate": "2026-03-20",
       "stages": {
@@ -5545,10 +5545,11 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
-      "_ts": 1778267367741,
+      "_ts": 1778267416509,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
-      }
+      },
+      "projectManager": "Jim Humphreys"
     },
     {
       "id": "permit-94",
