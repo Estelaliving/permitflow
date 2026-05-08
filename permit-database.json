@@ -1,7 +1,7 @@
 {
-  "version": 1778268574953,
+  "version": 1778268577914,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:29:34.953Z",
+  "updatedAt": "2026-05-08T19:29:37.914Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6120,7 +6120,7 @@
         "geotechLetter": "",
         "constLienAff": "",
         "noc": "",
-        "recordedDeed": "2026-05-08"
+        "recordedDeed": ""
       }
     },
     {
