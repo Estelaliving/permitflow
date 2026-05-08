@@ -1,7 +1,7 @@
 {
-  "version": 1778273538146,
+  "version": 1778273544031,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:52:18.146Z",
+  "updatedAt": "2026-05-08T20:52:24.031Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12117,7 +12117,7 @@
       "parcelId": "3507-008-022",
       "model": "Exuma X",
       "plan": "",
-      "garage": "",
+      "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
       "projectManager": "",
       "estWeeks": "",
@@ -12131,7 +12131,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
-      "_ts": 1778273536138
+      "_ts": 1778273542025
     },
     {
       "id": "permit-1778272370270",
