@@ -1,7 +1,7 @@
 {
-  "version": 1778272912003,
+  "version": 1778272925259,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:41:52.003Z",
+  "updatedAt": "2026-05-08T20:42:05.259Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11141,12 +11141,12 @@
       "permitNumber": "BLDR-26-05-13619 ",
       "releaseDate": "2026-03-31",
       "stages": {
-        "architecture": "not-started",
-        "sitePlan": "not-started",
-        "trussEng": "not-started",
-        "energyCalcs": "not-started",
-        "soilTest": "not-started",
-        "structuralEng": "not-started",
+        "architecture": "requested",
+        "sitePlan": "requested",
+        "trussEng": "requested",
+        "energyCalcs": "requested",
+        "soilTest": "requested",
+        "structuralEng": "requested",
         "landscape": "n/a",
         "productApproval": "n/a",
         "colorMaterial": "n/a",
@@ -11173,7 +11173,14 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-08",
+        "sitePlan": "2026-05-08",
+        "trussEng": "2026-05-08",
+        "energyCalcs": "2026-05-08",
+        "soilTest": "2026-05-08",
+        "structuralEng": "2026-05-08"
+      },
       "stageLastModified": "2026-05-08",
       "overallStatus": "active",
       "drawingReview": {
@@ -11185,7 +11192,16 @@
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
       "_ts": 1778272906676,
-      "projectManager": "Jeffrey Gwinn"
+      "projectManager": "Jeffrey Gwinn",
+      "stageRequestedAt": {
+        "architecture": "2026-05-08",
+        "sitePlan": "2026-05-08",
+        "trussEng": "2026-05-08",
+        "energyCalcs": "2026-05-08",
+        "soilTest": "2026-05-08",
+        "structuralEng": "2026-05-08"
+      },
+      "stageCompletedAt": {}
     },
     {
       "id": "permit-180",
