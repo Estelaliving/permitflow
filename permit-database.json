@@ -1,7 +1,7 @@
 {
-  "version": 1778265369299,
+  "version": 1778265386007,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T18:36:09.299Z",
+  "updatedAt": "2026-05-08T18:36:26.007Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5238,7 +5238,7 @@
         "submitted": "2026-03-20",
         "permitIssued": null
       },
-      "notes": "Jamie sent the Vendors re",
+      "notes": "Jamie sent the vendors request",
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
@@ -5256,7 +5256,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
-      "_ts": 1778265367296,
+      "_ts": 1778265384003,
       "projectManager": "Joshua Parker",
       "estWeeks": "2 ",
       "customFields": {
