@@ -1,7 +1,7 @@
 {
-  "version": 1778265803723,
-  "updatedBy": "Team member",
-  "updatedAt": "2026-05-08T18:43:23.723Z",
+  "version": 1778265839791,
+  "updatedBy": "Natalia Massola",
+  "updatedAt": "2026-05-08T18:43:59.791Z",
   "permits": [
     {
       "id": "permit-1",
@@ -418,8 +418,7 @@
       "stageNotes": {
         "permitIssued": ""
       },
-      "_ts": 1778265801712,
-      "reviewAgencies": []
+      "_ts": 1778265744213
     },
     {
       "id": "permit-8",
@@ -5269,13 +5268,13 @@
         "cf_mot27ztm": "ESTELA SPECS 7 LLC"
       },
       "stageRequestedAt": {
-        "constLienAff": null,
-        "productApproval": null,
+        "constLienAff": "",
+        "productApproval": "",
         "submitted": "2026-03-20"
       },
       "stageCompletedAt": {
-        "constLienAff": null,
-        "productApproval": null,
+        "constLienAff": "",
+        "productApproval": "",
         "submitted": "2026-05-08"
       }
     },
@@ -5429,7 +5428,7 @@
         "recordedDeed": "complete",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "not-started",
+        "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
@@ -5450,7 +5449,8 @@
         "productApproval": "2026-05-08",
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
-        "recordedDeed": "2026-05-08"
+        "recordedDeed": "2026-05-08",
+        "submitted": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "permitted",
@@ -5468,19 +5468,21 @@
       },
       "stageRequestedAt": {
         "permitIssued": "2026-05-08",
-        "soilTest": null,
-        "productApproval": null,
-        "constLienAff": null,
-        "noc": null,
-        "recordedDeed": null
+        "soilTest": "",
+        "productApproval": "",
+        "constLienAff": "",
+        "noc": "",
+        "recordedDeed": "",
+        "submitted": "2026-04-09"
       },
       "stageCompletedAt": {
         "permitIssued": "2026-05-07",
-        "soilTest": null,
-        "productApproval": null,
-        "constLienAff": "2026-05-08",
-        "noc": "2026-05-08",
-        "recordedDeed": "2026-05-08"
+        "soilTest": "",
+        "productApproval": "",
+        "constLienAff": "",
+        "noc": "",
+        "recordedDeed": "",
+        "submitted": "2026-05-08"
       },
       "projectManager": "Jim Humphreys"
     },
@@ -5614,7 +5616,7 @@
       "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
       "options": "",
-      "permitNumber": "",
+      "permitNumber": "2026041013",
       "releaseDate": "2026-03-20",
       "stages": {
         "architecture": "complete",
@@ -5650,7 +5652,7 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
+      "stageLastModified": "2026-05-08",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -5659,7 +5661,8 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit"
+      "permitStatus": "presubmit",
+      "_ts": 1778265837778
     },
     {
       "id": "permit-96",
