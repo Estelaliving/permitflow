@@ -1,7 +1,7 @@
 {
-  "version": 1778274416035,
+  "version": 1778274420363,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T21:06:56.035Z",
+  "updatedAt": "2026-05-08T21:07:00.363Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12301,7 +12301,7 @@
       "parcelId": "3578-030-017",
       "model": "Heron X",
       "plan": "",
-      "garage": "",
+      "garage": "Left Hand",
       "elevation": "",
       "projectManager": "",
       "estWeeks": "",
@@ -12315,7 +12315,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
-      "_ts": 1778274414019
+      "_ts": 1778274418359
     }
   ],
   "stageConfig": {
