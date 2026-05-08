@@ -1,7 +1,7 @@
 {
-  "version": 1778269210169,
+  "version": 1778269265453,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:40:10.169Z",
+  "updatedAt": "2026-05-08T19:41:05.453Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6252,7 +6252,7 @@
       "lotNumber": "",
       "parcelId": "07-11-31-7017-00030-0180",
       "address": "19 Bonnie Ln, Palm Coast, FL",
-      "model": "Plan 3 - 1742",
+      "model": "",
       "plan": "",
       "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
@@ -6293,7 +6293,7 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
+      "stageLastModified": "2026-05-08",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -6302,7 +6302,8 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit"
+      "permitStatus": "presubmit",
+      "_ts": 1778269263446
     },
     {
       "id": "permit-100",
