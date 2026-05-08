@@ -1,7 +1,7 @@
 {
-  "version": 1778275146028,
+  "version": 1778275169197,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T21:19:06.028Z",
+  "updatedAt": "2026-05-08T21:19:29.197Z",
   "permits": [
     {
       "id": "permit-1",
@@ -355,7 +355,7 @@
       "garage": "Left Hand",
       "elevation": "Farmhouse",
       "options": "5th Bedroom and bath in Flex",
-      "permitNumber": "",
+      "permitNumber": "2026040067",
       "releaseDate": "2026-01-20",
       "stages": {
         "architecture": "complete",
@@ -378,7 +378,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "not-started",
+        "permitIssued": "complete",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -390,9 +390,11 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {
+        "permitIssued": "2026-05-08"
+      },
+      "stageLastModified": "2026-05-08",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -400,7 +402,14 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied"
+      "permitStatus": "issued",
+      "_ts": 1778275166504,
+      "stageRequestedAt": {
+        "permitIssued": "2026-05-08"
+      },
+      "stageCompletedAt": {
+        "permitIssued": "2026-05-08"
+      }
     },
     {
       "id": "permit-7",
