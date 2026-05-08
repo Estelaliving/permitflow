@@ -1,7 +1,7 @@
 {
-  "version": 1778268018094,
+  "version": 1778268037433,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:20:18.094Z",
+  "updatedAt": "2026-05-08T19:20:37.433Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5686,7 +5686,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778267906724,
+      "_ts": 1778268033932,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 6 LLC"
       },
@@ -5714,6 +5714,19 @@
         "constLienAff": "",
         "noc": "",
         "recordedDeed": ""
+      },
+      "reviewAgencies": [
+        "mechanical"
+      ],
+      "stageRounds": {
+        "ra_mechanical": [
+          {
+            "sent": "2026-05-08",
+            "received": "",
+            "result": "pending",
+            "note": ""
+          }
+        ]
       }
     },
     {
