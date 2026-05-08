@@ -1,7 +1,7 @@
 {
-  "version": 1778266809559,
+  "version": 1778266824731,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:00:09.559Z",
+  "updatedAt": "2026-05-08T19:00:24.731Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5677,7 +5677,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778266807544,
+      "_ts": 1778266822729,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
       },
@@ -5727,6 +5727,9 @@
       },
       "agencyStatuses": {
         "stormwater": "complete"
+      },
+      "agencyNotes": {
+        "stormwater": "Alliance"
       }
     },
     {
