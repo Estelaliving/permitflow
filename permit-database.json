@@ -1,7 +1,7 @@
 {
-  "version": 1778267536435,
+  "version": 1778267558327,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:12:16.435Z",
+  "updatedAt": "2026-05-08T19:12:38.327Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5555,7 +5555,8 @@
       "projectManager": "Jim Humphreys",
       "stageRequestedAt": {
         "trussEng": "2026-03-24",
-        "structuralEng": "2026-04-14"
+        "structuralEng": "2026-04-14",
+        "sitePlan": "2026-03-24"
       },
       "stageCompletedAt": {
         "trussEng": "2026-04-11",
