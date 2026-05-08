@@ -1,7 +1,7 @@
 {
-  "version": 1778269601044,
+  "version": 1778269604467,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:46:41.044Z",
+  "updatedAt": "2026-05-08T19:46:44.467Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6275,7 +6275,7 @@
         "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "not-started",
         "planReview": "not-started",
@@ -6306,7 +6306,8 @@
         "geotechLetter": "2026-05-08",
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
-        "recordedDeed": "2026-05-08"
+        "recordedDeed": "2026-05-08",
+        "subCOI": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "active",
@@ -6337,7 +6338,8 @@
         "geotechLetter": "2026-05-08",
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
-        "recordedDeed": "2026-05-08"
+        "recordedDeed": "2026-05-08",
+        "subCOI": "2026-05-08"
       },
       "stageCompletedAt": {
         "architecture": "2026-04-15",
@@ -6352,7 +6354,8 @@
         "geotechLetter": "2026-05-08",
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
-        "recordedDeed": "2026-05-08"
+        "recordedDeed": "2026-05-08",
+        "subCOI": "2026-05-08"
       }
     },
     {
