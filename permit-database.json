@@ -1,7 +1,7 @@
 {
-  "version": 1778266938938,
+  "version": 1778266951766,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:02:18.938Z",
+  "updatedAt": "2026-05-08T19:02:31.766Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5743,7 +5743,7 @@
       "plan": "",
       "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "",
+      "options": "86050 · Dove Series Exterior Package",
       "permitNumber": "2026041330",
       "releaseDate": "2026-03-20",
       "stages": {
