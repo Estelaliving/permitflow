@@ -1,7 +1,7 @@
 {
-  "version": 1778267744766,
+  "version": 1778267747502,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:15:44.766Z",
+  "updatedAt": "2026-05-08T19:15:47.502Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5592,7 +5592,7 @@
         "constLienAff": "",
         "noc": "",
         "recordedDeed": "",
-        "subCOI": "2026-05-08"
+        "subCOI": ""
       }
     },
     {
