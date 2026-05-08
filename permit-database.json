@@ -1,7 +1,7 @@
 {
-  "version": 1778273876617,
+  "version": 1778273886672,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T20:57:56.617Z",
+  "updatedAt": "2026-05-08T20:58:06.672Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12217,7 +12217,7 @@
       "permitNumber": "",
       "permitFee": "",
       "utilities": "",
-      "options": "86055 · Stone Series Exterior Package",
+      "options": "86055 · Stone Series Exterior Package, 85030 · Farm & Foundry Interior Package",
       "notes": "",
       "customFields": {
         "cf_mot27ztm": ""
