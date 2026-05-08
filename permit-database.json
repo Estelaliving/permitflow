@@ -1,7 +1,7 @@
 {
-  "version": 1778267966518,
+  "version": 1778267970635,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:19:26.518Z",
+  "updatedAt": "2026-05-08T19:19:30.635Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5645,8 +5645,8 @@
         "utilityPP": "complete",
         "geotechLetter": "complete",
         "constLienAff": "complete",
-        "noc": "not-started",
-        "recordedDeed": "not-started",
+        "noc": "complete",
+        "recordedDeed": "complete",
         "subCOI": "not-started",
         "omReview": "not-started",
         "submitted": "complete",
@@ -5672,7 +5672,9 @@
         "roofingWorksheet": "2026-05-08",
         "utilityPP": "2026-05-08",
         "geotechLetter": "2026-05-08",
-        "constLienAff": "2026-05-08"
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "submitted",
@@ -5697,7 +5699,9 @@
         "roofingWorksheet": "2026-05-08",
         "utilityPP": "2026-05-08",
         "geotechLetter": "2026-05-08",
-        "constLienAff": "2026-05-08"
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": ""
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
@@ -5707,7 +5711,9 @@
         "roofingWorksheet": "2026-05-08",
         "utilityPP": "2026-05-08",
         "geotechLetter": "2026-05-08",
-        "constLienAff": "2026-05-08"
+        "constLienAff": "2026-05-08",
+        "noc": "2026-05-08",
+        "recordedDeed": "2026-05-08"
       }
     },
     {
