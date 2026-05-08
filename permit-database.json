@@ -1,7 +1,7 @@
 {
-  "version": 1778268679792,
+  "version": 1778268685020,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:31:19.792Z",
+  "updatedAt": "2026-05-08T19:31:25.020Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5633,7 +5633,7 @@
       "releaseDate": "2026-03-20",
       "stages": {
         "architecture": "complete",
-        "sitePlan": "requested",
+        "sitePlan": "complete",
         "trussEng": "complete",
         "energyCalcs": "complete",
         "soilTest": "complete",
@@ -5675,7 +5675,8 @@
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
         "recordedDeed": "2026-05-08",
-        "soilTest": "2026-05-08"
+        "soilTest": "2026-05-08",
+        "sitePlan": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "submitted",
@@ -5703,7 +5704,8 @@
         "constLienAff": "",
         "noc": "",
         "recordedDeed": "",
-        "soilTest": ""
+        "soilTest": "",
+        "sitePlan": ""
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
@@ -5716,7 +5718,8 @@
         "constLienAff": "",
         "noc": "",
         "recordedDeed": "",
-        "soilTest": "2026-05-05"
+        "soilTest": "2026-05-05",
+        "sitePlan": "2026-05-08"
       },
       "reviewAgencies": [
         "mechanical",
