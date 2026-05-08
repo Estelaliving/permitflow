@@ -1,7 +1,7 @@
 {
-  "version": 1778267940831,
+  "version": 1778267966518,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T19:19:00.831Z",
+  "updatedAt": "2026-05-08T19:19:26.518Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5638,13 +5638,13 @@
         "energyCalcs": "complete",
         "soilTest": "requested",
         "structuralEng": "complete",
-        "landscape": "not-started",
-        "productApproval": "not-started",
-        "colorMaterial": "not-started",
-        "roofingWorksheet": "not-started",
-        "utilityPP": "not-started",
-        "geotechLetter": "not-started",
-        "constLienAff": "not-started",
+        "landscape": "complete",
+        "productApproval": "complete",
+        "colorMaterial": "complete",
+        "roofingWorksheet": "complete",
+        "utilityPP": "complete",
+        "geotechLetter": "complete",
+        "constLienAff": "complete",
         "noc": "not-started",
         "recordedDeed": "not-started",
         "subCOI": "not-started",
@@ -5665,7 +5665,14 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {
-        "submitted": "2026-05-08"
+        "submitted": "2026-05-08",
+        "landscape": "2026-05-08",
+        "productApproval": "2026-05-08",
+        "colorMaterial": "2026-05-08",
+        "roofingWorksheet": "2026-05-08",
+        "utilityPP": "2026-05-08",
+        "geotechLetter": "2026-05-08",
+        "constLienAff": "2026-05-08"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "submitted",
@@ -5683,10 +5690,24 @@
       },
       "projectManager": "Jim Humphreys",
       "stageRequestedAt": {
-        "submitted": "2026-05-05"
+        "submitted": "2026-05-05",
+        "landscape": "2026-05-08",
+        "productApproval": "2026-05-08",
+        "colorMaterial": "2026-05-08",
+        "roofingWorksheet": "2026-05-08",
+        "utilityPP": "2026-05-08",
+        "geotechLetter": "2026-05-08",
+        "constLienAff": "2026-05-08"
       },
       "stageCompletedAt": {
-        "submitted": "2026-05-08"
+        "submitted": "2026-05-08",
+        "landscape": "2026-05-08",
+        "productApproval": "2026-05-08",
+        "colorMaterial": "2026-05-08",
+        "roofingWorksheet": "2026-05-08",
+        "utilityPP": "2026-05-08",
+        "geotechLetter": "2026-05-08",
+        "constLienAff": "2026-05-08"
       }
     },
     {
