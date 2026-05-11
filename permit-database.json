@@ -1,7 +1,7 @@
 {
-  "version": 1778515366700,
+  "version": 1778515383567,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T16:02:46.700Z",
+  "updatedAt": "2026-05-11T16:03:03.567Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5361,7 +5361,7 @@
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "not-started",
+        "permitIssued": "complete",
         "inspections": "not-started",
         "co": "not-started"
       },
@@ -5376,10 +5376,11 @@
       "stageUpdatedAt": {
         "constLienAff": "2026-05-08",
         "productApproval": "2026-05-08",
-        "submitted": "2026-05-08"
+        "submitted": "2026-05-08",
+        "permitIssued": "2026-05-11"
       },
       "stageLastModified": "2026-05-08",
-      "overallStatus": "submitted",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -5387,7 +5388,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
+      "permitStatus": "issued",
       "_ts": 1778265390788,
       "projectManager": "Joshua Parker",
       "estWeeks": "2 ",
@@ -5397,12 +5398,14 @@
       "stageRequestedAt": {
         "constLienAff": null,
         "productApproval": null,
-        "submitted": "2026-03-20"
+        "submitted": "2026-03-20",
+        "permitIssued": "2026-05-11"
       },
       "stageCompletedAt": {
         "constLienAff": null,
         "productApproval": null,
-        "submitted": "2026-05-08"
+        "submitted": "2026-05-08",
+        "permitIssued": "2026-05-11"
       }
     },
     {
