@@ -1,7 +1,7 @@
 {
-  "version": 1778515388743,
+  "version": 1778518435931,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T16:03:08.743Z",
+  "updatedAt": "2026-05-11T16:53:55.931Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6329,7 +6329,13 @@
       "stageLastModified": "2026-05-08",
       "overallStatus": "active",
       "drawingReview": {
-        "checks": {},
+        "checks": {
+          "energyCalcs_address": true,
+          "energyCalcs_garage": true,
+          "energyCalcs_location": true,
+          "energyCalcs_modelElev": true,
+          "energyCalcs_garageCars": true
+        },
         "notes": "",
         "completedAt": null,
         "completedBy": ""
