@@ -1,7 +1,7 @@
 {
-  "version": 1778513577486,
+  "version": 1778513584560,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T15:32:57.486Z",
+  "updatedAt": "2026-05-11T15:33:04.560Z",
   "permits": [
     {
       "id": "permit-1",
@@ -490,7 +490,7 @@
           {
             "sent": "2026-05-04",
             "received": "2026-05-04",
-            "result": "pending",
+            "result": "approved",
             "note": "WAITING FOR PALM COAST PORTAL"
           }
         ],
@@ -498,7 +498,7 @@
           {
             "sent": "2026-05-08",
             "received": "2026-05-11",
-            "result": "pending",
+            "result": "approved",
             "note": ""
           }
         ]
