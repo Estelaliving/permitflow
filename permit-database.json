@@ -1,7 +1,7 @@
 {
-  "version": 1778529011298,
+  "version": 1778529030954,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T19:50:11.298Z",
+  "updatedAt": "2026-05-11T19:50:30.954Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6603,7 +6603,7 @@
         "recordedDeed": "complete",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "not-started",
+        "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -6633,10 +6633,11 @@
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
         "recordedDeed": "2026-05-08",
-        "productApproval": "2026-05-08"
+        "productApproval": "2026-05-08",
+        "submitted": "2026-05-11"
       },
       "stageLastModified": "2026-05-08",
-      "overallStatus": "active",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {
           "architecture_address": true,
@@ -6682,7 +6683,7 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
+      "permitStatus": "applied",
       "projectManager": "Joshua Parker",
       "_ts": 1778269702397,
       "customFields": {
@@ -6703,7 +6704,8 @@
         "constLienAff": null,
         "noc": null,
         "recordedDeed": null,
-        "productApproval": null
+        "productApproval": null,
+        "submitted": "2026-05-11"
       },
       "stageCompletedAt": {
         "landscape": "2026-05-09",
@@ -6719,7 +6721,8 @@
         "constLienAff": null,
         "noc": null,
         "recordedDeed": null,
-        "productApproval": null
+        "productApproval": null,
+        "submitted": "2026-05-11"
       }
     },
     {
