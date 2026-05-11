@@ -1,7 +1,7 @@
 {
-  "version": 1778524429446,
+  "version": 1778524435605,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T18:33:49.446Z",
+  "updatedAt": "2026-05-11T18:33:55.605Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6522,8 +6522,8 @@
           "trussEng_options": true
         },
         "notes": "",
-        "completedAt": "2026-05-11",
-        "completedBy": "Natalia Massola"
+        "completedAt": null,
+        "completedBy": ""
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
