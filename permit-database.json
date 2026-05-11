@@ -1,7 +1,7 @@
 {
-  "version": 1778530317259,
+  "version": 1778531299681,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T20:11:57.259Z",
+  "updatedAt": "2026-05-11T20:28:19.681Z",
   "permits": [
     {
       "id": "permit-1",
@@ -2277,7 +2277,7 @@
         "noc": "n/a",
         "recordedDeed": "n/a",
         "subCOI": "not-started",
-        "omReview": "not-started",
+        "omReview": "requested",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
@@ -2293,7 +2293,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "omReview": "2026-05-11"
+      },
       "stageLastModified": "2026-04-08",
       "overallStatus": "permitted",
       "drawingReview": {
@@ -2303,7 +2305,11 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "permitStatus": "issued",
+      "stageRequestedAt": {
+        "omReview": "2026-05-11"
+      },
+      "stageCompletedAt": {}
     },
     {
       "id": "permit-38",
