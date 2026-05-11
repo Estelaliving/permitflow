@@ -1,7 +1,7 @@
 {
-  "version": 1778519020848,
+  "version": 1778519026920,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T17:03:40.848Z",
+  "updatedAt": "2026-05-11T17:03:46.920Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6338,13 +6338,16 @@
           "energyCalcs_options": true,
           "architecture_address": true,
           "architecture_garage": true,
-          "architecture_location": false,
+          "architecture_location": true,
           "structuralEng_address": true,
           "structuralEng_garage": true,
           "structuralEng_location": true,
           "structuralEng_modelElev": true,
           "structuralEng_garageCars": true,
-          "structuralEng_options": true
+          "structuralEng_options": true,
+          "architecture_modelElev": true,
+          "architecture_garageCars": true,
+          "architecture_options": true
         },
         "notes": "",
         "completedAt": null,
