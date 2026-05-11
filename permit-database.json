@@ -1,7 +1,7 @@
 {
-  "version": 1778275863831,
+  "version": 1778513195901,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-08T21:31:03.831Z",
+  "updatedAt": "2026-05-11T15:26:35.901Z",
   "permits": [
     {
       "id": "permit-1",
@@ -497,7 +497,7 @@
         "ra_stormwater": [
           {
             "sent": "2026-05-08",
-            "received": "",
+            "received": "2026-05-11",
             "result": "pending",
             "note": ""
           }
@@ -1930,7 +1930,7 @@
         "permitIssued": "2026-05-08"
       },
       "stageCompletedAt": {
-        "submitted": "",
+        "submitted": null,
         "permitIssued": "2025-08-02"
       },
       "stageNotes": {
@@ -5391,13 +5391,13 @@
         "cf_mot27ztm": "ESTELA SPECS 7 LLC"
       },
       "stageRequestedAt": {
-        "constLienAff": "",
-        "productApproval": "",
+        "constLienAff": null,
+        "productApproval": null,
         "submitted": "2026-03-20"
       },
       "stageCompletedAt": {
-        "constLienAff": "",
-        "productApproval": "",
+        "constLienAff": null,
+        "productApproval": null,
         "submitted": "2026-05-08"
       }
     },
@@ -5591,20 +5591,20 @@
       },
       "stageRequestedAt": {
         "permitIssued": "2026-05-08",
-        "soilTest": "",
-        "productApproval": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "soilTest": null,
+        "productApproval": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "submitted": "2026-04-09"
       },
       "stageCompletedAt": {
         "permitIssued": "2026-05-07",
-        "soilTest": "",
-        "productApproval": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "soilTest": null,
+        "productApproval": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "submitted": "2026-05-08"
       },
       "projectManager": "Jim Humphreys"
@@ -5692,15 +5692,15 @@
         "structuralEng": "2026-04-14",
         "sitePlan": "2026-03-24",
         "landscape": "2026-04-29",
-        "productApproval": "",
-        "colorMaterial": "",
-        "utilityPP": "",
-        "roofingWorksheet": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "subCOI": "",
+        "productApproval": null,
+        "colorMaterial": null,
+        "utilityPP": null,
+        "roofingWorksheet": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "subCOI": null,
         "submitted": "2026-05-01"
       },
       "stageCompletedAt": {
@@ -5708,15 +5708,15 @@
         "structuralEng": "2026-04-18",
         "sitePlan": "2026-04-30",
         "landscape": "2026-04-30",
-        "productApproval": "",
-        "colorMaterial": "",
-        "utilityPP": "",
-        "roofingWorksheet": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "subCOI": "",
+        "productApproval": null,
+        "colorMaterial": null,
+        "utilityPP": null,
+        "roofingWorksheet": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "subCOI": null,
         "submitted": "2026-05-08"
       },
       "reviewAgencies": [
@@ -5817,31 +5817,31 @@
       "projectManager": "Jim Humphreys",
       "stageRequestedAt": {
         "submitted": "2026-05-05",
-        "landscape": "",
-        "productApproval": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "soilTest": "",
-        "sitePlan": ""
+        "landscape": null,
+        "productApproval": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "soilTest": null,
+        "sitePlan": null
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
-        "landscape": "",
-        "productApproval": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "landscape": null,
+        "productApproval": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "soilTest": "2026-05-05",
-        "sitePlan": ""
+        "sitePlan": null
       },
       "reviewAgencies": [
         "mechanical",
@@ -5960,33 +5960,33 @@
       },
       "projectManager": "Joshua Parker",
       "stageRequestedAt": {
-        "landscape": "",
+        "landscape": null,
         "energyCalcs": "2026-04-23",
         "sitePlan": "2026-03-24",
-        "soilTest": "",
+        "soilTest": null,
         "productApproval": "2026-05-08",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "submitted": "2026-04-23"
       },
       "stageCompletedAt": {
-        "landscape": "",
+        "landscape": null,
         "energyCalcs": "2026-04-24",
         "sitePlan": "2026-04-18",
-        "soilTest": "",
-        "productApproval": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "soilTest": null,
+        "productApproval": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "submitted": "2026-05-08"
       },
       "reviewAgencies": [
@@ -6087,28 +6087,28 @@
         "submitted": "2026-04-30",
         "sitePlan": "2026-03-24",
         "landscape": "2026-04-23",
-        "energyCalcs": "",
-        "productApproval": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": ""
+        "energyCalcs": null,
+        "productApproval": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
         "sitePlan": "2026-04-24",
-        "landscape": "",
-        "productApproval": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": ""
+        "landscape": null,
+        "productApproval": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null
       },
       "projectManager": "Joshua Parker",
       "reviewAgencies": [
@@ -6226,14 +6226,14 @@
         "soilTest": "2026-04-13",
         "structuralEng": "2026-04-20",
         "landscape": "2026-05-03",
-        "productApproval": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "productApproval": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "submitted": "2026-05-05"
       },
       "stageCompletedAt": {
@@ -6243,14 +6243,14 @@
         "energyCalcs": "2026-04-22",
         "sitePlan": "2026-05-04",
         "landscape": "2026-05-06",
-        "productApproval": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "productApproval": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "submitted": "2026-05-08"
       }
     },
@@ -6341,14 +6341,14 @@
         "soilTest": "2026-04-13",
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-05",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "productApproval": ""
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "productApproval": null
       },
       "stageCompletedAt": {
         "trussEng": "2026-04-16",
@@ -6357,14 +6357,14 @@
         "sitePlan": "2026-05-06",
         "landscape": "2026-05-09",
         "architecture": "2026-04-14",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "productApproval": ""
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "productApproval": null
       }
     },
     {
@@ -6455,15 +6455,15 @@
         "soilTest": "2026-04-13",
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-06",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "subCOI": "2026-05-08",
-        "productApproval": ""
+        "productApproval": null
       },
       "stageCompletedAt": {
         "architecture": "2026-04-15",
@@ -6472,15 +6472,15 @@
         "energyCalcs": "2026-04-22",
         "sitePlan": "2026-05-07",
         "landscape": "2026-05-09",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "subCOI": "2026-05-08",
-        "productApproval": ""
+        "productApproval": null
       }
     },
     {
@@ -6570,14 +6570,14 @@
         "soilTest": "2026-04-13",
         "landscape": "2026-05-08",
         "structuralEng": "2026-04-14",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "geotechLetter": "",
-        "utilityPP": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "productApproval": ""
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "geotechLetter": null,
+        "utilityPP": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "productApproval": null
       },
       "stageCompletedAt": {
         "landscape": "2026-05-09",
@@ -6586,14 +6586,14 @@
         "structuralEng": "2026-04-18",
         "architecture": "2026-04-15",
         "trussEng": "2026-04-15",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "geotechLetter": "",
-        "utilityPP": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "productApproval": ""
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "geotechLetter": null,
+        "utilityPP": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "productApproval": null
       }
     },
     {
@@ -6683,14 +6683,14 @@
         "energyCalcs": "2026-04-13",
         "soilTest": "2026-04-13",
         "structuralEng": "2026-05-01",
-        "landscape": "",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
+        "landscape": null,
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
         "productApproval": "2026-05-08",
         "submitted": "2026-05-05"
       },
@@ -6701,14 +6701,14 @@
         "sitePlan": "2026-04-28",
         "structuralEng": "2026-05-05",
         "landscape": "2026-05-06",
-        "colorMaterial": "",
-        "roofingWorksheet": "",
-        "utilityPP": "",
-        "geotechLetter": "",
-        "constLienAff": "",
-        "noc": "",
-        "recordedDeed": "",
-        "productApproval": "",
+        "colorMaterial": null,
+        "roofingWorksheet": null,
+        "utilityPP": null,
+        "geotechLetter": null,
+        "constLienAff": null,
+        "noc": null,
+        "recordedDeed": null,
+        "productApproval": null,
         "submitted": "2026-05-08"
       },
       "reviewAgencies": [
@@ -11224,7 +11224,7 @@
       "garage": "3 Car - RH",
       "elevation": "A2 Stone/Stucco",
       "options": "86060 · Pearl Series Exterior Package, 85050 · Stone & Shadow Interior Package",
-      "permitNumber": "BLDR-26-05-13619 ",
+      "permitNumber": "BLDR-26-05-13619",
       "releaseDate": "2026-03-31",
       "stages": {
         "architecture": "complete",
@@ -11767,6 +11767,13 @@
         "architecture": "2026-04-30",
         "trussEng": "2026-04-30",
         "energyCalcs": "2026-05-02"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     },
     {
@@ -11860,6 +11867,13 @@
         "energyCalcs": "2026-05-02",
         "structuralEng": "2026-05-05",
         "trussEng": "2026-05-01"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     },
     {
@@ -11953,6 +11967,13 @@
         "trussEng": "2026-04-30",
         "energyCalcs": "2026-05-01",
         "structuralEng": "2026-05-06"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     },
     {
@@ -12045,6 +12066,13 @@
         "trussEng": "2026-05-06",
         "structuralEng": "2026-05-08",
         "energyCalcs": "2026-05-08"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     },
     {
@@ -12107,7 +12135,7 @@
       "market": "Ocala",
       "address": "00 SW 111th Pl, Ocala FL 34476",
       "lotNumber": "",
-      "parcelId": "# BLDR-26-05-13619 ",
+      "parcelId": "# BLDR-26-05-13619",
       "model": "Exuma X 3 Car",
       "plan": "",
       "garage": "3 Car - LH",
@@ -12138,7 +12166,14 @@
         "structuralEng": "2026-05-06",
         "energyCalcs": "2026-05-07"
       },
-      "_ts": 1778273324866
+      "_ts": 1778273324866,
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
+      }
     },
     {
       "id": "permit-1778272354838",
@@ -12231,6 +12266,13 @@
         "structuralEng": "2026-05-05",
         "energyCalcs": "2026-05-07",
         "trussEng": "2026-05-02"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     },
     {
@@ -12322,6 +12364,13 @@
       "stageCompletedAt": {
         "architecture": "2026-05-08",
         "trussEng": "2026-05-09"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     },
     {
@@ -12413,6 +12462,13 @@
       "stageCompletedAt": {
         "trussEng": "2026-05-09",
         "architecture": "2026-05-08"
+      },
+      "releaseDate": null,
+      "drawingReview": {
+        "checks": {},
+        "notes": "",
+        "completedAt": null,
+        "completedBy": ""
       }
     }
   ],
