@@ -1,7 +1,7 @@
 {
-  "version": 1778595468992,
+  "version": 1778595474114,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-12T14:17:48.992Z",
+  "updatedAt": "2026-05-12T14:17:54.114Z",
   "permits": [
     {
       "id": "permit-1",
@@ -10767,13 +10767,13 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
+        "inspections": "complete",
         "co": "complete"
       },
       "stageDates": {
@@ -10785,7 +10785,19 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {
-        "co": "2026-05-12"
+        "co": "2026-05-12",
+        "architecture": "2026-05-12",
+        "sitePlan": "2026-05-12",
+        "trussEng": "2026-05-12",
+        "energyCalcs": "2026-05-12",
+        "soilTest": "2026-05-12",
+        "structuralEng": "2026-05-12",
+        "subCOI": "2026-05-12",
+        "omReview": "2026-05-12",
+        "submitted": "2026-05-12",
+        "planReview": "2026-05-12",
+        "permitIssued": "2026-05-12",
+        "inspections": "2026-05-12"
       },
       "stageLastModified": "2026-04-08",
       "overallStatus": "co",
@@ -10795,7 +10807,7 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "co",
       "stageRequestedAt": {
         "co": "2026-05-12"
