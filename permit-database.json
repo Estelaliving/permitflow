@@ -1,7 +1,7 @@
 {
-  "version": 1778593345733,
+  "version": 1778593732905,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-12T13:42:25.733Z",
+  "updatedAt": "2026-05-12T13:48:52.905Z",
   "permits": [
     {
       "id": "permit-1",
@@ -474,7 +474,7 @@
       "stageNotes": {
         "permitIssued": ""
       },
-      "_ts": 1778593162703,
+      "_ts": 1778593729305,
       "reviewAgencies": [
         "mechanical",
         "stormwater"
@@ -492,6 +492,12 @@
             "received": "2026-05-04",
             "result": "approved",
             "note": "Sent to the City 05/11/2026"
+          },
+          {
+            "sent": "2026-05-12",
+            "received": "",
+            "result": "pending",
+            "note": ""
           }
         ],
         "ra_stormwater": [
@@ -508,7 +514,7 @@
       },
       "agencyStatuses": {
         "stormwater": "complete",
-        "mechanical": "complete"
+        "mechanical": "in-progress"
       }
     },
     {
