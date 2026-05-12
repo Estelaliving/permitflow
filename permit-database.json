@@ -1,7 +1,7 @@
 {
-  "version": 1778531326443,
+  "version": 1778592104660,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-11T20:28:46.443Z",
+  "updatedAt": "2026-05-12T13:21:44.660Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5632,7 +5632,7 @@
       "market": "Palm Coast",
       "lotNumber": "",
       "parcelId": "07-11-31-7063-00020-0020",
-      "address": "18 Zorlou Ct, Palm Coast, FL ",
+      "address": "18 Zorlou Ct, Palm Coast, FL",
       "model": "Exuma X",
       "plan": "",
       "garage": "Right Hand",
@@ -5978,7 +5978,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778266822729,
+      "_ts": 1778592102641,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
       },
@@ -6023,11 +6023,17 @@
             "received": "2026-04-30",
             "result": "pending",
             "note": "Sent to the city 05/06/26"
+          },
+          {
+            "sent": "2026-05-12",
+            "received": "",
+            "result": "pending",
+            "note": ""
           }
         ]
       },
       "agencyStatuses": {
-        "stormwater": "complete"
+        "stormwater": "in-progress"
       },
       "agencyNotes": {
         "stormwater": "Alliance"
