@@ -1,7 +1,7 @@
 {
-  "version": 1778593340816,
+  "version": 1778593345733,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-12T13:42:20.816Z",
+  "updatedAt": "2026-05-12T13:42:25.733Z",
   "permits": [
     {
       "id": "permit-1",
@@ -422,7 +422,7 @@
       "plan": "Plan 5-2182",
       "garage": "Left Hand",
       "elevation": "Transitional",
-      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan, 00015 · Bedroom 5 and Bath 3 I.L.O Flex, 60005 · Lanai Screen, 85065 · Urban Canvas Interior Package",
+      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan, 00015 · Bedroom 5 and Bath 3 I.L.O Flex, 60005 · Lanai Screen, 85065 · Urban Canvas Interior Package, 86015 · Uncertain Gray Exterior Package",
       "permitNumber": "2026050014",
       "releaseDate": null,
       "stages": {
