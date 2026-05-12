@@ -1,7 +1,7 @@
 {
-  "version": 1778606845052,
+  "version": 1778607032969,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-12T17:27:25.052Z",
+  "updatedAt": "2026-05-12T17:30:32.969Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5755,7 +5755,7 @@
           },
           {
             "sent": "2026-05-11",
-            "received": "",
+            "received": "2026-05-12",
             "result": "pending",
             "note": "sent to Alliance"
           }
