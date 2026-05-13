@@ -1,7 +1,7 @@
 {
-  "version": 1778679382949,
+  "version": 1778679386221,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-13T13:36:22.949Z",
+  "updatedAt": "2026-05-13T13:36:26.221Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5899,7 +5899,7 @@
             "sent": "2026-05-08",
             "received": "2026-05-11",
             "result": "pending",
-            "note": "waiting for Palm Coast Portal"
+            "note": "Sent to the city 05/13/2026"
           }
         ]
       },
