@@ -1,7 +1,7 @@
 {
-  "version": 1778705733300,
-  "updatedBy": "Team member",
-  "updatedAt": "2026-05-13T20:55:33.300Z",
+  "version": 1778705745955,
+  "updatedBy": "Natalia Massola",
+  "updatedAt": "2026-05-13T20:55:45.955Z",
   "permits": [
     {
       "id": "permit-1",
@@ -10861,14 +10861,14 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "complete",
-        "omReview": "complete",
+        "subCOI": "not-started",
+        "omReview": "not-started",
         "submitted": "complete",
-        "planReview": "complete",
+        "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "complete",
-        "co": "complete"
+        "inspections": "not-started",
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-08-22",
@@ -10878,37 +10878,17 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "co": "2026-05-12",
-        "architecture": "2026-05-12",
-        "sitePlan": "2026-05-12",
-        "trussEng": "2026-05-12",
-        "energyCalcs": "2026-05-12",
-        "soilTest": "2026-05-12",
-        "structuralEng": "2026-05-12",
-        "subCOI": "2026-05-12",
-        "omReview": "2026-05-12",
-        "submitted": "2026-05-12",
-        "planReview": "2026-05-12",
-        "permitIssued": "2026-05-12",
-        "inspections": "2026-05-12"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-04-08",
-      "overallStatus": "co",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "complete",
-      "permitStatus": "co",
-      "stageRequestedAt": {
-        "co": "2026-05-12"
-      },
-      "stageCompletedAt": {
-        "co": "2026-03-31"
-      }
+      "docsStatus": "collecting",
+      "permitStatus": "issued"
     },
     {
       "id": "permit-169",
