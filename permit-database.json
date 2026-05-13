@@ -1,7 +1,7 @@
 {
-  "version": 1778706479038,
-  "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-13T21:07:59.038Z",
+  "version": 1778706608874,
+  "updatedBy": "Team member",
+  "updatedAt": "2026-05-13T21:10:08.874Z",
   "permits": [
     {
       "id": "permit-1",
@@ -10861,14 +10861,14 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "2025-08-22",
@@ -10878,17 +10878,37 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "co": "2026-05-12",
+        "architecture": "2026-05-12",
+        "sitePlan": "2026-05-12",
+        "trussEng": "2026-05-12",
+        "energyCalcs": "2026-05-12",
+        "soilTest": "2026-05-12",
+        "structuralEng": "2026-05-12",
+        "subCOI": "2026-05-12",
+        "omReview": "2026-05-12",
+        "submitted": "2026-05-12",
+        "planReview": "2026-05-12",
+        "permitIssued": "2026-05-12",
+        "inspections": "2026-05-12"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co",
+      "stageRequestedAt": {
+        "co": "2026-05-12"
+      },
+      "stageCompletedAt": {
+        "co": "2026-03-31"
+      }
     },
     {
       "id": "permit-169",
@@ -12438,7 +12458,7 @@
       "stageLastModified": "2026-05-08",
       "stageUpdatedAt": {
         "architecture": "2026-05-08",
-        "sitePlan": "2026-05-13",
+        "sitePlan": "2026-05-08",
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
         "soilTest": "2026-05-08",
@@ -12465,7 +12485,7 @@
       "buildersRisk": false,
       "stages": {
         "architecture": "complete",
-        "sitePlan": "complete",
+        "sitePlan": "requested",
         "trussEng": "complete",
         "energyCalcs": "complete",
         "soilTest": "requested",
@@ -12522,8 +12542,7 @@
         "architecture": "2026-05-01",
         "structuralEng": "2026-05-05",
         "energyCalcs": "2026-05-07",
-        "trussEng": "2026-05-02",
-        "sitePlan": "2026-05-13"
+        "trussEng": "2026-05-02"
       },
       "releaseDate": null,
       "drawingReview": {
@@ -12543,7 +12562,7 @@
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-11",
         "soilTest": "2026-05-08",
-        "structuralEng": "2026-05-13",
+        "structuralEng": "2026-05-08",
         "landscape": "2026-05-08",
         "productApproval": "2026-05-08",
         "colorMaterial": "2026-05-08",
@@ -12570,7 +12589,7 @@
         "trussEng": "complete",
         "energyCalcs": "complete",
         "soilTest": "requested",
-        "structuralEng": "complete",
+        "structuralEng": "requested",
         "landscape": "not-started",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
@@ -12622,8 +12641,7 @@
       "stageCompletedAt": {
         "architecture": "2026-05-08",
         "trussEng": "2026-05-09",
-        "energyCalcs": "2026-05-12",
-        "structuralEng": "2026-05-13"
+        "energyCalcs": "2026-05-12"
       },
       "releaseDate": null,
       "drawingReview": {
@@ -12643,7 +12661,7 @@
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-11",
         "soilTest": "2026-05-08",
-        "structuralEng": "2026-05-13",
+        "structuralEng": "2026-05-08",
         "landscape": "2026-05-08",
         "productApproval": "2026-05-08",
         "colorMaterial": "2026-05-08",
@@ -12670,7 +12688,7 @@
         "trussEng": "complete",
         "energyCalcs": "complete",
         "soilTest": "requested",
-        "structuralEng": "complete",
+        "structuralEng": "requested",
         "landscape": "not-started",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
@@ -12722,8 +12740,7 @@
       "stageCompletedAt": {
         "trussEng": "2026-05-09",
         "architecture": "2026-05-08",
-        "energyCalcs": "2026-05-12",
-        "structuralEng": "2026-05-13"
+        "energyCalcs": "2026-05-12"
       },
       "releaseDate": null,
       "drawingReview": {
