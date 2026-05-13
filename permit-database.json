@@ -1,7 +1,7 @@
 {
-  "version": 1778705054614,
+  "version": 1778705297975,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-13T20:44:14.614Z",
+  "updatedAt": "2026-05-13T20:48:17.975Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11509,18 +11509,18 @@
       "address": "4860 SW 110th St, Ocala, FL",
       "model": "Heron X-3Car",
       "plan": "",
-      "garage": "3 Car - RH",
+      "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
-      "options": "86060 · Pearl Series Exterior Package, 85050 · Stone & Shadow Interior Package",
-      "permitNumber": "BLDR-26-05-13619",
+      "options": "",
+      "permitNumber": "",
       "releaseDate": "2026-03-31",
       "stages": {
-        "architecture": "complete",
-        "sitePlan": "complete",
-        "trussEng": "complete",
-        "energyCalcs": "complete",
-        "soilTest": "complete",
-        "structuralEng": "complete",
+        "architecture": "not-started",
+        "sitePlan": "not-started",
+        "trussEng": "not-started",
+        "energyCalcs": "not-started",
+        "soilTest": "not-started",
+        "structuralEng": "not-started",
         "landscape": "n/a",
         "productApproval": "n/a",
         "colorMaterial": "n/a",
@@ -11532,7 +11532,7 @@
         "recordedDeed": "n/a",
         "subCOI": "not-started",
         "omReview": "not-started",
-        "submitted": "complete",
+        "submitted": "not-started",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -11547,17 +11547,9 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {
-        "architecture": "2026-05-08",
-        "sitePlan": "2026-05-08",
-        "trussEng": "2026-05-08",
-        "energyCalcs": "2026-05-08",
-        "soilTest": "2026-05-08",
-        "structuralEng": "2026-05-08",
-        "submitted": "2026-05-08"
-      },
+      "stageUpdatedAt": {},
       "stageLastModified": "2026-05-13",
-      "overallStatus": "submitted",
+      "overallStatus": "active",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -11565,27 +11557,8 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "applied",
-      "_ts": 1778686865132,
-      "projectManager": "Jeffrey Gwinn",
-      "stageRequestedAt": {
-        "architecture": "2026-04-13",
-        "sitePlan": "2026-04-13",
-        "trussEng": "2026-04-13",
-        "energyCalcs": "2026-04-13",
-        "soilTest": "2026-04-28",
-        "structuralEng": "2026-04-14",
-        "submitted": "2026-05-07"
-      },
-      "stageCompletedAt": {
-        "trussEng": "2026-04-15",
-        "energyCalcs": "2026-04-22",
-        "soilTest": "2026-05-06",
-        "sitePlan": "2026-04-29",
-        "architecture": "2026-04-16",
-        "structuralEng": "2026-04-18",
-        "submitted": "2026-05-08"
-      },
+      "permitStatus": "presubmit",
+      "_ts": 1778701244296,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
       }
