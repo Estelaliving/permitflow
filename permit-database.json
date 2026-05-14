@@ -1,7 +1,7 @@
 {
-  "version": 1778778410517,
+  "version": 1778778461522,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-14T17:06:50.517Z",
+  "updatedAt": "2026-05-14T17:07:41.522Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6620,7 +6620,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778778408311,
+      "_ts": 1778778458892,
       "projectManager": "Joshua Parker",
       "customFields": {
         "cf_mot27ztm": "Estela Especs 2 LLC"
@@ -6679,7 +6679,7 @@
         "electric": "in-progress"
       },
       "agencyNotes": {
-        "electric": "Ressumit: Drawings "
+        "electric": "Ressumit: Electrical Drawings "
       }
     },
     {
