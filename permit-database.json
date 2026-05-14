@@ -1,7 +1,7 @@
 {
-  "version": 1778766696056,
+  "version": 1778766700525,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-14T13:51:36.056Z",
+  "updatedAt": "2026-05-14T13:51:40.525Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6738,7 +6738,7 @@
       "docsStatus": "collecting",
       "permitStatus": "applied",
       "projectManager": "Joshua Parker",
-      "_ts": 1778685233559,
+      "_ts": 1778766698515,
       "customFields": {
         "cf_mot27ztm": "Estela Specs 7 LLC"
       },
@@ -6789,6 +6789,9 @@
             "note": ""
           }
         ]
+      },
+      "agencyStatuses": {
+        "mechanical": "in-progress"
       }
     },
     {
