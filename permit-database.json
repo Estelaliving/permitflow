@@ -1,7 +1,7 @@
 {
-  "version": 1778793729564,
+  "version": 1778793942193,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-14T21:22:09.564Z",
+  "updatedAt": "2026-05-14T21:25:42.193Z",
   "permits": [
     {
       "id": "permit-1",
@@ -11683,7 +11683,7 @@
       "garage": "Left Hand",
       "elevation": "A2 Stone/Stucco",
       "options": "86055 · Stone Series Exterior Package, 85025 · Modern Praire Interior Package",
-      "permitNumber": "",
+      "permitNumber": "BLDR-26-05-14174",
       "releaseDate": "2026-04-01",
       "stages": {
         "architecture": "complete",
@@ -11726,7 +11726,7 @@
         "soilTest": "2026-05-08",
         "structuralEng": "2026-05-08"
       },
-      "stageLastModified": "2026-05-08",
+      "stageLastModified": "2026-05-14",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -11737,7 +11737,7 @@
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
       "projectManager": "Jeffrey Gwinn",
-      "_ts": 1778272478843,
+      "_ts": 1778793940185,
       "stageRequestedAt": {
         "architecture": "2026-04-13",
         "sitePlan": "2026-04-13",
