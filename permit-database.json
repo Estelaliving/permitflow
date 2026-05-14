@@ -1,7 +1,7 @@
 {
-  "version": 1778778461522,
+  "version": 1778778509523,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-14T17:07:41.522Z",
+  "updatedAt": "2026-05-14T17:08:29.523Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6620,7 +6620,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778778458892,
+      "_ts": 1778778506669,
       "projectManager": "Joshua Parker",
       "customFields": {
         "cf_mot27ztm": "Estela Especs 2 LLC"
