@@ -1,7 +1,7 @@
 {
-  "version": 1778786229528,
+  "version": 1778786291657,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-14T19:17:09.528Z",
+  "updatedAt": "2026-05-14T19:18:11.657Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6620,7 +6620,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "_ts": 1778778506669,
+      "_ts": 1778786288188,
       "projectManager": "Joshua Parker",
       "customFields": {
         "cf_mot27ztm": "Estela Especs 2 LLC"
@@ -6669,7 +6669,7 @@
         "ra_electric": [
           {
             "sent": "2026-05-14",
-            "received": "",
+            "received": "2026-05-14",
             "result": "pending",
             "note": "Sent to higgins (Drawings)"
           }
