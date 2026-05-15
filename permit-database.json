@@ -1,7 +1,7 @@
 {
-  "version": 1778863606829,
+  "version": 1778863617939,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:46:46.829Z",
+  "updatedAt": "2026-05-15T16:46:57.939Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12828,7 +12828,7 @@
         "trussEng": "complete",
         "energyCalcs": "complete",
         "soilTest": "complete",
-        "structuralEng": "not-started",
+        "structuralEng": "complete",
         "landscape": "n/a",
         "productApproval": "n/a",
         "colorMaterial": "n/a",
@@ -12861,7 +12861,8 @@
         "soilTest": "2026-05-15",
         "trussEng": "2026-05-15",
         "sitePlan": "2026-05-15",
-        "energyCalcs": "2026-05-15"
+        "energyCalcs": "2026-05-15",
+        "structuralEng": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "submitted",
@@ -12883,7 +12884,8 @@
         "soilTest": "2026-04-28",
         "trussEng": "2026-04-13",
         "sitePlan": "2026-04-13",
-        "energyCalcs": "2026-04-13"
+        "energyCalcs": "2026-04-13",
+        "structuralEng": "2026-05-15"
       },
       "stageCompletedAt": {
         "submitted": "2026-05-13",
@@ -12891,7 +12893,8 @@
         "soilTest": "2026-05-06",
         "trussEng": "2026-04-15",
         "sitePlan": "2026-04-29",
-        "energyCalcs": "2026-04-22"
+        "energyCalcs": "2026-04-22",
+        "structuralEng": "2026-05-15"
       },
       "projectManager": "MICHAEL BEDAW"
     },
