@@ -1,7 +1,7 @@
 {
-  "version": 1778877199800,
+  "version": 1778877211640,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T20:33:19.800Z",
+  "updatedAt": "2026-05-15T20:33:31.640Z",
   "permits": [
     {
       "id": "permit-1",
@@ -5521,7 +5521,7 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
+      "stageLastModified": "2026-05-15",
       "overallStatus": "active",
       "drawingReview": {
         "checks": {},
@@ -5530,7 +5530,9 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit"
+      "permitStatus": "presubmit",
+      "projectManager": "Jon Frantz",
+      "_ts": 1778877209627
     },
     {
       "id": "permit-87",
