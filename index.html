@@ -4374,5 +4374,46 @@ function _inject(){if(document.getElementById('_ms_status'))return;var c=documen
 var _obs=new MutationObserver(function(){if(document.getElementById('content'))_inject();});_obs.observe(document.body,{childList:true,subtree:true});setTimeout(_inject,500);setInterval(_inject,2000);
 })();
 </script>
+<script>
+(function(){
+var OW=[{c:'001',n:'Estela Living, LLC'},{c:'002',n:'Estela Specs 1 LLC'},{c:'003',n:'Estela Specs 2 LLC'},{c:'004',n:'Estela Specs 3 LLC'},{c:'005',n:'Estela Specs 4 LLC'},{c:'006',n:'Estela Specs 6 LLC'},{c:'007',n:'Estela Specs 7 LLC'},{c:'008',n:'Estela Specs 8 LLC'},{c:'009',n:'Estela Specs 9 LLC'},{c:'100',n:'Sabana Owner, LLC'}];
+var PMS=['Michael Bedaw','Jason Bedaw','Jim Humphreys','Jon Frantz'];
+window.OWNERS=OW; window.APP_PMS=PMS;
+function _gp(){try{return JSON.parse(localStorage.getItem('estela_permits_v3')||'[]');}catch(e){return[];}}
+function _sp(p){try{localStorage.setItem('estela_permits_v3',JSON.stringify(p));}catch(e){}}
+window._saveFld=function(pid,fld,val){var p=_gp();var i=p.findIndex(function(x){return x.id===pid;});if(i>-1){p[i][fld]=val;_sp(p);if(typeof saveData==='function')saveData();}};
+// Patch modal PM select + add Owner field
+window._patchModal=function(){
+  var pm=document.getElementById('f-projectManager');
+  if(!pm||pm.dataset.op) return; pm.dataset.op='1';
+  var cur=pm.value;
+  pm.innerHTML='<option value="">Select PM...</option>'+PMS.map(function(x){return '<option value="'+x+'" '+(x===cur?'selected':'')+'>'+x+'</option>';}).join('');
+  if(!document.getElementById('f-owner')){
+    var d=document.createElement('div');
+    d.style.cssText='display:flex;flex-direction:column;gap:4px';
+    d.innerHTML='<label style="font-size:11px;font-weight:600;color:#374151">Owner</label><select id="f-owner" style="padding:8px;border:1px solid #d1d5db;border-radius:6px;font-size:13px"><option value="">Select owner...</option>'+OW.map(function(o){return '<option value="'+o.c+'">'+o.c+' - '+o.n+'</option>';}).join('')+'</select>';
+    var parent=pm.closest('.form-field,div[class]');
+    if(parent&&parent.parentNode) parent.parentNode.insertBefore(d,parent);
+  }
+};
+// Inject Owner+PM dropdowns into expanded permit rows
+window._patchRows=function(){
+  document.querySelectorAll('[id^="expand-"]').forEach(function(row){
+    if(row.dataset.op2) return;
+    var pid=row.id.replace('expand-','');
+    var p=_gp().find(function(x){return x.id===pid;}); if(!p) return;
+    row.dataset.op2='1';
+    var div=document.createElement('div');
+    div.style.cssText='display:flex;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#f8fafc;border-top:1px solid #e5e7eb;margin-top:8px';
+    div.innerHTML='<div><label style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;display:block;margin-bottom:3px">OWNER</label><select onchange="window._saveFld(''+pid+'','owner',this.value)" style="padding:5px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;min-width:220px"><option value="">Select owner...</option>'+OW.map(function(o){return '<option value="'+o.c+'" '+(p.owner===o.c?'selected':'')+'>'+o.c+' - '+o.n+'</option>';}).join('')+'</select></div><div><label style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;display:block;margin-bottom:3px">PROJECT MANAGER</label><select onchange="window._saveFld(''+pid+'','projectManager',this.value)" style="padding:5px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;min-width:220px"><option value="">Select PM...</option>'+PMS.map(function(pm){return '<option value="'+pm+'" '+(p.projectManager===pm?'selected':'')+'>'+pm+'</option>';}).join('')+'</select></div>';
+    row.insertBefore(div,row.firstChild);
+  });
+};
+var obs=new MutationObserver(function(){window._patchModal();window._patchRows();});
+obs.observe(document.body,{childList:true,subtree:true});
+setTimeout(function(){window._patchModal();window._patchRows();},300);
+setInterval(function(){window._patchModal();window._patchRows();},1500);
+})();
+</script>
 </body>
 </html>
