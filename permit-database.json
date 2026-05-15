@@ -1,7 +1,7 @@
 {
-  "version": 1778862095835,
+  "version": 1778862107832,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T16:21:35.835Z",
+  "updatedAt": "2026-05-15T16:21:47.832Z",
   "permits": [
     {
       "id": "permit-1",
@@ -4324,10 +4324,10 @@
       "_ts": 1778859763446,
       "stageRequestedAt": {
         "co": "2026-05-15",
-        "constLienAff": null
+        "constLienAff": ""
       },
       "stageCompletedAt": {
-        "constLienAff": null
+        "constLienAff": ""
       }
     },
     {
@@ -5703,12 +5703,12 @@
       "_ts": 1778859966489,
       "projectManager": "JIM HUMPHREYS",
       "stageRequestedAt": {
-        "soilTest": null,
+        "soilTest": "",
         "permitIssued": "2026-05-15",
         "submitted": "2026-05-15"
       },
       "stageCompletedAt": {
-        "soilTest": null,
+        "soilTest": "",
         "permitIssued": "2026-04-25",
         "submitted": "2026-05-15"
       },
@@ -6077,7 +6077,7 @@
         "recordedDeed": null,
         "subCOI": null,
         "submitted": "2026-05-01",
-        "soilTest": null
+        "soilTest": ""
       },
       "stageCompletedAt": {
         "trussEng": "2026-04-11",
@@ -6094,7 +6094,7 @@
         "recordedDeed": null,
         "subCOI": null,
         "submitted": "2026-05-08",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "stormwater"
@@ -6269,7 +6269,7 @@
         "constLienAff": null,
         "noc": null,
         "recordedDeed": null,
-        "soilTest": null,
+        "soilTest": "",
         "sitePlan": null
       },
       "reviewAgencies": [
@@ -6440,7 +6440,7 @@
         "landscape": null,
         "energyCalcs": "2026-04-23",
         "sitePlan": "2026-03-24",
-        "soilTest": null,
+        "soilTest": "",
         "productApproval": "2026-05-08",
         "colorMaterial": null,
         "roofingWorksheet": null,
@@ -6455,7 +6455,7 @@
         "landscape": null,
         "energyCalcs": "2026-04-24",
         "sitePlan": "2026-04-18",
-        "soilTest": null,
+        "soilTest": "",
         "productApproval": null,
         "colorMaterial": null,
         "roofingWorksheet": null,
@@ -6629,7 +6629,7 @@
         "noc": null,
         "recordedDeed": null,
         "permitIssued": "2026-05-12",
-        "soilTest": null
+        "soilTest": ""
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
@@ -6644,7 +6644,7 @@
         "noc": null,
         "recordedDeed": null,
         "permitIssued": "2026-05-13",
-        "soilTest": null
+        "soilTest": ""
       },
       "projectManager": "JON FRANTZ",
       "reviewAgencies": [
@@ -6972,7 +6972,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-05",
         "colorMaterial": null,
@@ -7001,7 +7001,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "mechanical"
@@ -7339,7 +7339,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "landscape": "2026-05-08",
         "structuralEng": "2026-04-14",
         "colorMaterial": null,
@@ -7368,7 +7368,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "mechanical"
@@ -7581,7 +7581,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-05-01",
         "landscape": null,
         "colorMaterial": null,
@@ -7610,7 +7610,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-08",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "zoning",
@@ -12857,7 +12857,7 @@
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-05-01",
         "landscape": "2026-05-13"
       },
@@ -12866,7 +12866,7 @@
         "energyCalcs": "2026-05-02",
         "structuralEng": "2026-05-05",
         "trussEng": "2026-05-01",
-        "soilTest": null,
+        "soilTest": "",
         "sitePlan": "2026-05-15"
       },
       "releaseDate": null,
@@ -12963,7 +12963,7 @@
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-05-04"
       },
       "stageCompletedAt": {
@@ -12971,7 +12971,7 @@
         "trussEng": "2026-04-30",
         "energyCalcs": "2026-05-01",
         "structuralEng": "2026-05-06",
-        "soilTest": null
+        "soilTest": ""
       },
       "releaseDate": null,
       "drawingReview": {
@@ -13074,7 +13074,7 @@
         "trussEng": "2026-05-06",
         "structuralEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
-        "soilTest": null
+        "soilTest": ""
       },
       "releaseDate": null,
       "drawingReview": {
