@@ -1,7 +1,7 @@
 {
-  "version": 1778863445148,
+  "version": 1778863457471,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:44:05.148Z",
+  "updatedAt": "2026-05-15T16:44:17.471Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12885,7 +12885,7 @@
         "submitted": "2026-05-13",
         "architecture": "2026-05-06",
         "soilTest": "2026-05-06",
-        "trussEng": "2026-05-15"
+        "trussEng": "2026-04-15"
       },
       "projectManager": "MICHAEL BEDAW"
     },
