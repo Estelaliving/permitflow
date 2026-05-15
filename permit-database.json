@@ -1,7 +1,7 @@
 {
-  "version": 1778869893678,
-  "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T18:31:33.678Z",
+  "version": 1778869917825,
+  "updatedBy": "Natalia Massola",
+  "updatedAt": "2026-05-15T18:31:57.825Z",
   "permits": [
     {
       "id": "permit-1",
@@ -40,8 +40,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "requested",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-02-02",
@@ -102,15 +101,14 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -121,7 +119,9 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {
-        "permitIssued": "2026-05-08"
+        "permitIssued": "2026-05-08",
+        "subCOI": "2026-05-15",
+        "inspections": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
@@ -131,14 +131,15 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "issued",
       "_ts": 1778862273054,
       "customFields": {
         "cf_mot27ztm": "ESTELA LIVING LLC"
       },
       "stageRequestedAt": {
-        "permitIssued": "2026-05-08"
+        "permitIssued": "2026-05-08",
+        "inspections": "2026-05-15"
       },
       "stageCompletedAt": {
         "permitIssued": "2026-05-02"
@@ -182,8 +183,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "requested",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -255,8 +255,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "requested",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -331,8 +330,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "requested",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -407,8 +405,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "requested",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -480,8 +477,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -527,7 +523,7 @@
         "energyCalcs": "2026-04-13",
         "structuralEng": "2026-04-17",
         "landscape": "2026-04-28",
-        "architecture": null
+        "architecture": ""
       },
       "stageCompletedAt": {
         "submitted": "2026-05-08",
@@ -611,8 +607,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -671,8 +666,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -731,8 +725,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -791,8 +784,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -851,8 +843,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -911,8 +902,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -971,8 +961,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1031,8 +1020,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1091,8 +1079,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1151,8 +1138,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1211,8 +1197,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1271,8 +1256,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1331,8 +1315,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1391,8 +1374,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1451,8 +1433,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1511,8 +1492,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -1571,8 +1551,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-13",
@@ -1631,8 +1610,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-17",
@@ -1691,8 +1669,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-17",
@@ -1751,8 +1728,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-17",
@@ -1811,8 +1787,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-23",
@@ -1871,8 +1846,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-23",
@@ -1931,8 +1905,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-23",
@@ -1991,8 +1964,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-23",
@@ -2075,8 +2047,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-23",
@@ -2135,8 +2106,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-23",
@@ -2195,8 +2165,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-23",
@@ -2255,8 +2224,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -2315,8 +2283,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -2349,16 +2316,16 @@
       "plan": "Plan 5 - 2182",
       "garage": "Right Hand",
       "elevation": "Transitional",
-      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan",
+      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan, 70010 · Frameless Shower Upgrade - Brushed Nickel, 85055 · Sable & Sand Interior Package, 86010 · Neutral Ground Exterior Package",
       "permitNumber": "",
       "releaseDate": null,
       "stages": {
         "architecture": "complete",
         "sitePlan": "complete",
         "trussEng": "complete",
-        "energyCalcs": "complete",
+        "energyCalcs": "requested",
         "soilTest": "n/a",
-        "structuralEng": "complete",
+        "structuralEng": "requested",
         "landscape": "n/a",
         "productApproval": "n/a",
         "colorMaterial": "n/a",
@@ -2368,15 +2335,14 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "requested",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -2387,7 +2353,10 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {
-        "omReview": "2026-05-11"
+        "omReview": "2026-05-11",
+        "subCOI": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "structuralEng": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
@@ -2400,7 +2369,10 @@
       "docsStatus": "collecting",
       "permitStatus": "issued",
       "stageRequestedAt": {
-        "omReview": "2026-05-11"
+        "omReview": "2026-05-11",
+        "architecture": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "structuralEng": "2026-05-15"
       },
       "stageCompletedAt": {},
       "stageNotes": {
@@ -2446,8 +2418,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -2508,8 +2479,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -2568,8 +2538,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -2628,8 +2597,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-04-01",
@@ -2688,8 +2656,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-01-20",
@@ -2748,8 +2715,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -2808,8 +2774,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-04-01",
@@ -2872,7 +2837,7 @@
       },
       "stageCompletedAt": {
         "submitted": "2026-04-09",
-        "permitIssued": "2026-05-14"
+        "permitIssued": "2026-05-15"
       },
       "projectManager": "JASON BEDAW"
     },
@@ -2913,8 +2878,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-04-01",
@@ -2984,8 +2948,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -3044,8 +3007,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "complete",
-        "co": "complete",
-        "test": "not-started"
+        "co": "complete"
       },
       "stageDates": {
         "submitted": null,
@@ -3119,23 +3081,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": null,
@@ -3145,17 +3106,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-49",
@@ -3194,8 +3178,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "complete",
-        "co": "complete",
-        "test": "not-started"
+        "co": "complete"
       },
       "stageDates": {
         "submitted": null,
@@ -3269,23 +3252,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": null,
@@ -3295,17 +3277,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-51",
@@ -3329,23 +3334,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 4/",
@@ -3355,17 +3359,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-52",
@@ -3389,23 +3416,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 4/",
@@ -3415,17 +3441,56 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "co": "2026-05-15",
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co",
+      "stageRounds": {
+        "colorMaterial": [
+          {
+            "sent": "2026-05-14",
+            "received": "",
+            "result": "pending",
+            "note": ""
+          }
+        ]
+      },
+      "stageRequestedAt": {
+        "co": "2026-05-14"
+      },
+      "stageCompletedAt": {
+        "co": "2026-04-20"
+      }
     },
     {
       "id": "permit-53",
@@ -3449,23 +3514,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 4/",
@@ -3475,17 +3539,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-54",
@@ -3509,23 +3596,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 4/",
@@ -3535,17 +3621,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-55",
@@ -3569,23 +3678,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 4/",
@@ -3595,17 +3703,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-56",
@@ -3629,23 +3760,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 4/",
@@ -3655,17 +3785,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": true,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-57",
@@ -3689,23 +3842,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 5/",
@@ -3715,17 +3867,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-58",
@@ -3749,23 +3924,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 5/",
@@ -3775,17 +3949,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-59",
@@ -3809,23 +4006,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 5/",
@@ -3835,17 +4031,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-60",
@@ -3869,23 +4088,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 5/",
@@ -3895,17 +4113,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-61",
@@ -3929,23 +4170,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "Applied 5/",
@@ -3955,17 +4195,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-62",
@@ -3989,23 +4252,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": null,
@@ -4015,17 +4277,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-63",
@@ -4049,23 +4334,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": null,
@@ -4075,17 +4359,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-64",
@@ -4109,12 +4416,12 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
         "subCOI": "n/a",
@@ -4123,9 +4430,8 @@
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "requested",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "requested"
       },
       "stageDates": {
         "submitted": null,
@@ -4137,22 +4443,74 @@
       "buildersRisk": false,
       "stageUpdatedAt": {
         "subCOI": "2026-05-15",
-        "co": "2026-05-15"
+        "co": "2026-05-15",
+        "inspections": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "constLienAff": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
       "drawingReview": {
-        "checks": {},
+        "checks": {
+          "architecture_address": true,
+          "sitePlan_address": true,
+          "trussEng_address": true,
+          "energyCalcs_address": true,
+          "soilTest_address": true,
+          "structuralEng_address": true,
+          "landscape_address": true,
+          "architecture_garage": true,
+          "sitePlan_garage": true,
+          "trussEng_garage": true,
+          "energyCalcs_garage": true,
+          "soilTest_garage": true,
+          "structuralEng_garage": true,
+          "landscape_garage": true,
+          "architecture_location": true,
+          "sitePlan_location": true,
+          "trussEng_location": true,
+          "energyCalcs_location": true,
+          "soilTest_location": true,
+          "structuralEng_location": true,
+          "landscape_location": true,
+          "architecture_modelElev": true,
+          "sitePlan_modelElev": true,
+          "trussEng_modelElev": true,
+          "energyCalcs_modelElev": true,
+          "soilTest_modelElev": true,
+          "structuralEng_modelElev": true,
+          "landscape_modelElev": true,
+          "architecture_garageCars": true,
+          "sitePlan_garageCars": true,
+          "trussEng_garageCars": true,
+          "energyCalcs_garageCars": true,
+          "structuralEng_garageCars": true,
+          "landscape_garageCars": true,
+          "soilTest_garageCars": true,
+          "architecture_options": true,
+          "sitePlan_options": true,
+          "trussEng_options": true,
+          "energyCalcs_options": true,
+          "soilTest_options": true,
+          "structuralEng_options": true,
+          "landscape_options": true
+        },
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "issued",
       "stageRequestedAt": {
-        "co": "2026-05-15"
+        "co": "2026-05-15",
+        "inspections": "2026-05-15",
+        "productApproval": null,
+        "constLienAff": null
       },
-      "stageCompletedAt": {},
+      "stageCompletedAt": {
+        "productApproval": null,
+        "constLienAff": null
+      },
       "_ts": 1778859694277
     },
     {
@@ -4177,23 +4535,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "2025-07-24",
@@ -4203,17 +4560,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-66",
@@ -4237,23 +4617,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "2025-07-24",
@@ -4263,17 +4642,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-67",
@@ -4297,23 +4699,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
-        "omReview": "not-started",
+        "subCOI": "complete",
+        "omReview": "complete",
         "submitted": "complete",
-        "planReview": "not-started",
+        "planReview": "complete",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "complete",
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "2025-09-12",
@@ -4323,17 +4724,40 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "architecture": "2026-05-15",
+        "sitePlan": "2026-05-15",
+        "trussEng": "2026-05-15",
+        "energyCalcs": "2026-05-15",
+        "soilTest": "2026-05-15",
+        "structuralEng": "2026-05-15",
+        "landscape": "2026-05-15",
+        "productApproval": "2026-05-15",
+        "colorMaterial": "2026-05-15",
+        "roofingWorksheet": "2026-05-15",
+        "utilityPP": "2026-05-15",
+        "geotechLetter": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "noc": "2026-05-15",
+        "recordedDeed": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "omReview": "2026-05-15",
+        "submitted": "2026-05-15",
+        "planReview": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
-      "overallStatus": "permitted",
+      "overallStatus": "co",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "docsStatus": "complete",
+      "permitStatus": "co"
     },
     {
       "id": "permit-68",
@@ -4371,9 +4795,8 @@
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "requested",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "requested"
       },
       "stageDates": {
         "submitted": "2025-09-12",
@@ -4386,7 +4809,8 @@
       "stageUpdatedAt": {
         "co": "2026-05-15",
         "constLienAff": "2026-05-15",
-        "subCOI": "2026-05-15"
+        "subCOI": "2026-05-15",
+        "inspections": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
@@ -4444,7 +4868,8 @@
       "_ts": 1778859763446,
       "stageRequestedAt": {
         "co": "2026-05-15",
-        "constLienAff": null
+        "constLienAff": null,
+        "inspections": "2026-05-15"
       },
       "stageCompletedAt": {
         "constLienAff": null
@@ -4486,9 +4911,8 @@
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "requested"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -4498,7 +4922,10 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
       "overallStatus": "permitted",
       "drawingReview": {
@@ -4508,7 +4935,12 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "permitStatus": "issued",
+      "stageRequestedAt": {
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
+      "stageCompletedAt": {}
     },
     {
       "id": "permit-70",
@@ -4546,9 +4978,8 @@
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "requested"
       },
       "stageDates": {
         "submitted": "2025-10-13",
@@ -4558,7 +4989,10 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
+      "stageUpdatedAt": {
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
       "stageLastModified": "2026-04-08",
       "overallStatus": "permitted",
       "drawingReview": {
@@ -4568,7 +5002,12 @@
         "completedBy": ""
       },
       "docsStatus": "collecting",
-      "permitStatus": "issued"
+      "permitStatus": "issued",
+      "stageRequestedAt": {
+        "inspections": "2026-05-15",
+        "co": "2026-05-15"
+      },
+      "stageCompletedAt": {}
     },
     {
       "id": "permit-71",
@@ -4607,8 +5046,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-11-05",
@@ -4667,8 +5105,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-15",
@@ -4727,8 +5164,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-11-19",
@@ -4787,8 +5223,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-28",
@@ -4847,8 +5282,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-11-06",
@@ -4907,8 +5341,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-12-18",
@@ -4967,8 +5400,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-01-13",
@@ -5027,8 +5459,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-01-19",
@@ -5087,8 +5518,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-01-14",
@@ -5147,8 +5577,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-02-09",
@@ -5207,8 +5636,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-01-23",
@@ -5267,8 +5695,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-01-28",
@@ -5327,8 +5754,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-02-09",
@@ -5387,8 +5813,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-02-25",
@@ -5447,8 +5872,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -5507,8 +5931,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -5567,8 +5990,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -5627,8 +6049,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-05",
@@ -5680,15 +6101,14 @@
         "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-20",
@@ -5702,7 +6122,9 @@
         "constLienAff": "2026-05-08",
         "productApproval": "2026-05-08",
         "submitted": "2026-05-08",
-        "permitIssued": "2026-05-11"
+        "permitIssued": "2026-05-11",
+        "inspections": "2026-05-15",
+        "subCOI": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
@@ -5755,7 +6177,7 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "issued",
       "_ts": 1778859857862,
       "projectManager": "JIM HUMPHREYS",
@@ -5767,7 +6189,8 @@
         "constLienAff": null,
         "productApproval": null,
         "submitted": "2026-03-20",
-        "permitIssued": "2026-05-11"
+        "permitIssued": "2026-05-11",
+        "inspections": "2026-05-15"
       },
       "stageCompletedAt": {
         "constLienAff": null,
@@ -5801,23 +6224,22 @@
         "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
-        "productApproval": "not-started",
+        "productApproval": "complete",
         "colorMaterial": "complete",
         "roofingWorksheet": "complete",
         "utilityPP": "complete",
         "geotechLetter": "complete",
-        "constLienAff": "not-started",
+        "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-04-08",
@@ -5830,29 +6252,81 @@
       "stageUpdatedAt": {
         "soilTest": "2026-05-15",
         "permitIssued": "2026-05-15",
-        "submitted": "2026-05-15"
+        "submitted": "2026-05-15",
+        "constLienAff": "2026-05-15",
+        "subCOI": "2026-05-15",
+        "inspections": "2026-05-15",
+        "productApproval": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
       "drawingReview": {
-        "checks": {},
+        "checks": {
+          "architecture_address": true,
+          "sitePlan_address": true,
+          "trussEng_address": true,
+          "energyCalcs_address": true,
+          "soilTest_address": true,
+          "structuralEng_address": true,
+          "landscape_address": true,
+          "architecture_garage": true,
+          "sitePlan_garage": true,
+          "trussEng_garage": true,
+          "energyCalcs_garage": true,
+          "soilTest_garage": true,
+          "structuralEng_garage": true,
+          "landscape_garage": true,
+          "architecture_location": true,
+          "sitePlan_location": true,
+          "trussEng_location": true,
+          "energyCalcs_location": true,
+          "soilTest_location": true,
+          "structuralEng_location": true,
+          "landscape_location": true,
+          "architecture_modelElev": true,
+          "sitePlan_modelElev": true,
+          "trussEng_modelElev": true,
+          "energyCalcs_modelElev": true,
+          "soilTest_modelElev": true,
+          "structuralEng_modelElev": true,
+          "landscape_modelElev": true,
+          "architecture_garageCars": true,
+          "sitePlan_garageCars": true,
+          "trussEng_garageCars": true,
+          "energyCalcs_garageCars": true,
+          "soilTest_garageCars": true,
+          "structuralEng_garageCars": true,
+          "landscape_garageCars": true,
+          "architecture_options": true,
+          "sitePlan_options": true,
+          "trussEng_options": true,
+          "energyCalcs_options": true,
+          "soilTest_options": true,
+          "structuralEng_options": true,
+          "landscape_options": true
+        },
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "issued",
       "_ts": 1778859966489,
       "projectManager": "JIM HUMPHREYS",
       "stageRequestedAt": {
         "soilTest": null,
         "permitIssued": "2026-05-15",
-        "submitted": "2026-05-15"
+        "submitted": "2026-04-08",
+        "constLienAff": null,
+        "inspections": "2026-05-15",
+        "productApproval": null
       },
       "stageCompletedAt": {
         "soilTest": null,
         "permitIssued": "2026-04-25",
-        "submitted": "2026-05-15"
+        "submitted": "2026-05-15",
+        "constLienAff": null,
+        "productApproval": null
       },
       "stageNotes": {
         "soilTest": "SENT TO FTE"
@@ -5894,9 +6368,8 @@
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "inspections": "requested",
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-04-08",
@@ -5912,12 +6385,56 @@
         "soilTest": "2026-05-15",
         "productApproval": "2026-05-15",
         "constLienAff": "2026-05-15",
-        "subCOI": "2026-05-15"
+        "subCOI": "2026-05-15",
+        "inspections": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
       "drawingReview": {
-        "checks": {},
+        "checks": {
+          "architecture_address": true,
+          "sitePlan_address": true,
+          "trussEng_address": true,
+          "energyCalcs_address": true,
+          "soilTest_address": true,
+          "structuralEng_address": true,
+          "landscape_address": true,
+          "architecture_garage": true,
+          "sitePlan_garage": true,
+          "trussEng_garage": true,
+          "energyCalcs_garage": true,
+          "soilTest_garage": true,
+          "structuralEng_garage": true,
+          "landscape_garage": true,
+          "architecture_location": true,
+          "sitePlan_location": true,
+          "trussEng_location": true,
+          "energyCalcs_location": true,
+          "structuralEng_location": true,
+          "landscape_location": true,
+          "soilTest_location": true,
+          "architecture_modelElev": true,
+          "sitePlan_modelElev": true,
+          "trussEng_modelElev": true,
+          "energyCalcs_modelElev": true,
+          "soilTest_modelElev": true,
+          "structuralEng_modelElev": true,
+          "landscape_modelElev": true,
+          "architecture_garageCars": true,
+          "sitePlan_garageCars": true,
+          "trussEng_garageCars": true,
+          "energyCalcs_garageCars": true,
+          "soilTest_garageCars": true,
+          "structuralEng_garageCars": true,
+          "landscape_garageCars": true,
+          "architecture_options": true,
+          "sitePlan_options": true,
+          "trussEng_options": true,
+          "energyCalcs_options": true,
+          "soilTest_options": true,
+          "structuralEng_options": true,
+          "landscape_options": true
+        },
         "notes": "",
         "completedAt": null,
         "completedBy": ""
@@ -5931,7 +6448,8 @@
         "permitIssued": "2026-05-15",
         "soilTest": null,
         "productApproval": null,
-        "constLienAff": null
+        "constLienAff": null,
+        "inspections": "2026-05-15"
       },
       "stageCompletedAt": {
         "submitted": "2026-05-15",
@@ -5981,8 +6499,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "requested",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -6121,8 +6638,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -6300,15 +6816,14 @@
         "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -6330,7 +6845,8 @@
         "noc": "2026-05-08",
         "recordedDeed": "2026-05-08",
         "soilTest": "2026-05-08",
-        "sitePlan": "2026-05-08"
+        "sitePlan": "2026-05-08",
+        "subCOI": "2026-05-15"
       },
       "stageLastModified": "2026-05-08",
       "overallStatus": "submitted",
@@ -6383,7 +6899,7 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "applied",
       "_ts": 1778860765060,
       "customFields": {
@@ -6498,8 +7014,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -6679,8 +7194,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -6862,8 +7376,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -7023,15 +7536,14 @@
         "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -7057,7 +7569,8 @@
         "noc": "2026-05-08",
         "recordedDeed": "2026-05-08",
         "productApproval": "2026-05-08",
-        "submitted": "2026-05-11"
+        "submitted": "2026-05-11",
+        "subCOI": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "submitted",
@@ -7110,7 +7623,7 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "applied",
       "projectManager": "JIM HUMPHREYS",
       "_ts": 1778858549014,
@@ -7213,8 +7726,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -7392,15 +7904,14 @@
         "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -7426,7 +7937,8 @@
         "noc": "2026-05-08",
         "recordedDeed": "2026-05-08",
         "productApproval": "2026-05-08",
-        "submitted": "2026-05-11"
+        "submitted": "2026-05-11",
+        "subCOI": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "submitted",
@@ -7479,7 +7991,7 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "applied",
       "projectManager": "JIM HUMPHREYS",
       "_ts": 1778858722994,
@@ -7502,7 +8014,7 @@
         "noc": null,
         "recordedDeed": null,
         "productApproval": null,
-        "submitted": "2026-05-11"
+        "submitted": "2026-05-12"
       },
       "stageCompletedAt": {
         "landscape": "2026-05-09",
@@ -7519,7 +8031,7 @@
         "noc": null,
         "recordedDeed": null,
         "productApproval": null,
-        "submitted": "2026-05-11",
+        "submitted": "2026-05-13",
         "soilTest": null
       },
       "reviewAgencies": [
@@ -7582,8 +8094,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -7642,8 +8153,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -7843,8 +8353,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -7903,8 +8412,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-02-04",
@@ -7963,8 +8471,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-02-04",
@@ -8023,8 +8530,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-02-04",
@@ -8083,8 +8589,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -8143,8 +8648,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -8203,8 +8707,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -8263,8 +8766,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -8323,8 +8825,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-02-04",
@@ -8383,8 +8884,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -8443,8 +8943,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -8503,8 +9002,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-13",
@@ -8563,8 +9061,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-13",
@@ -8623,8 +9120,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-13",
@@ -8683,8 +9179,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-27",
@@ -8743,8 +9238,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-27",
@@ -8803,8 +9297,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-21",
@@ -8863,8 +9356,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-13",
@@ -8923,8 +9415,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-25",
@@ -8983,8 +9474,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-27",
@@ -9043,8 +9533,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-13",
@@ -9103,8 +9592,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-21",
@@ -9163,8 +9651,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-25",
@@ -9223,8 +9710,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-05-06",
@@ -9283,8 +9769,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-05-06",
@@ -9343,8 +9828,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-05-06",
@@ -9403,8 +9887,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -9463,8 +9946,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-09-25",
@@ -9523,8 +10005,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-09-25",
@@ -9583,8 +10064,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-09-25",
@@ -9643,8 +10123,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -9703,8 +10182,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-27",
@@ -9763,8 +10241,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-27",
@@ -9823,8 +10300,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -9883,8 +10359,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -9943,8 +10418,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -10003,8 +10477,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -10063,8 +10536,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-27",
@@ -10123,8 +10595,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-27",
@@ -10183,8 +10654,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -10243,8 +10713,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -10303,8 +10772,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-30",
@@ -10363,8 +10831,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -10423,8 +10890,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -10483,8 +10949,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -10543,8 +11008,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-08",
@@ -10603,8 +11067,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-02-09",
@@ -10663,8 +11126,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2024-12-02",
@@ -10723,8 +11185,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2024-12-02",
@@ -10783,8 +11244,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-21",
@@ -10843,8 +11303,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-02-04",
@@ -10903,8 +11362,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-21",
@@ -10963,8 +11421,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2024-11-18",
@@ -11023,8 +11480,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-21",
@@ -11083,8 +11539,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -11143,8 +11598,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-01-23",
@@ -11203,8 +11657,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-13",
@@ -11263,8 +11716,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-03-13",
@@ -11323,8 +11775,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-05-06",
@@ -11383,8 +11834,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-24",
@@ -11443,8 +11893,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-07-25",
@@ -11503,8 +11952,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-07-28",
@@ -11563,8 +12011,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-07-22",
@@ -11623,8 +12070,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-08-11",
@@ -11683,8 +12129,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-07-22",
@@ -11743,8 +12188,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "complete",
-        "co": "complete",
-        "test": "not-started"
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "2025-08-22",
@@ -11755,19 +12199,19 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {
-        "co": "2026-05-12",
-        "architecture": "2026-05-12",
-        "sitePlan": "2026-05-12",
-        "trussEng": "2026-05-12",
-        "energyCalcs": "2026-05-12",
-        "soilTest": "2026-05-12",
-        "structuralEng": "2026-05-12",
-        "subCOI": "2026-05-12",
-        "omReview": "2026-05-12",
-        "submitted": "2026-05-12",
-        "planReview": "2026-05-12",
-        "permitIssued": "2026-05-12",
-        "inspections": "2026-05-12"
+        "co": "2026-05-14",
+        "architecture": "2026-05-14",
+        "sitePlan": "2026-05-14",
+        "trussEng": "2026-05-14",
+        "energyCalcs": "2026-05-14",
+        "soilTest": "2026-05-14",
+        "structuralEng": "2026-05-14",
+        "subCOI": "2026-05-14",
+        "omReview": "2026-05-14",
+        "submitted": "2026-05-14",
+        "planReview": "2026-05-14",
+        "permitIssued": "2026-05-14",
+        "inspections": "2026-05-14"
       },
       "stageLastModified": "2026-04-08",
       "overallStatus": "co",
@@ -11780,10 +12224,10 @@
       "docsStatus": "complete",
       "permitStatus": "co",
       "stageRequestedAt": {
-        "co": "2026-05-12"
+        "co": "2026-05-14"
       },
       "stageCompletedAt": {
-        "co": "2026-03-31"
+        "co": "2026-03-20"
       }
     },
     {
@@ -11823,8 +12267,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-09-25",
@@ -11883,8 +12326,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "complete",
-        "co": "complete",
-        "test": "not-started"
+        "co": "complete"
       },
       "stageDates": {
         "submitted": "2025-09-25",
@@ -11964,8 +12406,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -12024,8 +12465,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-07",
@@ -12084,8 +12524,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-10-22",
@@ -12144,8 +12583,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-11-06",
@@ -12204,8 +12642,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-11-12",
@@ -12264,8 +12701,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-02-09",
@@ -12299,7 +12735,7 @@
       "garage": "Right Hand",
       "elevation": "A2 Stone/Stucco",
       "options": "",
-      "permitNumber": "",
+      "permitNumber": "BLDR-26-03-08949",
       "releaseDate": "2026-02-16",
       "stages": {
         "architecture": "complete",
@@ -12317,15 +12753,14 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
-        "permitIssued": "not-started",
-        "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "permitIssued": "complete",
+        "inspections": "requested",
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2026-03-16",
@@ -12335,17 +12770,29 @@
       "permitFee": "",
       "utilities": "",
       "buildersRisk": false,
-      "stageUpdatedAt": {},
-      "stageLastModified": "2026-04-08",
-      "overallStatus": "submitted",
+      "stageUpdatedAt": {
+        "subCOI": "2026-05-15",
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15"
+      },
+      "stageLastModified": "2026-05-15",
+      "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
-      "permitStatus": "applied"
+      "docsStatus": "complete",
+      "permitStatus": "issued",
+      "stageRequestedAt": {
+        "permitIssued": "2026-05-15",
+        "inspections": "2026-05-15"
+      },
+      "stageCompletedAt": {
+        "permitIssued": "2026-04-14"
+      },
+      "_ts": 1778869915822
     },
     {
       "id": "permit-178",
@@ -12384,8 +12831,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -12444,8 +12890,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -12491,10 +12936,10 @@
         "sitePlan": "2026-04-13",
         "energyCalcs": "2026-04-13",
         "structuralEng": "2026-04-14",
-        "noc": null,
-        "recordedDeed": null,
-        "productApproval": null,
-        "constLienAff": null
+        "noc": "",
+        "recordedDeed": "",
+        "productApproval": "",
+        "constLienAff": ""
       },
       "stageCompletedAt": {
         "submitted": "2026-05-13",
@@ -12504,10 +12949,10 @@
         "sitePlan": "2026-04-29",
         "energyCalcs": "2026-04-22",
         "structuralEng": "2026-04-17",
-        "noc": null,
-        "recordedDeed": null,
-        "productApproval": null,
-        "constLienAff": null
+        "noc": "",
+        "recordedDeed": "",
+        "productApproval": "",
+        "constLienAff": ""
       },
       "projectManager": "MICHAEL BEDAW"
     },
@@ -12548,8 +12993,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -12640,8 +13084,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-30",
@@ -12700,8 +13143,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-30",
@@ -12760,8 +13202,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-30",
@@ -12820,8 +13261,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-30",
@@ -12880,8 +13320,7 @@
         "resubmittal": "n/a",
         "permitIssued": "complete",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": "2025-06-30",
@@ -12923,7 +13362,7 @@
         "constLienAff": "2026-05-14",
         "noc": "2026-05-14",
         "recordedDeed": "2026-05-14",
-        "subCOI": "2026-05-14",
+        "subCOI": "2026-05-15",
         "omReview": "2026-05-14",
         "submitted": "2026-05-14",
         "permitIssued": "2026-05-08",
@@ -12950,15 +13389,14 @@
         "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "complete",
+        "subCOI": "n/a",
         "omReview": "n/a",
         "submitted": "complete",
         "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Palm Coast Scattered",
       "market": "Palm Coast",
@@ -13113,7 +13551,7 @@
         "energyCalcs": "complete",
         "soilTest": "complete",
         "structuralEng": "complete",
-        "landscape": "requested",
+        "landscape": "complete",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
         "roofingWorksheet": "not-started",
@@ -13129,8 +13567,7 @@
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Palm Coast Scattered",
       "market": "Palm Coast",
@@ -13169,7 +13606,8 @@
         "structuralEng": "2026-05-05",
         "trussEng": "2026-05-01",
         "soilTest": null,
-        "sitePlan": "2026-05-15"
+        "sitePlan": "2026-05-15",
+        "landscape": "2026-05-15"
       },
       "releaseDate": null,
       "drawingReview": {
@@ -13188,12 +13626,12 @@
       "stageLastModified": "2026-05-15",
       "stageUpdatedAt": {
         "architecture": "2026-05-08",
-        "sitePlan": "2026-05-08",
+        "sitePlan": "2026-05-15",
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
         "soilTest": "2026-05-15",
         "structuralEng": "2026-05-08",
-        "landscape": "2026-05-08",
+        "landscape": "2026-05-15",
         "productApproval": "2026-05-08",
         "colorMaterial": "2026-05-08",
         "roofingWorksheet": "2026-05-08",
@@ -13215,12 +13653,12 @@
       "buildersRisk": false,
       "stages": {
         "architecture": "complete",
-        "sitePlan": "requested",
+        "sitePlan": "complete",
         "trussEng": "complete",
         "energyCalcs": "complete",
         "soilTest": "complete",
         "structuralEng": "complete",
-        "landscape": "not-started",
+        "landscape": "requested",
         "productApproval": "not-started",
         "colorMaterial": "not-started",
         "roofingWorksheet": "not-started",
@@ -13236,8 +13674,7 @@
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Palm Coast Scattered",
       "market": "Palm Coast",
@@ -13267,14 +13704,16 @@
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
         "soilTest": null,
-        "structuralEng": "2026-05-04"
+        "structuralEng": "2026-05-04",
+        "landscape": "2026-05-15"
       },
       "stageCompletedAt": {
         "architecture": "2026-04-30",
         "trussEng": "2026-04-30",
         "energyCalcs": "2026-05-01",
         "structuralEng": "2026-05-06",
-        "soilTest": null
+        "soilTest": null,
+        "sitePlan": "2026-05-14"
       },
       "releaseDate": null,
       "drawingReview": {
@@ -13341,8 +13780,7 @@
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Palm Coast Scattered",
       "market": "Palm Coast",
@@ -13446,8 +13884,7 @@
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Ocala Waterways",
       "market": "Ocala",
@@ -13475,7 +13912,7 @@
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": "2026-05-08",
+        "soilTest": "2026-05-15",
         "structuralEng": "2026-05-04"
       },
       "stageCompletedAt": {
@@ -13548,8 +13985,7 @@
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Ocala Waterways",
       "market": "Ocala",
@@ -13578,7 +14014,7 @@
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": "2026-05-08",
+        "soilTest": "2026-05-15",
         "structuralEng": "2026-05-01"
       },
       "stageCompletedAt": {
@@ -13650,8 +14086,7 @@
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Ocala Waterways",
       "market": "Ocala",
@@ -13751,8 +14186,7 @@
         "inspections": "not-started",
         "co": "not-started",
         "powerService": "not-started",
-        "utilityConn": "not-started",
-        "test": "not-started"
+        "utilityConn": "not-started"
       },
       "community": "Ocala Waterways",
       "market": "Ocala",
