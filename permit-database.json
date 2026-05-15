@@ -1,7 +1,7 @@
 {
-  "version": 1778859167835,
+  "version": 1778859214836,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T15:32:47.835Z",
+  "updatedAt": "2026-05-15T15:33:34.836Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6660,7 +6660,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": "",
+        "soilTest": null,
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-05",
         "colorMaterial": null,
@@ -6689,7 +6689,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": ""
+        "soilTest": null
       },
       "reviewAgencies": [
         "mechanical"
@@ -6837,7 +6837,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": "",
+        "soilTest": null,
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-06",
         "colorMaterial": null,
@@ -6868,7 +6868,7 @@
         "subCOI": "2026-05-08",
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": ""
+        "soilTest": null
       },
       "reviewAgencies": [
         "electric"
@@ -7021,7 +7021,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": "",
+        "soilTest": null,
         "landscape": "2026-05-08",
         "structuralEng": "2026-04-14",
         "colorMaterial": null,
@@ -7050,7 +7050,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": ""
+        "soilTest": null
       },
       "reviewAgencies": [
         "mechanical"
@@ -7262,7 +7262,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": "",
+        "soilTest": null,
         "structuralEng": "2026-05-01",
         "landscape": null,
         "colorMaterial": null,
@@ -7291,7 +7291,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-08",
-        "soilTest": ""
+        "soilTest": null
       },
       "reviewAgencies": [
         "zoning",
@@ -12538,7 +12538,7 @@
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": "",
+        "soilTest": null,
         "structuralEng": "2026-05-01",
         "landscape": "2026-05-13"
       },
@@ -12547,7 +12547,7 @@
         "energyCalcs": "2026-05-02",
         "structuralEng": "2026-05-05",
         "trussEng": "2026-05-01",
-        "soilTest": "",
+        "soilTest": null,
         "sitePlan": "2026-05-15"
       },
       "releaseDate": null,
@@ -12564,13 +12564,13 @@
     {
       "id": "permit-1778271219981",
       "overallStatus": "active",
-      "stageLastModified": "2026-05-08",
+      "stageLastModified": "2026-05-15",
       "stageUpdatedAt": {
         "architecture": "2026-05-08",
         "sitePlan": "2026-05-08",
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
-        "soilTest": "2026-05-08",
+        "soilTest": "2026-05-15",
         "structuralEng": "2026-05-08",
         "landscape": "2026-05-08",
         "productApproval": "2026-05-08",
@@ -12597,7 +12597,7 @@
         "sitePlan": "requested",
         "trussEng": "complete",
         "energyCalcs": "complete",
-        "soilTest": "requested",
+        "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "not-started",
         "productApproval": "not-started",
@@ -12626,7 +12626,7 @@
       "plan": "",
       "garage": "3 Car - LH",
       "elevation": "A2 Stone/Stucco",
-      "projectManager": "Joshua Parker",
+      "projectManager": "JON FRANTZ",
       "estWeeks": "",
       "permitNumber": "",
       "permitFee": "",
@@ -12638,20 +12638,21 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
-      "_ts": 1778271242437,
+      "_ts": 1778859077243,
       "stageRequestedAt": {
         "architecture": "2026-04-28",
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": "2026-04-28",
+        "soilTest": "",
         "structuralEng": "2026-05-04"
       },
       "stageCompletedAt": {
         "architecture": "2026-04-30",
         "trussEng": "2026-04-30",
         "energyCalcs": "2026-05-01",
-        "structuralEng": "2026-05-06"
+        "structuralEng": "2026-05-06",
+        "soilTest": ""
       },
       "releaseDate": null,
       "drawingReview": {
@@ -12659,6 +12660,9 @@
         "notes": "",
         "completedAt": null,
         "completedBy": ""
+      },
+      "stageNotes": {
+        "soilTest": "SENT TO FTE"
       }
     },
     {
