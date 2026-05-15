@@ -1,7 +1,7 @@
 {
-  "version": 1778860671273,
+  "version": 1778860687543,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T15:57:51.273Z",
+  "updatedAt": "2026-05-15T15:58:07.543Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6539,7 +6539,7 @@
         "sitePlan": "complete",
         "trussEng": "complete",
         "energyCalcs": "complete",
-        "soilTest": "requested",
+        "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
         "productApproval": "complete",
@@ -6581,7 +6581,8 @@
         "noc": "2026-05-08",
         "recordedDeed": "2026-05-08",
         "subCOI": "2026-05-08",
-        "submitted": "2026-05-08"
+        "submitted": "2026-05-08",
+        "soilTest": "2026-05-15"
       },
       "stageLastModified": "2026-05-11",
       "overallStatus": "submitted",
@@ -6634,7 +6635,7 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "applied",
       "_ts": 1778529533951,
       "customFields": {
@@ -6655,7 +6656,8 @@
         "noc": null,
         "recordedDeed": null,
         "subCOI": null,
-        "submitted": "2026-05-01"
+        "submitted": "2026-05-01",
+        "soilTest": "2026-05-15"
       },
       "stageCompletedAt": {
         "trussEng": "2026-04-11",
@@ -6671,7 +6673,8 @@
         "noc": null,
         "recordedDeed": null,
         "subCOI": null,
-        "submitted": "2026-05-08"
+        "submitted": "2026-05-08",
+        "soilTest": "2026-05-15"
       },
       "reviewAgencies": [
         "stormwater"
