@@ -1,7 +1,7 @@
 {
-  "version": 1778860847835,
+  "version": 1778860851251,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T16:00:47.835Z",
+  "updatedAt": "2026-05-15T16:00:51.251Z",
   "permits": [
     {
       "id": "permit-1",
@@ -4279,10 +4279,10 @@
       "_ts": 1778859763446,
       "stageRequestedAt": {
         "co": "2026-05-15",
-        "constLienAff": null
+        "constLienAff": ""
       },
       "stageCompletedAt": {
-        "constLienAff": null
+        "constLienAff": ""
       }
     },
     {
@@ -5658,12 +5658,12 @@
       "_ts": 1778859966489,
       "projectManager": "JIM HUMPHREYS",
       "stageRequestedAt": {
-        "soilTest": null,
+        "soilTest": "",
         "permitIssued": "2026-05-15",
         "submitted": "2026-05-15"
       },
       "stageCompletedAt": {
-        "soilTest": null,
+        "soilTest": "",
         "permitIssued": "2026-04-25",
         "submitted": "2026-05-15"
       },
@@ -6919,7 +6919,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-05",
         "colorMaterial": null,
@@ -6948,7 +6948,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "mechanical"
@@ -7096,7 +7096,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-06",
         "colorMaterial": null,
@@ -7127,7 +7127,7 @@
         "subCOI": "2026-05-08",
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "electric"
@@ -7280,7 +7280,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "landscape": "2026-05-08",
         "structuralEng": "2026-04-14",
         "colorMaterial": null,
@@ -7309,7 +7309,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "mechanical"
@@ -7521,7 +7521,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-05-01",
         "landscape": null,
         "colorMaterial": null,
@@ -7550,7 +7550,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-08",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "zoning",
@@ -12797,7 +12797,7 @@
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-05-01",
         "landscape": "2026-05-13"
       },
@@ -12806,7 +12806,7 @@
         "energyCalcs": "2026-05-02",
         "structuralEng": "2026-05-05",
         "trussEng": "2026-05-01",
-        "soilTest": null,
+        "soilTest": "",
         "sitePlan": "2026-05-15"
       },
       "releaseDate": null,
@@ -12903,7 +12903,7 @@
         "sitePlan": "2026-04-28",
         "trussEng": "2026-04-28",
         "energyCalcs": "2026-04-28",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-05-04"
       },
       "stageCompletedAt": {
@@ -12911,7 +12911,7 @@
         "trussEng": "2026-04-30",
         "energyCalcs": "2026-05-01",
         "structuralEng": "2026-05-06",
-        "soilTest": null
+        "soilTest": ""
       },
       "releaseDate": null,
       "drawingReview": {
@@ -13014,7 +13014,7 @@
         "trussEng": "2026-05-06",
         "structuralEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
-        "soilTest": null
+        "soilTest": ""
       },
       "releaseDate": null,
       "drawingReview": {
