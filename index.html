@@ -2597,7 +2597,8 @@ function printPermitReport() {
   <h1>Estela Living · Permit Status Report</h1>
   <div class="sub">Generated: ${reportDate}</div>
   ${content.innerHTML}
-  </body></html>`);
+  
+<style>#_svbtn{position:fixed;bottom:16px;left:12px;padding:9px 18px;background:#2da44e;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.25)}#_svbtn:hover{background:#238636}#_svlbl{position:fixed;bottom:50px;left:12px;font-size:10px;color:#555;background:#fff;padding:2px 6px;border-radius:4px;z-index:9999}</style><button id="_svbtn" onclick="_sv()">💾 Save Data</button><div id="_svlbl"></div><script>function _sv(){const b=document.getElementById('_svbtn'),l=document.getElementById('_svlbl');b.textContent='⏳...';b.style.background='#f59e0b';try{if(typeof saveData==='function')saveData();if(typeof syncToOneDriveDB==='function')syncToOneDriveDB();const n=(JSON.parse(localStorage.getItem('estela_permits_v3')||'[]')).length;b.textContent='✅ '+n+' Saved';b.style.background='#2da44e';l.textContent='Saved: '+new Date().toLocaleTimeString();setTimeout(()=>{b.textContent='💾 Save Data';},3000);}catch(e){b.textContent='💾 Save Data';b.style.background='#2da44e';}}setInterval(_sv,60000);window.addEventListener('beforeunload',_sv);</script></body></html>`);
   win.document.close();
   win.focus();
   setTimeout(() => win.print(), 500);
