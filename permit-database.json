@@ -1,7 +1,7 @@
 {
-  "version": 1778877139831,
+  "version": 1778877199800,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T20:32:19.831Z",
+  "updatedAt": "2026-05-15T20:33:19.800Z",
   "permits": [
     {
       "id": "permit-1",
@@ -480,8 +480,7 @@
         "resubmittal": "n/a",
         "permitIssued": "not-started",
         "inspections": "not-started",
-        "co": "not-started",
-        "test": "not-started"
+        "co": "not-started"
       },
       "stageDates": {
         "submitted": null,
@@ -515,7 +514,7 @@
         "permitIssued": "",
         "architecture": "JAMIE SENT"
       },
-      "_ts": 1778863022138,
+      "_ts": 1778877129887,
       "reviewAgencies": [
         "mechanical",
         "stormwater"
@@ -550,7 +549,7 @@
             "sent": "2026-05-12",
             "received": "2026-05-12",
             "result": "pending",
-            "note": "Waithing for the city"
+            "note": "Sent to the City 05/15/2026"
           }
         ],
         "ra_stormwater": [
@@ -567,7 +566,7 @@
       },
       "agencyStatuses": {
         "stormwater": "complete",
-        "mechanical": "in-progress"
+        "mechanical": "complete"
       },
       "projectManager": "JON FRANTZ",
       "customFields": {
