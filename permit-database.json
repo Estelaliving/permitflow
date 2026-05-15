@@ -1,7 +1,7 @@
 {
-  "version": 1778859512579,
+  "version": 1778859522858,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T15:38:32.579Z",
+  "updatedAt": "2026-05-15T15:38:42.858Z",
   "permits": [
     {
       "id": "permit-1",
@@ -13280,7 +13280,11 @@
         "notes": "",
         "completedAt": null,
         "completedBy": ""
-      }
+      },
+      "stageNotes": {
+        "soilTest": "SENT TO FTE"
+      },
+      "_ts": 1778859520844
     },
     {
       "id": "permit-1778272340224",
