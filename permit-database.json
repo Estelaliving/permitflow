@@ -1,7 +1,7 @@
 {
-  "version": 1778858601200,
+  "version": 1778858613223,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T15:23:21.200Z",
+  "updatedAt": "2026-05-15T15:23:33.223Z",
   "permits": [
     {
       "id": "permit-1",
@@ -7377,7 +7377,7 @@
         "subCOI": "2026-05-08",
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": "2026-05-15"
+        "soilTest": ""
       },
       "reviewAgencies": [
         "electric"
