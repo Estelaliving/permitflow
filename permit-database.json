@@ -1,7 +1,7 @@
 {
-  "version": 1778864314842,
+  "version": 1778864350427,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:58:34.842Z",
+  "updatedAt": "2026-05-15T16:59:10.427Z",
   "permits": [
     {
       "id": "permit-1",
@@ -13989,7 +13989,7 @@
     {
       "id": "permit-1778272370270",
       "overallStatus": "active",
-      "stageLastModified": "2026-05-08",
+      "stageLastModified": "2026-05-15",
       "stageUpdatedAt": {
         "architecture": "2026-05-08",
         "sitePlan": "2026-05-08",
@@ -14051,7 +14051,7 @@
       "plan": "",
       "garage": "3 Car - RH",
       "elevation": "",
-      "projectManager": "Jeffrey Gwinn",
+      "projectManager": "MICHAEL BEDAW",
       "estWeeks": "",
       "permitNumber": "",
       "permitFee": "",
@@ -14063,7 +14063,7 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "presubmit",
-      "_ts": 1778273874380,
+      "_ts": 1778864348415,
       "stageRequestedAt": {
         "architecture": "2026-05-06",
         "sitePlan": "2026-05-06",
