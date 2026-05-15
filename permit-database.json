@@ -1,7 +1,7 @@
 {
-  "version": 1778875411422,
+  "version": 1778875417956,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T20:03:31.422Z",
+  "updatedAt": "2026-05-15T20:03:37.956Z",
   "permits": [
     {
       "id": "permit-1",
@@ -13518,7 +13518,7 @@
     },
     {
       "id": "permit-1778270872516",
-      "overallStatus": "active",
+      "overallStatus": "submitted",
       "stageLastModified": "2026-05-15",
       "stageUpdatedAt": {
         "architecture": "2026-05-08",
@@ -13538,7 +13538,7 @@
         "recordedDeed": "2026-05-15",
         "subCOI": "2026-05-15",
         "omReview": "2026-05-08",
-        "submitted": "2026-05-08",
+        "submitted": "2026-05-15",
         "permitIssued": "2026-05-08",
         "inspections": "2026-05-08",
         "co": "2026-05-08",
@@ -13565,7 +13565,7 @@
         "recordedDeed": "complete",
         "subCOI": "n/a",
         "omReview": "not-started",
-        "submitted": "not-started",
+        "submitted": "complete",
         "permitIssued": "not-started",
         "inspections": "not-started",
         "co": "not-started",
@@ -13592,7 +13592,7 @@
         "cf_mot27ztm": "ESTELA SPECS 2 LLC"
       },
       "docsStatus": "collecting",
-      "permitStatus": "presubmit",
+      "permitStatus": "applied",
       "_ts": 1778858983663,
       "stageRequestedAt": {
         "architecture": "2026-04-28",
@@ -13609,7 +13609,8 @@
         "noc": "2026-05-15",
         "geotechLetter": "2026-05-15",
         "recordedDeed": "2026-05-15",
-        "utilityPP": "2026-05-15"
+        "utilityPP": "2026-05-15",
+        "submitted": "2026-05-15"
       },
       "stageCompletedAt": {
         "architecture": "2026-04-30",
@@ -13625,7 +13626,8 @@
         "roofingWorksheet": "2026-05-15",
         "geotechLetter": "2026-05-15",
         "recordedDeed": "2026-05-15",
-        "utilityPP": "2026-05-15"
+        "utilityPP": "2026-05-15",
+        "submitted": "2026-05-15"
       },
       "releaseDate": null,
       "drawingReview": {
