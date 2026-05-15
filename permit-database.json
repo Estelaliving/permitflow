@@ -1,7 +1,7 @@
 {
-  "version": 1778874449367,
+  "version": 1778874473803,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T19:47:29.367Z",
+  "updatedAt": "2026-05-15T19:47:53.803Z",
   "permits": [
     {
       "id": "permit-1",
@@ -13530,7 +13530,7 @@
         "landscape": "2026-05-15",
         "productApproval": "2026-05-15",
         "colorMaterial": "2026-05-15",
-        "roofingWorksheet": "2026-05-08",
+        "roofingWorksheet": "2026-05-15",
         "utilityPP": "2026-05-08",
         "geotechLetter": "2026-05-08",
         "constLienAff": "2026-05-15",
@@ -13557,7 +13557,7 @@
         "landscape": "complete",
         "productApproval": "complete",
         "colorMaterial": "complete",
-        "roofingWorksheet": "not-started",
+        "roofingWorksheet": "complete",
         "utilityPP": "not-started",
         "geotechLetter": "not-started",
         "constLienAff": "complete",
@@ -13604,7 +13604,8 @@
         "landscape": "2026-05-13",
         "colorMaterial": "2026-05-15",
         "constLienAff": "2026-05-15",
-        "productApproval": "2026-05-15"
+        "productApproval": "2026-05-15",
+        "roofingWorksheet": "2026-05-15"
       },
       "stageCompletedAt": {
         "architecture": "2026-04-30",
@@ -13616,7 +13617,8 @@
         "landscape": "2026-05-15",
         "colorMaterial": "2026-05-15",
         "constLienAff": "2026-05-15",
-        "productApproval": "2026-05-15"
+        "productApproval": "2026-05-15",
+        "roofingWorksheet": "2026-05-15"
       },
       "releaseDate": null,
       "drawingReview": {
