@@ -1,7 +1,7 @@
 {
-  "version": 1778860805978,
+  "version": 1778860821193,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:00:05.978Z",
+  "updatedAt": "2026-05-15T16:00:21.193Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6925,7 +6925,7 @@
         "constLienAff": "complete",
         "noc": "complete",
         "recordedDeed": "complete",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
@@ -6955,7 +6955,8 @@
         "constLienAff": "2026-05-08",
         "noc": "2026-05-08",
         "recordedDeed": "2026-05-08",
-        "submitted": "2026-05-08"
+        "submitted": "2026-05-08",
+        "subCOI": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "submitted",
@@ -7008,9 +7009,9 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "applied",
-      "_ts": 1778857896022,
+      "_ts": 1778860818279,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
       },
@@ -7069,6 +7070,9 @@
       },
       "agencyNotes": {
         "stormwater": "Alliance"
+      },
+      "stageNotes": {
+        "soilTest": "SENT TO FTE"
       }
     },
     {
