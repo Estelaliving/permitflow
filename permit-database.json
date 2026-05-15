@@ -1,7 +1,7 @@
 {
-  "version": 1778858633764,
+  "version": 1778858687836,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T15:23:53.764Z",
+  "updatedAt": "2026-05-15T15:24:47.836Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6660,7 +6660,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": null,
+        "soilTest": "",
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-05",
         "colorMaterial": null,
@@ -6689,7 +6689,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": null
+        "soilTest": ""
       },
       "reviewAgencies": [
         "mechanical"
@@ -6733,7 +6733,7 @@
         "sitePlan": "complete",
         "trussEng": "complete",
         "energyCalcs": "complete",
-        "soilTest": "requested",
+        "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
         "productApproval": "complete",
@@ -6766,7 +6766,7 @@
         "sitePlan": "2026-05-08",
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
-        "soilTest": "2026-05-08",
+        "soilTest": "2026-05-15",
         "structuralEng": "2026-05-08",
         "landscape": "2026-05-08",
         "colorMaterial": "2026-05-08",
@@ -6780,7 +6780,7 @@
         "productApproval": "2026-05-08",
         "submitted": "2026-05-11"
       },
-      "stageLastModified": "2026-05-08",
+      "stageLastModified": "2026-05-15",
       "overallStatus": "submitted",
       "drawingReview": {
         "checks": {
@@ -6825,10 +6825,10 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "applied",
-      "_ts": 1778786288188,
-      "projectManager": "Joshua Parker",
+      "_ts": 1778858620279,
+      "projectManager": "JIM HUMPHREYS",
       "customFields": {
         "cf_mot27ztm": "Estela Especs 2 LLC"
       },
@@ -6837,7 +6837,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": "2026-04-13",
+        "soilTest": "",
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-06",
         "colorMaterial": null,
@@ -6867,7 +6867,8 @@
         "recordedDeed": null,
         "subCOI": "2026-05-08",
         "productApproval": null,
-        "submitted": "2026-05-11"
+        "submitted": "2026-05-11",
+        "soilTest": ""
       },
       "reviewAgencies": [
         "electric"
@@ -6887,6 +6888,9 @@
       },
       "agencyNotes": {
         "electric": "Ressumit: Electrical Drawings "
+      },
+      "stageNotes": {
+        "soilTest": "REQUEST SENT TO FTE"
       }
     },
     {
