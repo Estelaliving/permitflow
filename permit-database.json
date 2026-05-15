@@ -1,7 +1,7 @@
 {
-  "version": 1778860696280,
+  "version": 1778860699745,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T15:58:16.280Z",
+  "updatedAt": "2026-05-15T15:58:19.745Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6674,7 +6674,7 @@
         "recordedDeed": null,
         "subCOI": null,
         "submitted": "2026-05-08",
-        "soilTest": "2026-05-15"
+        "soilTest": ""
       },
       "reviewAgencies": [
         "stormwater"
