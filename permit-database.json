@@ -1,7 +1,7 @@
 {
-  "version": 1778862051477,
+  "version": 1778862060287,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:20:51.477Z",
+  "updatedAt": "2026-05-15T16:21:00.287Z",
   "permits": [
     {
       "id": "permit-1",
@@ -2263,7 +2263,7 @@
       "plan": "Plan 5 - 2182",
       "garage": "Right Hand",
       "elevation": "Transitional",
-      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan, 70010 · Frameless Shower Upgrade - Brushed Nickel, 85055 · Sable & Sand Interior Package",
+      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan, 70010 · Frameless Shower Upgrade - Brushed Nickel, 85055 · Sable & Sand Interior Package, 86010 · Neutral Ground Exterior Package",
       "permitNumber": "",
       "releaseDate": null,
       "stages": {
