@@ -1,7 +1,7 @@
 {
-  "version": 1778858087841,
+  "version": 1778858098930,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T15:14:47.841Z",
+  "updatedAt": "2026-05-15T15:14:58.930Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6209,17 +6209,60 @@
         "recordedDeed": "2026-05-08",
         "permitIssued": "2026-05-12"
       },
-      "stageLastModified": "2026-05-08",
+      "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
       "drawingReview": {
-        "checks": {},
+        "checks": {
+          "architecture_address": true,
+          "sitePlan_address": true,
+          "trussEng_address": true,
+          "energyCalcs_address": true,
+          "soilTest_address": true,
+          "structuralEng_address": true,
+          "landscape_address": true,
+          "sitePlan_garage": true,
+          "architecture_garage": true,
+          "trussEng_garage": true,
+          "energyCalcs_garage": true,
+          "soilTest_garage": true,
+          "structuralEng_garage": true,
+          "landscape_garage": true,
+          "architecture_location": true,
+          "sitePlan_location": true,
+          "trussEng_location": true,
+          "energyCalcs_location": true,
+          "soilTest_location": true,
+          "structuralEng_location": true,
+          "landscape_location": true,
+          "architecture_modelElev": true,
+          "sitePlan_modelElev": true,
+          "trussEng_modelElev": true,
+          "energyCalcs_modelElev": true,
+          "soilTest_modelElev": true,
+          "structuralEng_modelElev": true,
+          "landscape_modelElev": true,
+          "architecture_garageCars": true,
+          "sitePlan_garageCars": true,
+          "trussEng_garageCars": true,
+          "energyCalcs_garageCars": true,
+          "soilTest_garageCars": true,
+          "structuralEng_garageCars": true,
+          "landscape_garageCars": true,
+          "architecture_options": true,
+          "sitePlan_options": true,
+          "trussEng_options": true,
+          "energyCalcs_options": true,
+          "soilTest_options": true,
+          "structuralEng_options": true,
+          "landscape_options": true
+        },
         "notes": "",
         "completedAt": null,
         "completedBy": ""
       },
       "docsStatus": "collecting",
       "permitStatus": "issued",
-      "_ts": 1778267315591,
+      "_ts": 1778858038839,
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 9 LLC"
       },
@@ -6252,7 +6295,7 @@
         "recordedDeed": null,
         "permitIssued": "2026-05-13"
       },
-      "projectManager": "Joshua Parker",
+      "projectManager": "JON FRANTZ",
       "reviewAgencies": [
         "mechanical",
         "stormwater"
