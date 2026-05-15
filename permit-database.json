@@ -1,7 +1,7 @@
 {
-  "version": 1778877127621,
+  "version": 1778877131892,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T20:32:07.621Z",
+  "updatedAt": "2026-05-15T20:32:11.892Z",
   "permits": [
     {
       "id": "permit-1",
@@ -511,7 +511,7 @@
         "permitIssued": "",
         "architecture": "JAMIE SENT"
       },
-      "_ts": 1778863022138,
+      "_ts": 1778877129887,
       "reviewAgencies": [
         "mechanical",
         "stormwater"
@@ -563,7 +563,7 @@
       },
       "agencyStatuses": {
         "stormwater": "complete",
-        "mechanical": "in-progress"
+        "mechanical": "complete"
       },
       "projectManager": "JON FRANTZ",
       "customFields": {
