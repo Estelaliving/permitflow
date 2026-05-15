@@ -1,7 +1,7 @@
 {
-  "version": 1778862977005,
+  "version": 1778863024935,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:36:17.005Z",
+  "updatedAt": "2026-05-15T16:37:04.935Z",
   "permits": [
     {
       "id": "permit-1",
@@ -460,7 +460,7 @@
         "trussEng": "complete",
         "energyCalcs": "complete",
         "soilTest": "n/a",
-        "structuralEng": "requested",
+        "structuralEng": "complete",
         "landscape": "complete",
         "productApproval": "n/a",
         "colorMaterial": "n/a",
@@ -510,7 +510,7 @@
         "permitIssued": "",
         "architecture": "JAMIE SENT"
       },
-      "_ts": 1778862973000,
+      "_ts": 1778863022138,
       "reviewAgencies": [
         "mechanical",
         "stormwater"
@@ -530,7 +530,8 @@
         "energyCalcs": "2026-04-22",
         "sitePlan": "2026-04-29",
         "landscape": "2026-04-30",
-        "architecture": "2026-04-11"
+        "architecture": "2026-04-11",
+        "structuralEng": "2026-05-15"
       },
       "stageRounds": {
         "ra_mechanical": [
