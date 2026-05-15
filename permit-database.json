@@ -1,7 +1,7 @@
 {
-  "version": 1778863633068,
+  "version": 1778863637740,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:47:13.068Z",
+  "updatedAt": "2026-05-15T16:47:17.740Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12838,7 +12838,7 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
@@ -12862,7 +12862,8 @@
         "trussEng": "2026-05-15",
         "sitePlan": "2026-05-15",
         "energyCalcs": "2026-05-15",
-        "structuralEng": "2026-05-15"
+        "structuralEng": "2026-05-15",
+        "subCOI": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
       "overallStatus": "submitted",
@@ -12872,7 +12873,7 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "applied",
       "_ts": 1778863160553,
       "customFields": {
