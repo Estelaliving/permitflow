@@ -1,7 +1,7 @@
 {
-  "version": 1778863793078,
+  "version": 1778863798587,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:49:53.078Z",
+  "updatedAt": "2026-05-15T16:49:58.587Z",
   "permits": [
     {
       "id": "permit-1",
@@ -12943,7 +12943,7 @@
         "recordedDeed": "n/a",
         "subCOI": "n/a",
         "omReview": "not-started",
-        "submitted": "not-started",
+        "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "not-started",
@@ -12965,10 +12965,11 @@
         "energyCalcs": "2026-05-08",
         "soilTest": "2026-05-08",
         "structuralEng": "2026-05-08",
-        "subCOI": "2026-05-15"
+        "subCOI": "2026-05-15",
+        "submitted": "2026-05-15"
       },
       "stageLastModified": "2026-05-15",
-      "overallStatus": "active",
+      "overallStatus": "submitted",
       "drawingReview": {
         "checks": {},
         "notes": "",
@@ -12976,7 +12977,7 @@
         "completedBy": ""
       },
       "docsStatus": "complete",
-      "permitStatus": "presubmit",
+      "permitStatus": "applied",
       "projectManager": "MICHAEL BEDAW",
       "_ts": 1778863750291,
       "stageRequestedAt": {
@@ -12985,7 +12986,8 @@
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
         "soilTest": "2026-04-28",
-        "structuralEng": "2026-04-15"
+        "structuralEng": "2026-04-15",
+        "submitted": "2026-05-15"
       },
       "stageCompletedAt": {
         "trussEng": "2026-04-16",
@@ -12993,7 +12995,8 @@
         "structuralEng": "2026-04-18",
         "energyCalcs": "2026-04-22",
         "sitePlan": "2026-04-29",
-        "soilTest": "2026-05-06"
+        "soilTest": "2026-05-06",
+        "submitted": "2026-05-15"
       },
       "customFields": {
         "cf_mot27ztm": "ESTELA SPECS 1 LLC"
