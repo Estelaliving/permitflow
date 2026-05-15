@@ -1,7 +1,7 @@
 {
-  "version": 1778862898042,
+  "version": 1778862904257,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:34:58.042Z",
+  "updatedAt": "2026-05-15T16:35:04.257Z",
   "permits": [
     {
       "id": "permit-1",
@@ -526,7 +526,7 @@
         "trussEng": "2026-04-18",
         "energyCalcs": "2026-04-22",
         "sitePlan": "2026-04-29",
-        "landscape": "2026-05-15"
+        "landscape": "2026-04-30"
       },
       "stageRounds": {
         "ra_mechanical": [
