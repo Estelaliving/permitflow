@@ -1,7 +1,7 @@
 {
-  "version": 1778862017078,
+  "version": 1778862021269,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:20:17.078Z",
+  "updatedAt": "2026-05-15T16:20:21.269Z",
   "permits": [
     {
       "id": "permit-1",
@@ -2263,7 +2263,7 @@
       "plan": "Plan 5 - 2182",
       "garage": "Right Hand",
       "elevation": "Transitional",
-      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan, 05011 · Full Summer Kitchen in Lanai",
+      "options": "5th Bedroom and bath in Flex, 00005 · Extended Covered Patio - Per Plan",
       "permitNumber": "",
       "releaseDate": null,
       "stages": {
