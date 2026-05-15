@@ -1,7 +1,7 @@
 {
-  "version": 1778862362919,
+  "version": 1778862398985,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T16:26:02.919Z",
+  "updatedAt": "2026-05-15T16:26:38.985Z",
   "permits": [
     {
       "id": "permit-1",
@@ -323,13 +323,13 @@
         "constLienAff": "n/a",
         "noc": "n/a",
         "recordedDeed": "n/a",
-        "subCOI": "not-started",
+        "subCOI": "n/a",
         "omReview": "not-started",
         "submitted": "complete",
         "planReview": "not-started",
         "resubmittal": "n/a",
         "permitIssued": "complete",
-        "inspections": "not-started",
+        "inspections": "requested",
         "co": "not-started"
       },
       "stageDates": {
@@ -341,9 +341,11 @@
       "utilities": "",
       "buildersRisk": false,
       "stageUpdatedAt": {
-        "permitIssued": "2026-05-08"
+        "permitIssued": "2026-05-08",
+        "subCOI": "2026-05-15",
+        "inspections": "2026-05-15"
       },
-      "stageLastModified": "2026-05-08",
+      "stageLastModified": "2026-05-15",
       "overallStatus": "permitted",
       "drawingReview": {
         "checks": {},
@@ -351,18 +353,20 @@
         "completedAt": null,
         "completedBy": ""
       },
-      "docsStatus": "collecting",
+      "docsStatus": "complete",
       "permitStatus": "issued",
-      "_ts": 1778274933490,
+      "_ts": 1778862395346,
       "customFields": {
         "cf_mot27ztm": "ESTELA LIVING LLC"
       },
       "stageRequestedAt": {
-        "permitIssued": "2026-05-08"
+        "permitIssued": "2026-05-08",
+        "inspections": "2026-05-15"
       },
       "stageCompletedAt": {
         "permitIssued": "2026-04-25"
-      }
+      },
+      "projectManager": "JON FRANTZ"
     },
     {
       "id": "permit-6",
