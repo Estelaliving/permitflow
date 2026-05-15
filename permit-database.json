@@ -1,7 +1,7 @@
 {
-  "version": 1778858494547,
+  "version": 1778858498230,
   "updatedBy": "Natalia Massola",
-  "updatedAt": "2026-05-15T15:21:34.547Z",
+  "updatedAt": "2026-05-15T15:21:38.230Z",
   "permits": [
     {
       "id": "permit-1",
@@ -7154,7 +7154,7 @@
       "docsStatus": "collecting",
       "permitStatus": "applied",
       "projectManager": "JIM HUMPHREYS",
-      "_ts": 1778858482816,
+      "_ts": 1778858498484,
       "customFields": {
         "cf_mot27ztm": "Estela Specs 7 LLC"
       },
@@ -7192,7 +7192,7 @@
         "recordedDeed": null,
         "productApproval": null,
         "submitted": "2026-05-11",
-        "soilTest": "2026-05-15"
+        "soilTest": ""
       },
       "reviewAgencies": [
         "mechanical"
@@ -7212,6 +7212,9 @@
       },
       "agencyNotes": {
         "mechanical": "Resummit: \"State Card\""
+      },
+      "stageNotes": {
+        "soilTest": ""
       }
     },
     {
