@@ -1,7 +1,7 @@
 {
-  "version": 1778858567838,
+  "version": 1778858593085,
   "updatedBy": "Team member",
-  "updatedAt": "2026-05-15T15:22:47.838Z",
+  "updatedAt": "2026-05-15T15:23:13.085Z",
   "permits": [
     {
       "id": "permit-1",
@@ -6551,7 +6551,7 @@
         "sitePlan": "complete",
         "trussEng": "complete",
         "energyCalcs": "complete",
-        "soilTest": "requested",
+        "soilTest": "complete",
         "structuralEng": "complete",
         "landscape": "complete",
         "productApproval": "complete",
@@ -6584,7 +6584,7 @@
         "sitePlan": "2026-05-08",
         "trussEng": "2026-05-08",
         "energyCalcs": "2026-05-08",
-        "soilTest": "2026-05-08",
+        "soilTest": "2026-05-15",
         "structuralEng": "2026-05-08",
         "landscape": "2026-05-08",
         "colorMaterial": "2026-05-08",
@@ -6636,7 +6636,13 @@
           "trussEng_location": true,
           "trussEng_modelElev": true,
           "trussEng_garageCars": true,
-          "trussEng_options": true
+          "trussEng_options": true,
+          "soilTest_address": true,
+          "soilTest_garage": true,
+          "soilTest_location": true,
+          "soilTest_modelElev": true,
+          "soilTest_garageCars": true,
+          "soilTest_options": true
         },
         "notes": "",
         "completedAt": null,
@@ -6644,8 +6650,8 @@
       },
       "docsStatus": "collecting",
       "permitStatus": "applied",
-      "projectManager": "Joshue Parker",
-      "_ts": 1778853996503,
+      "projectManager": "JIM HUMPHREYS",
+      "_ts": 1778858549014,
       "customFields": {
         "cf_mot27ztm": "Estela Specs 7 LLC"
       },
@@ -6654,7 +6660,7 @@
         "sitePlan": "2026-04-13",
         "trussEng": "2026-04-13",
         "energyCalcs": "2026-04-13",
-        "soilTest": "2026-04-13",
+        "soilTest": null,
         "structuralEng": "2026-04-15",
         "landscape": "2026-05-05",
         "colorMaterial": null,
@@ -6682,7 +6688,8 @@
         "noc": null,
         "recordedDeed": null,
         "productApproval": null,
-        "submitted": "2026-05-11"
+        "submitted": "2026-05-11",
+        "soilTest": null
       },
       "reviewAgencies": [
         "mechanical"
@@ -6702,6 +6709,9 @@
       },
       "agencyNotes": {
         "mechanical": "Resummit: \"State Card\""
+      },
+      "stageNotes": {
+        "soilTest": "REQUEST SENT TO FTE"
       }
     },
     {
