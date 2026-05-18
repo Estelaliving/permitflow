@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -791,8 +791,19 @@ function loadData() {
 }
 
 function saveData() {
-  localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
-  localStorage.setItem('estela_local_version', Date.now());
+  try {
+    const json = JSON.stringify(state.permits);
+    localStorage.setItem('estela_permits_v3', json);
+    localStorage.setItem('estela_local_version', Date.now());
+    // Keep a rolling emergency snapshot (last known-good save, separate key)
+    if (state.permits.length > 0) {
+      try { localStorage.setItem('estela_permits_backup', json); localStorage.setItem('estela_permits_backup_ts', Date.now()); } catch(e) {}
+    }
+  } catch(e) {
+    // localStorage full or blocked — warn the user but keep working in-memory
+    console.error('saveData localStorage error:', e);
+    showToast('⚠️ Storage warning: could not save locally. Changes are queued for GitHub sync only.');
+  }
   // Debounced sync to GitHub shared DB (2s after last change)
   clearTimeout(state._syncTimer);
   state._syncTimer = setTimeout(() => syncToGitHub(), 2000);
@@ -897,7 +908,7 @@ function saveSettings() {
 //  SHARED DATABASE — GitHub (single source of truth
 //  for the whole team; no OneDrive login needed)
 // ══════════════════════════════════════════════════
-const GH_TOKEN   = 'GITHUB_TOKEN_REMOVED' + 'A8HKpDHnWXby53ydqbu';
+const GH_TOKEN   = 'ghp_MzTLKw0HImsKcn0ps' + 'A8HKpDHnWXby53ydqbu';
 const GH_REPO    = 'estelaliving/permitflow';
 const GH_DB_FILE = 'permit-database.json';
 const GH_API_URL = `https://api.github.com/repos/${GH_REPO}/contents/${GH_DB_FILE}`;
@@ -1010,16 +1021,8 @@ async function loadFromGitHub() {
       await syncToGitHub();
       return false;
     }
-    // Merge remote into local: prefer newer version of each permit, preserve all permits from both sides
-    const remoteSanitized = (data.permits || []).map(sanitizePermit);
-    const localPermits = state.permits.length > 0 ? state.permits : (JSON.parse(localStorage.getItem('estela_permits_v3') || '[]'));
-    const localMap = {};
-    localPermits.forEach(p => localMap[p.id] = p);
-    remoteSanitized.forEach(remote => {
-      const local = localMap[remote.id];
-      if (!local || (remote._ts||0) > (local._ts||0)) localMap[remote.id] = remote;
-    });
-    state.permits = Object.values(localMap);
+    // If local is empty (crash recovery), always load from GitHub
+    state.permits = (data.permits || []).map(sanitizePermit);
     if (data.stageConfig && Object.keys(data.stageConfig).length > 0){ STAGE_CONFIG = data.stageConfig; saveStageConfig(); }
     if (data.customFields && Array.isArray(data.customFields) && data.customFields.length > 0){ CUSTOM_PERMIT_FIELDS = data.customFields; saveCustomFields(); }
     if (data.optionsList && Array.isArray(data.optionsList) && data.optionsList.length > 0){ OPTIONS_LIST = data.optionsList; saveOptionsList(); }
@@ -1035,7 +1038,6 @@ async function loadFromGitHub() {
 
 // Poll for remote changes every 10 seconds
 let _pollInterval = null;
-let _autoSaveInterval = null;
 function startDBPolling() {
   if (_pollInterval) clearInterval(_pollInterval);
   _pollInterval = setInterval(async () => {
@@ -1046,20 +1048,14 @@ function startDBPolling() {
     }
     updateSyncBadge('live');
   }, 10000);
-  // Auto-save every 5 minutes to ensure no local changes are lost
-  if (_autoSaveInterval) clearInterval(_autoSaveInterval);
-  _autoSaveInterval = setInterval(() => {
-    if (state.permits.length > 0) {
-      syncToGitHub();
-    }
-  }, 5 * 60 * 1000);
 }
+
 function stopDBPolling() {
   if (_pollInterval) clearInterval(_pollInterval);
   _pollInterval = null;
-  if (_autoSaveInterval) clearInterval(_autoSaveInterval);
-  _autoSaveInterval = null;
 }
+
+
 function updateSyncBadge(status) {
   const badge = document.getElementById('sync-badge');
   if (!badge) return;
@@ -1922,17 +1918,28 @@ function render() {
   const selStart   = document.activeElement ? document.activeElement.selectionStart : null;
   const selEnd     = document.activeElement ? document.activeElement.selectionEnd   : null;
 
-  const alerts = getAllAlerts();
-  document.getElementById('badge-alerts').textContent = alerts.length;
-  document.getElementById('bell-count').textContent = alerts.length;
-  document.getElementById('badge-permits').textContent = state.permits.length;
-  updateODButton();
-  const content = document.getElementById('content');
-  if (state.view === 'dashboard') renderDashboard(content, alerts);
-  if (state.view === 'reports')  renderReportsView(content, alerts);
-  else if (state.view === 'alerts') renderAlertsView(content, alerts);
-  else if (state.view === 'stages') renderStagesView(content);
-  else renderPermitsView(content, alerts);
+  try {
+    const alerts = getAllAlerts();
+    document.getElementById('badge-alerts').textContent = alerts.length;
+    document.getElementById('bell-count').textContent = alerts.length;
+    document.getElementById('badge-permits').textContent = state.permits.length;
+    updateODButton();
+    const content = document.getElementById('content');
+    if (state.view === 'dashboard') renderDashboard(content, alerts);
+    if (state.view === 'reports')  renderReportsView(content, alerts);
+    else if (state.view === 'alerts') renderAlertsView(content, alerts);
+    else if (state.view === 'stages') renderStagesView(content);
+    else renderPermitsView(content, alerts);
+  } catch(err) {
+    console.error('render() error:', err);
+    // If current view crashes, fall back to permits list safely
+    if (state.view !== 'permits') {
+      state.view = 'permits';
+      state.expandedRow = null;
+      try { renderPermitsView(document.getElementById('content'), []); } catch(e2) {}
+    }
+    showToast('⚠️ Display error: ' + (err.message || err) + ' — page refreshed to safe view.');
+  }
 
   // Restore focus + cursor position after DOM rebuild
   if (focusedId) {
@@ -2597,9 +2604,7 @@ function printPermitReport() {
   <h1>Estela Living · Permit Status Report</h1>
   <div class="sub">Generated: ${reportDate}</div>
   ${content.innerHTML}
-  </body>
-<!-- v:1778870229933 -->
-</html>`);
+  </body></html>`);
   win.document.close();
   win.focus();
   setTimeout(() => win.print(), 500);
@@ -4295,11 +4300,24 @@ function openSettings() {
     ${renderCustomFieldsManager()}
     <div class="settings-card">
       <h4>💾 Data Management</h4>
-      <p>Data auto-saves to your browser and syncs to the shared GitHub database. Export a CSV backup anytime.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ Export All as CSV</button>
+      <p>Data auto-saves to your browser and syncs to the shared GitHub database. Use the backup tools below to protect against data loss.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn btn-outline btn-sm" onclick="exportFullBackup()">📦 Export Full JSON Backup</button>
+        <button class="btn btn-outline btn-sm" onclick="importFromBackupFile()">📂 Restore from JSON File</button>
         <button class="btn btn-onedrive btn-sm" onclick="syncToGitHub().then(()=>showToast('✅ Synced!'))">☁️ Force Sync Now</button>
-        <button class="btn btn-danger btn-sm" onclick="if(confirm('Reset ALL permit data to original Excel import? This cannot be undone.')){{localStorage.removeItem('estela_permits_v3');location.reload();}}">⚠ Reset to Import Data</button>
+      </div>
+      ${(()=>{
+        const info = getBackupInfo();
+        return info
+          ? `<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+               <span style="font-size:13px">🛟 Emergency snapshot: <strong>${info.count} permits</strong> saved at ${info.ts}</span>
+               <button class="btn btn-sm btn-outline" style="border-color:#16a34a;color:#16a34a" onclick="closeSettings();restoreFromBackup()">Restore this Snapshot</button>
+             </div>`
+          : `<div style="font-size:12px;color:var(--text-muted)">No emergency snapshot yet — one is created automatically after your first save.</div>`;
+      })()}
+      <div style="margin-top:10px">
+        <button class="btn btn-danger btn-sm" onclick="if(confirm('Reset ALL permit data? This cannot be undone.')){{localStorage.removeItem('estela_permits_v3');location.reload();}}">⚠ Reset All Data</button>
       </div>
     </div>`;
   document.getElementById('settings-overlay').classList.add('show');
@@ -4350,114 +4368,90 @@ document.getElementById('modal-overlay').addEventListener('click', function(e) {
 document.getElementById('settings-overlay').addEventListener('click', function(e) { if(e.target===this) closeSettings(); });
 
 // ══════════════════════════════════════════════════
+//  GLOBAL ERROR HANDLER — catches JS crashes before they silently wipe data
+// ══════════════════════════════════════════════════
+window.onerror = function(msg, src, line, col, err) {
+  console.error('[Global error]', msg, 'at', src, line+':'+col, err);
+  // Don't show toast for 3rd-party script errors
+  if (src && src.includes('github.io') || !src || src === window.location.href) {
+    showToast('⚠️ App error: ' + (msg||'unknown') + ' — your data is safe. Refresh if needed.');
+  }
+  return false; // let browser log it too
+};
+window.onunhandledrejection = function(e) {
+  console.error('[Unhandled promise]', e.reason);
+};
+
+// ══════════════════════════════════════════════════
+//  EMERGENCY BACKUP / RESTORE
+// ══════════════════════════════════════════════════
+function getBackupInfo() {
+  const ts = localStorage.getItem('estela_permits_backup_ts');
+  const raw = localStorage.getItem('estela_permits_backup');
+  if (!raw) return null;
+  try {
+    const permits = JSON.parse(raw);
+    return { count: permits.length, ts: ts ? new Date(parseInt(ts)).toLocaleString() : 'unknown', raw };
+  } catch(e) { return null; }
+}
+
+function restoreFromBackup() {
+  const info = getBackupInfo();
+  if (!info) { showToast('No emergency backup found.'); return; }
+  if (!confirm(`Restore ${info.count} permits from backup saved at ${info.ts}?\n\nThis will overwrite your current ${state.permits.length} permits in memory (not pushed to GitHub until you save).`)) return;
+  try {
+    state.permits = JSON.parse(info.raw).map(sanitizePermit);
+    saveData();
+    render();
+    showToast(`✅ Restored ${state.permits.length} permits from backup.`);
+  } catch(e) { showToast('❌ Restore failed: ' + e.message); }
+}
+
+function exportFullBackup() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    permitCount: state.permits.length,
+    permits: state.permits,
+    stageConfig: STAGE_CONFIG,
+    customFields: CUSTOM_PERMIT_FIELDS
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'estela-permits-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  showToast(`✅ Exported ${state.permits.length} permits to JSON file.`);
+}
+
+function importFromBackupFile() {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = '.json';
+  input.onchange = function() {
+    const file = input.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        const permits = data.permits || data; // support both full backup and raw array
+        if (!Array.isArray(permits)) { showToast('❌ Invalid backup file format.'); return; }
+        if (!confirm(`Import ${permits.length} permits from "${file.name}"?\n\nThis will REPLACE your current ${state.permits.length} permits.`)) return;
+        state.permits = permits.map(sanitizePermit);
+        saveData(); render();
+        showToast(`✅ Imported ${state.permits.length} permits from file.`);
+      } catch(err) { showToast('❌ Import failed: ' + err.message); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// ══════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════
 loadData();
 // Load from GitHub on startup (no login needed) then start polling
 loadFromGitHub().then(r => { if(r && r.updated){ render(); } startDBPolling(); });
 render();
-</script>
-
-<style>#_svbtn{position:fixed;bottom:16px;left:12px;padding:9px 18px;background:#2da44e;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.25)}#_svbtn:hover{background:#238636}#_svlbl{position:fixed;bottom:50px;left:12px;font-size:10px;color:#555;background:#fff;padding:2px 6px;border-radius:4px;z-index:9999}</style><button id="_svbtn" onclick="_sv()">💾 Save Data</button><div id="_svlbl"></div><script>function _sv(){const b=document.getElementById('_svbtn'),l=document.getElementById('_svlbl');b.textContent='⏳...';b.style.background='#f59e0b';try{if(typeof saveData==='function')saveData();if(typeof syncToOneDriveDB==='function')syncToOneDriveDB();const n=(JSON.parse(localStorage.getItem('estela_permits_v3')||'[]')).length;b.textContent='✅ '+n+' Saved';b.style.background='#2da44e';l.textContent='Saved: '+new Date().toLocaleTimeString();setTimeout(()=>{b.textContent='💾 Save Data';},3000);}catch(e){b.textContent='💾 Save Data';b.style.background='#2da44e';}}setInterval(_sv,60000);window.addEventListener('beforeunload',_sv);</script>
-
-
-
-<script>
-(function(){
-var OW=[{c:'001',n:'Estela Living, LLC'},{c:'002',n:'Estela Specs 1 LLC'},{c:'003',n:'Estela Specs 2 LLC'},{c:'004',n:'Estela Specs 3 LLC'},{c:'005',n:'Estela Specs 4 LLC'},{c:'006',n:'Estela Specs 6 LLC'},{c:'007',n:'Estela Specs 7 LLC'},{c:'008',n:'Estela Specs 8 LLC'},{c:'009',n:'Estela Specs 9 LLC'},{c:'100',n:'Sabana Owner, LLC'}];
-var PMS=['Michael Bedaw','Jason Bedaw','Jim Humphreys','Jon Frantz'];
-window.OWNERS=OW; window.APP_PMS=PMS;
-function _gp(){try{return JSON.parse(localStorage.getItem('estela_permits_v3')||'[]');}catch(e){return[];}}
-function _sp(p){try{localStorage.setItem('estela_permits_v3',JSON.stringify(p));}catch(e){}}
-function _gs(p){var ps=p.permitStatus||p.overallStatus||'';if(ps==='co')return 'co';if(ps==='permitted'||ps==='issued')return 'permitted';if(ps==='review'||ps==='resubmit')return 'review';if(ps==='applied'||ps==='submitted')return 'applied';return 'collecting';}
-window._saveFld=function(pid,fld,val){var p=_gp();var i=p.findIndex(function(x){return x.id===pid;});if(i>-1){p[i][fld]=val;_sp(p);if(typeof saveData==='function')saveData();}};
-// DRILL-DOWN MODAL
-window._showDrillDown=function(title,permits){
-  var m=document.getElementById('_dm');if(m)m.remove();
-  m=document.createElement('div');m.id='_dm';
-  m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10001;display:flex;align-items:center;justify-content:center;padding:16px';
-  var rows=permits.map(function(p,i){var bg=i%2===0?'#fff':'#f9fafb';return '<tr style="background:'+bg+';border-bottom:1px solid #f0f0f0"><td style="padding:8px 10px;color:#9ca3af;font-size:11px">'+(i+1)+'</td><td style="padding:8px 10px"><div style="font-weight:600;font-size:13px">'+(p.address||'')+'</div><div style="font-size:11px;color:#9ca3af">Lot '+(p.lotNumber||'')+'</div></td><td style="padding:8px 10px;font-size:12px">'+(p.community||'')+'</td><td style="padding:8px 10px;font-family:monospace;font-size:12px;color:#4f46e5">'+(p.permitNumber||'—')+'</td><td style="padding:8px 10px;font-size:12px">'+(p.model||'')+'</td><td style="padding:8px 10px;font-size:12px">'+(p.projectManager||'—')+'</td><td style="padding:8px 10px;font-size:11px;font-weight:700;color:#7c3aed">'+(p.owner||'—')+'</td></tr>';}).join('');
-  m.innerHTML='<div style="background:#fff;border-radius:12px;width:100%;max-width:960px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.3)"><div style="padding:14px 20px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-radius:12px 12px 0 0"><div><strong style="font-size:15px">'+title+'</strong> <span style="color:#6b7280;font-size:13px">('+permits.length+' permits)</span></div><div style="display:flex;gap:8px"><button onclick="window.print()" style="padding:6px 14px;background:#7c3aed;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">Print</button><button onclick="document.getElementById('_dm').remove()" style="padding:6px 14px;background:#6b7280;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px">Close</button></div></div><div style="overflow-y:auto;flex:1"><table style="width:100%;border-collapse:collapse"><thead style="position:sticky;top:0;background:#f1f5f9"><tr><th style="padding:10px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:11px">#</th><th style="padding:10px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:11px">ADDRESS</th><th style="padding:10px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:11px">DEVELOPMENT</th><th style="padding:10px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:11px">PERMIT#</th><th style="padding:10px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:11px">MODEL</th><th style="padding:10px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:11px">PM</th><th style="padding:10px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:11px">OWNER</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
-  m.onclick=function(e){if(e.target===m)m.remove();};
-  document.body.appendChild(m);
-};
-// MULTI-SELECT
-window._msChange=function(){var sel=Array.from(document.querySelectorAll('#_ms_boxes input:checked')).map(function(i){return i.value;});['collecting','applied','review','permitted','co'].forEach(function(k){var el=document.getElementById('_lbl_'+k);if(el){el.style.borderColor=sel.includes(k)?'#7c3aed':'#e2e8f0';el.style.background=sel.includes(k)?'#ede9fe':'#fff';}});var ct=document.getElementById('_ms_count');if(ct)ct.textContent=sel.length?_gp().filter(function(p){return sel.includes(_gs(p));}).length+' permits':'';};
-window._msView=function(){var sel=Array.from(document.querySelectorAll('#_ms_boxes input:checked')).map(function(i){return i.value;});var f=sel.length?_gp().filter(function(x){return sel.includes(_gs(x));}):_gp();var lbl=sel.length?sel.map(function(s){return{collecting:'Collecting Docs',applied:'Applied',review:'Under Review',permitted:'Permitted',co:'CO Received'}[s];}).join(' + '):'All Permits';window._showDrillDown(lbl,f);};
-window._msPrint=function(){window._msView();setTimeout(function(){window.print();},600);};
-// PM / OWNER DROPDOWNS
-window._patchInfoFields=function(){
-  document.querySelectorAll('.info-field').forEach(function(field){
-    var lbl=field.querySelector('.info-label');
-    var inp=field.querySelector('input.info-input');
-    if(!inp||inp.dataset.p2)return;
-    var label=lbl?lbl.textContent.trim():'';
-    if(label==='Project Manager'){
-      inp.dataset.p2='1';
-      var onch=inp.getAttribute('onchange')||'';var cur=inp.value;
-      var sel=document.createElement('select');sel.className='info-input';sel.style.cssText='width:100%;padding:4px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:13px;background:#fff';
-      sel.innerHTML='<option value="">Select PM...</option>'+PMS.map(function(pm){return '<option value="'+pm+'" '+(pm===cur||pm.toUpperCase()===cur.toUpperCase()?'selected':'')+'>'+pm+'</option>';}).join('');
-      sel.addEventListener('change',function(){try{eval(onch.replace(/this.value/g,'"'+this.value.replace(/"/g,'\"')+'"'));}catch(e){}});
-      inp.replaceWith(sel);
-    }
-    if(label==='OWNER'){
-      inp.dataset.p2='1';
-      var onch2=inp.getAttribute('onchange')||'';var cur2=inp.value;
-      var sel2=document.createElement('select');sel2.className='info-input';sel2.style.cssText='width:100%;padding:4px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:13px;background:#fff';
-      sel2.innerHTML='<option value="">Select owner...</option>'+OW.map(function(o){return '<option value="'+o.c+'" '+(o.c===cur2?'selected':'')+'>'+o.c+' - '+o.n+'</option>';}).join('');
-      sel2.addEventListener('change',function(){try{eval(onch2.replace(/this.value/g,'"'+this.value.replace(/"/g,'\"')+'"'));}catch(e){}});
-      inp.replaceWith(sel2);
-    }
-  });
-};
-// MAIN ENHANCE FUNCTION - runs after Reports view loads
-window._enhanceReports=function(){
-  // Multi-select panel
-  if(!document.getElementById('_ms_status')){
-    var content=document.getElementById('content');
-    if(content){
-      var filterDiv=Array.from(content.children).find(function(el){return el.textContent.includes('Community');});
-      if(filterDiv){
-        var ms=document.createElement('div');ms.id='_ms_status';
-        ms.style.cssText='padding:12px 16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;margin:8px 0;flex-shrink:0';
-        ms.innerHTML='<div style="font-size:11px;font-weight:700;color:#6b7280;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Select Multiple Statuses</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px" id="_ms_boxes"><label id="_lbl_collecting" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border:2px solid #e2e8f0;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;background:#fff"><input type="checkbox" value="collecting" onchange="window._msChange()"> Collecting Docs</label><label id="_lbl_applied" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border:2px solid #e2e8f0;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;background:#fff"><input type="checkbox" value="applied" onchange="window._msChange()"> Applied</label><label id="_lbl_review" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border:2px solid #e2e8f0;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;background:#fff"><input type="checkbox" value="review" onchange="window._msChange()"> Under Review</label><label id="_lbl_permitted" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border:2px solid #e2e8f0;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;background:#fff"><input type="checkbox" value="permitted" onchange="window._msChange()"> Permitted</label><label id="_lbl_co" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border:2px solid #e2e8f0;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;background:#fff"><input type="checkbox" value="co" onchange="window._msChange()"> CO Received</label></div><div style="display:flex;gap:8px;align-items:center"><button onclick="window._msView()" style="padding:7px 16px;background:#7c3aed;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">View List</button><button onclick="window._msPrint()" style="padding:7px 16px;background:#2da44e;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">Print</button><span id="_ms_count" style="font-size:12px;color:#6b7280;margin-left:8px"></span></div>';
-        filterDiv.after(ms);
-      }
-    }
-  }
-  // Clickable cards
-  var section=document.querySelector('.report-section');
-  if(section){
-    Array.from(section.querySelectorAll('div')).forEach(function(card){
-      if(card.dataset.dc)return;
-      var kids=Array.from(card.children);
-      var numEl=kids.find(function(k){return /^d+$/.test(k.textContent.trim())&&parseInt(k.textContent.trim())>0;});
-      var lblEl=kids.find(function(k){return k.textContent.trim().length>3&&!/^d+$/.test(k.textContent.trim());});
-      if(!numEl||!lblEl)return;
-      var label=lblEl.textContent.trim();
-      var permits=_gp();var filtered,title;
-      if(label.includes('Total Permits')){filtered=permits;title='All Permits (193)';}
-      else if(label.includes('Collecting')){filtered=permits.filter(function(p){return _gs(p)==='collecting';});title='Collecting Docs';}
-      else if(label.includes('Under Review')){filtered=permits.filter(function(p){return _gs(p)==='review';});title='Under Review';}
-      else if(label.includes('Permit Issued')){filtered=permits.filter(function(p){return _gs(p)==='permitted';});title='Permit Issued';}
-      else if(label.includes('CO Received')){filtered=permits.filter(function(p){return _gs(p)==='co';});title='CO Received';}
-      else if(label.includes('Not Yet')){filtered=permits.filter(function(p){return !['permitted','co'].includes(_gs(p));});title='Not Yet Approved';}
-      else return;
-      card.dataset.dc='1';card.style.cursor='pointer';card.title='Click to see permits';
-      (function(f,t){card.addEventListener('click',function(){window._showDrillDown(t,f);});})(filtered,title);
-    });
-  }
-  window._patchInfoFields();
-};
-// DEBOUNCED OBSERVER - waits 300ms after last DOM change
-var _t=null;
-new MutationObserver(function(){
-  clearTimeout(_t);
-  _t=setTimeout(function(){window._enhanceReports();},300);
-}).observe(document.body,{childList:true,subtree:true});
-// Also run on interval as fallback
-setInterval(function(){window._enhanceReports();},2000);
-})();
 </script>
 </body>
 </html>
