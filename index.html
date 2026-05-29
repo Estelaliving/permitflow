@@ -1013,15 +1013,7 @@ async function loadFromGitHub() {
     const data = await res.json();
     if (!data.permits) return false;
     if (_lastRemoteVersion && data.version <= _lastRemoteVersion) return false;
-    // Don't overwrite if user has newer local changes
-    const localVer = parseInt(localStorage.getItem('estela_local_version') || '0');
-    const localCount = (JSON.parse(localStorage.getItem('estela_permits_v3') || '[]')).length;
-    if (!_lastRemoteVersion && localVer > data.version && localCount > 0) {
-      // Local is genuinely newer AND has data — push to GitHub
-      await syncToGitHub();
-      return false;
-    }
-    // If local is empty (crash recovery), always load from GitHub
+    // GitHub is always the source of truth on load — never push local over it
     state.permits = (data.permits || []).map(sanitizePermit);
     if (data.stageConfig && Object.keys(data.stageConfig).length > 0){ STAGE_CONFIG = data.stageConfig; saveStageConfig(); }
     if (data.customFields && Array.isArray(data.customFields) && data.customFields.length > 0){ CUSTOM_PERMIT_FIELDS = data.customFields; saveCustomFields(); }
