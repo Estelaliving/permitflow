@@ -1003,14 +1003,26 @@ async function syncToGitHub() {
 
 async function loadFromGitHub() {
   try {
-    const res = await fetch(GH_RAW_URL + '?t=' + Date.now());
+    // Use API endpoint (not raw CDN) so we always get fresh data, never cached
+    const res = await fetch(GH_API_URL, {
+      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
+    });
     if (res.status === 404) {
       showToast('📤 First time — creating shared database...');
       await syncToGitHub();
       return true;
     }
     if (!res.ok) return false;
-    const data = await res.json();
+    const apiData = await res.json();
+    _dbSha = apiData.sha;
+    // Decode base64 content from API response
+    const raw = atob(apiData.content.replace(/\s/g,''));
+    let data;
+    try {
+      data = JSON.parse(decodeURIComponent(Array.from(raw).map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+    } catch(e) {
+      data = JSON.parse(raw);
+    }
     if (!data.permits) return false;
     if (_lastRemoteVersion && data.version <= _lastRemoteVersion) return false;
     // GitHub is always the source of truth on load — never push local over it
