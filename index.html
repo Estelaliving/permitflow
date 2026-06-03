@@ -2305,11 +2305,15 @@ function renderWeeklyReport(el) {
       ${critical.length?`<div style="margin-bottom:24px">
         <h3 style="font-size:14px;font-weight:700;color:#b91c1c;margin-bottom:8px">⚡ Critical — Approving in ≤14 Days (${critical.length})</h3>
         <table style="${tblStyle}"><thead><tr>
-          <th style="${thStyle}">Lot</th><th style="${thStyle}">Address</th><th style="${thStyle}">Community</th>
+          <th style="${thStyle}">Lot</th><th style="${thStyle}">Address</th><th style="${thStyle}">Parcel ID</th><th style="${thStyle}">Owner</th><th style="${thStyle}">Community</th>
           <th style="${thStyle}">Model</th><th style="${thStyle}">Phase</th><th style="${thStyle}">ETA Date</th><th style="${thStyle}">Days Left</th><th style="${thStyle}">PM</th>
         </tr></thead><tbody>
-          ${critical.map(p=>{ const e=getEstApprovalInfo(p); return `<tr style="background:#fff7f7">
+          ${critical.map(p=>{ const e=getEstApprovalInfo(p);
+            const ow=(p.customFields&&p.customFields[Object.keys(p.customFields||{}).find(k=>{const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k);return cf&&cf.label.toUpperCase().includes('OWNER');})||''])||p.owner||'—';
+            return `<tr style="background:#fff7f7">
             <td style="${tdStyle}">${p.lotNumber||'—'}</td><td style="${tdStyle}">${(p.address||'').split(',')[0]}</td>
+            <td style="${tdStyle};font-size:11px;font-family:monospace">${p.parcelId||'—'}</td>
+            <td style="${tdStyle};font-size:11px">${ow}</td>
             <td style="${tdStyle}">${p.community||''}</td><td style="${tdStyle}">${p.model||''}</td>
             <td style="${tdStyle}">Phase ${getCurrentPhase(p)}</td>
             <td style="${tdStyle};font-weight:700;color:#b91c1c">${e.targetDate||'—'}</td>
@@ -2321,11 +2325,15 @@ function renderWeeklyReport(el) {
       <div style="margin-bottom:24px">
         <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">🏗️ Upcoming Approvals — Next 30 Days (${upcoming.length})</h3>
         ${upcoming.length?`<table style="${tblStyle}"><thead><tr>
-          <th style="${thStyle}">Lot</th><th style="${thStyle}">Address</th><th style="${thStyle}">Community</th>
+          <th style="${thStyle}">Lot</th><th style="${thStyle}">Address</th><th style="${thStyle}">Parcel ID</th><th style="${thStyle}">Owner</th><th style="${thStyle}">Community</th>
           <th style="${thStyle}">Model</th><th style="${thStyle}">Phase</th><th style="${thStyle}">ETA Date</th><th style="${thStyle}">Days Left</th><th style="${thStyle}">PM</th>
         </tr></thead><tbody>
-          ${upcoming.map(p=>{ const e=getEstApprovalInfo(p); const urg=e.daysRemaining<=14; return `<tr${urg?' style="background:#fff7f7"':''}>
+          ${upcoming.map(p=>{ const e=getEstApprovalInfo(p); const urg=e.daysRemaining<=14;
+            const ow=(p.customFields&&p.customFields[Object.keys(p.customFields||{}).find(k=>{const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k);return cf&&cf.label.toUpperCase().includes('OWNER');})||''])||p.owner||'—';
+            return `<tr${urg?' style="background:#fff7f7"':''}>
             <td style="${tdStyle}">${p.lotNumber||'—'}</td><td style="${tdStyle}">${(p.address||'').split(',')[0]}</td>
+            <td style="${tdStyle};font-size:11px;font-family:monospace">${p.parcelId||'—'}</td>
+            <td style="${tdStyle};font-size:11px">${ow}</td>
             <td style="${tdStyle}">${p.community||''}</td><td style="${tdStyle}">${p.model||''}</td>
             <td style="${tdStyle}">Phase ${getCurrentPhase(p)}</td>
             <td style="${tdStyle};font-weight:${urg?700:400};color:${urg?'#b91c1c':'inherit'}">${e.targetDate||'—'}</td>
@@ -2515,17 +2523,20 @@ function renderReportsView(el, alerts) {
           <button onclick="state._reportStatus='All';render()" style="padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)">✕ Clear filter</button>
         </div>
         <table class="report-table"><thead><tr>
-          <th>Address</th><th>Community</th><th>Lot</th><th>Model</th><th>PM</th><th>Permit #</th><th>Days at City</th><th></th>
+          <th>Address</th><th>Community</th><th>Lot</th><th>Parcel ID</th><th>Owner</th><th>Model</th><th>PM</th><th>Permit #</th><th>Days at City</th><th></th>
         </tr></thead><tbody>
           ${all.map(p=>{
             const cityDays = getCityDays(p);
+            const ownerVal = (p.customFields && p.customFields[Object.keys(p.customFields||{}).find(k=>{ const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k); return cf&&cf.label.toUpperCase().includes('OWNER'); })||'']) || p.owner || '—';
             return `<tr>
-              <td style="font-weight:600;cursor:pointer" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">${(p.address||'').split(',')[0]}</td>
+              <td style="font-weight:600;cursor:pointer;color:#2d5a8e" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">${(p.address||'').split(',')[0]}</td>
               <td>${p.community||''}</td>
               <td>${p.lotNumber||'—'}</td>
+              <td style="font-size:11px;font-family:monospace">${p.parcelId||'—'}</td>
+              <td style="font-size:11px">${ownerVal}</td>
               <td style="font-size:12px">${p.model||'—'}</td>
               <td style="font-size:12px">${p.projectManager||'—'}</td>
-              <td style="font-size:12px">${p.permitNumber||'—'}</td>
+              <td style="font-size:12px;font-family:monospace">${p.permitNumber||'—'}</td>
               <td>${cityDays!==null?`<span class="dur-pill ${durClass(cityDays)}">${cityDays}d</span>`:'—'}</td>
               <td><button class="btn btn-sm btn-outline" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">Open →</button></td>
             </tr>`;
