@@ -2491,7 +2491,34 @@ function renderReportsView(el, alerts) {
       <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
         <button class="btn btn-sm btn-outline" onclick="exportSummaryCSV()">⬇ Export CSV</button>
         <button class="btn btn-sm btn-outline" onclick="state._reportTab='printreport';render()">🖨 Print Report</button>
-      </div>`;
+      </div>
+      ${filterStatus !== 'All' ? `
+      <div style="margin-top:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:13px;font-weight:700">
+            ${filterStatus==='active'?'🟡 Collecting Docs':filterStatus==='submitted'?'🔵 Under Review':filterStatus==='permitted'?'🟢 Permit Issued':'🩵 CO Received'}
+            — ${all.length} permits
+          </div>
+          <button onclick="state._reportStatus='All';render()" style="padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)">✕ Clear filter</button>
+        </div>
+        <table class="report-table"><thead><tr>
+          <th>Address</th><th>Community</th><th>Lot</th><th>Model</th><th>PM</th><th>Permit #</th><th>Days at City</th><th></th>
+        </tr></thead><tbody>
+          ${all.map(p=>{
+            const cityDays = getCityDays(p);
+            return `<tr>
+              <td style="font-weight:600;cursor:pointer" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">${(p.address||'').split(',')[0]}</td>
+              <td>${p.community||''}</td>
+              <td>${p.lotNumber||'—'}</td>
+              <td style="font-size:12px">${p.model||'—'}</td>
+              <td style="font-size:12px">${p.projectManager||'—'}</td>
+              <td style="font-size:12px">${p.permitNumber||'—'}</td>
+              <td>${cityDays!==null?`<span class="dur-pill ${durClass(cityDays)}">${cityDays}d</span>`:'—'}</td>
+              <td><button class="btn btn-sm btn-outline" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">Open →</button></td>
+            </tr>`;
+          }).join('')}
+        </tbody></table>
+      </div>` : ''}`;
   }
   if (tab==='aging') {
     body = `<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px">
