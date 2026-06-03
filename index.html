@@ -3425,12 +3425,6 @@ function renderExpandContent(permit) {
           <option value="Both" ${permit.water==='Both'?'selected':''}>City Water + Well</option>
         </select>
       </div>
-      <div class="info-field">
-        <span class="info-label">Owner / LLC</span>
-        <input class="info-input" list="owner-list-inline" value="${permit.owner||''}" placeholder="Type code or name..."
-          autocomplete="off" onchange="updatePermitField('${permit.id}','owner',this.value)">
-        <datalist id="owner-list-inline">${OWNERS.map(o=>`<option value="${o}">`).join('')}</datalist>
-      </div>
       <div class="info-field" style="grid-column:1/-1">
         <span class="info-label">Notes</span>
         <input class="info-input" value="${permit.notes||''}" placeholder="Add notes..."
@@ -4496,8 +4490,11 @@ function renderInlineCustomFields(permit) {
           <button title="Remove this field from all permits" onclick="event.stopPropagation();removeCustomField(${i},'${permit.id}')"
             style="border:none;background:none;cursor:pointer;color:#fca5a5;font-size:13px;padding:0 2px;line-height:1;font-weight:700" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#fca5a5'">✕</button>
         </div>
-        <input class="info-input" value="${(cf[f.key]||'').replace(/"/g,'&quot;')}" placeholder="${f.label}"
-               onchange="updateCustomField('${permit.id}','${f.key}',this.value)">
+        ${f.label.toUpperCase().includes('OWNER')?
+          `<input class="info-input" list="owner-datalist-${permit.id}" value="${(cf[f.key]||'').replace(/"/g,'&quot;')}" placeholder="Type 001 or Estela..." autocomplete="off" onchange="updateCustomField('${permit.id}','${f.key}',this.value)">
+           <datalist id="owner-datalist-${permit.id}">${OWNERS.map(o=>`<option value="${o}">`).join('')}</datalist>` :
+          `<input class="info-input" value="${(cf[f.key]||'').replace(/"/g,'&quot;')}" placeholder="${f.label}" onchange="updateCustomField('${permit.id}','${f.key}',this.value)">`
+        }
       </div>`).join('');
   }
   // "Add Field" row always at the bottom
@@ -4686,12 +4683,6 @@ function buildModalForm(permit) {
     <option value="Both" ${v('water')==='Both'?'selected':''}>City Water + Well</option>
   </select>
 </div>
-<div class="form-field"><label class="form-label">Owner / LLC</label>
-  <input class="form-input" id="f-owner" list="owner-list" value="${v('owner')}" placeholder="Type code or name (e.g. 001 or Estela)..." autocomplete="off">
-  <datalist id="owner-list">
-    ${OWNERS.map(o=>`<option value="${o}">`).join('')}
-  </datalist>
-</div>
 <div class="form-field"><label class="form-label">Project Manager</label><input class="form-input" id="f-projectManager" value="${v('projectManager')}" placeholder="PM initials or name"></div>
     <div class="form-field"><label class="form-label">Est. Weeks to Approval</label><input class="form-input" id="f-estWeeks" value="${v('estWeeks')}" placeholder="e.g. 3 weeks"></div>
     <div class="form-field"><label class="form-label">Permit Number</label><input class="form-input" id="f-permitNumber" value="${v('permitNumber')}"></div>
@@ -4722,7 +4713,7 @@ function saveModal() {
   const addr = document.getElementById('f-address').value.trim();
   if (!addr) { alert('Address is required.'); return; }
   const today = new Date().toISOString().split('T')[0];
-  const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','water','owner','projectManager','estWeeks','permitNumber','permitFee','utilities','options','notes'];
+  const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','water','projectManager','estWeeks','permitNumber','permitFee','utilities','options','notes'];
   if (state.editingId) {
     const permit = state.permits.find(p=>p.id===state.editingId);
     if (permit) {
