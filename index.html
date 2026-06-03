@@ -577,6 +577,7 @@ td.address-cell { min-width:200px; }
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 // ══════════════════════════════════════════════════
 //  DATA
@@ -900,33 +901,48 @@ function saveSettings() {
 }
 
 // ══════════════════════════════════════════════════
-//  SHARED ONEDRIVE DATABASE
-//  Stores permit-database.json in shared OneDrive so
-//  every team member sees the same data in real time.
+//  SUPABASE — Real-time shared database
+//  Replaces GitHub JSON sync. All team members see
+//  changes instantly without polling or conflicts.
 // ══════════════════════════════════════════════════
-// ══════════════════════════════════════════════════
-//  SHARED DATABASE — GitHub (single source of truth
-//  for the whole team; no OneDrive login needed)
-// ══════════════════════════════════════════════════
-const GH_TOKEN   = 'ghp_MzTLKw0HImsKcn0ps' + 'A8HKpDHnWXby53ydqbu';
-const GH_REPO    = 'estelaliving/permitflow';
-const GH_DB_FILE = 'permit-database.json';
-const GH_API_URL = `https://api.github.com/repos/${GH_REPO}/contents/${GH_DB_FILE}`;
-const GH_RAW_URL = `https://raw.githubusercontent.com/${GH_REPO}/main/${GH_DB_FILE}`;
+const SB_URL = 'https://raqiscditxkvgadiostr.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhcWlzY2RpdHhrdmdhZGlvc3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0ODM1NTMsImV4cCI6MjA5NjA1OTU1M30.5Y2c6kiORxfGN_BLdGk_InwnoYxAqlH55ruuZNzeVKQ';
 
+let _sbClient = null;
 let _syncInProgress = false;
 let _lastRemoteVersion = null;
 let _syncFailCount = 0;
 let _syncRetryTimer = null;
-let _dbSha = null;
+let _realtimeChannel = null;
+
+function _getSB() {
+  if (!_sbClient && window.supabase) {
+    _sbClient = window.supabase.createClient(SB_URL, SB_KEY);
+  }
+  return _sbClient;
+}
 
 async function syncToGitHub() {
+  const sb = _getSB();
+  if (!sb) { console.warn('Supabase not ready'); return; }
   if (_syncInProgress) return;
-  if (state.permits.length === 0) { console.warn('Refusing to push empty permit list to GitHub'); _syncInProgress = false; updateSyncBadge('saved'); return; }
+  if (state.permits.length === 0) { console.warn('Refusing to push empty permit list'); updateSyncBadge('saved'); return; }
   _syncInProgress = true;
   clearTimeout(_syncRetryTimer);
   updateSyncBadge('syncing');
   try {
+    // Fetch remote first and merge concurrent edits by _ts
+    const { data: remote } = await sb.from('permit_database').select('data').eq('id', 1).single();
+    if (remote && remote.data && remote.data.permits) {
+      const remoteMap = {};
+      remote.data.permits.forEach(p => remoteMap[p.id] = p);
+      state.permits.forEach(local => {
+        const rem = remoteMap[local.id];
+        if (!rem || (local._ts||0) >= (rem._ts||0)) remoteMap[local.id] = local;
+      });
+      state.permits = Object.values(remoteMap);
+      localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
+    }
     const payload = {
       version: Date.now(),
       updatedBy: state.odAccount?.name || state.odAccount?.username || 'Team member',
@@ -935,62 +951,15 @@ async function syncToGitHub() {
       stageConfig: STAGE_CONFIG,
       customFields: CUSTOM_PERMIT_FIELDS,
       optionsList: OPTIONS_LIST,
-      reviewConfig: { docs: REVIEW_DOCS, fields: REVIEW_FIELDS },
     };
-    // Fetch latest remote data — get SHA and merge any concurrent changes
-    const shaRes = await fetch(GH_API_URL, {
-      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    if (shaRes.ok) {
-      const d = await shaRes.json();
-      _dbSha = d.sha;
-      // Decode and merge remote permits so we don't overwrite concurrent changes
-      try {
-        const raw = atob(d.content.replace(/\s/g,''));
-        const remote = JSON.parse(decodeURIComponent(Array.from(raw).map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
-        if (remote.permits && remote.version > (_lastRemoteVersion || 0)) {
-          // Build map of remote permits
-          const remoteMap = {};
-          remote.permits.forEach(p => remoteMap[p.id] = p);
-          // Merge: keep whichever version of each permit is newer (_ts)
-          state.permits.forEach(local => {
-            const rem = remoteMap[local.id];
-            if (!rem || (local._ts||0) >= (rem._ts||0)) remoteMap[local.id] = local;
-          });
-          // Preserve any permits added remotely that we don't have locally
-          state.permits = Object.values(remoteMap);
-          localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
-          // Also sync app-level config from remote if newer
-          if (remote.customFields && remote.customFields.length > CUSTOM_PERMIT_FIELDS.length) { CUSTOM_PERMIT_FIELDS = remote.customFields; saveCustomFields(); }
-          if (remote.optionsList && remote.optionsList.length > OPTIONS_LIST.length) { OPTIONS_LIST = remote.optionsList; saveOptionsList(); }
-        }
-      } catch(mergeErr) { console.warn('Merge warning:', mergeErr); }
-    }
-
-    const body = { message: 'Update permit database', content: btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2)))) };
-    if (_dbSha) body.sha = _dbSha;
-
-    const res = await fetch(GH_API_URL, {
-      method: 'PUT',
-      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) {
-      if (res.status === 409) {
-        // SHA conflict — retry once with fresh SHA
-        _dbSha = null; _syncInProgress = false;
-        setTimeout(syncToGitHub, 1000);
-        return;
-      }
-      throw new Error('HTTP ' + res.status);
-    }
-    const data = await res.json();
-    _dbSha = data.content.sha;
+    const { error } = await sb.from('permit_database')
+      .upsert({ id: 1, data: payload, updated_at: new Date().toISOString() });
+    if (error) throw error;
     _lastRemoteVersion = payload.version;
     _syncFailCount = 0;
     updateSyncBadge('saved');
   } catch(e) {
-    console.warn('GitHub sync failed:', e);
+    console.warn('Supabase sync failed:', e);
     _syncFailCount++;
     updateSyncBadge('error');
     if (_syncFailCount === 3) showToast('⚠️ Sync failing — changes saved locally, will retry.');
@@ -1002,61 +971,78 @@ async function syncToGitHub() {
 }
 
 async function loadFromGitHub() {
+  const sb = _getSB();
+  if (!sb) return false;
   try {
-    // Use API endpoint (not raw CDN) so we always get fresh data, never cached
-    const res = await fetch(GH_API_URL, {
-      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
-    });
-    if (res.status === 404) {
-      showToast('📤 First time — creating shared database...');
-      await syncToGitHub();
-      return true;
-    }
-    if (!res.ok) return false;
-    const apiData = await res.json();
-    _dbSha = apiData.sha;
-    // Decode base64 content from API response
-    const raw = atob(apiData.content.replace(/\s/g,''));
-    let data;
-    try {
-      data = JSON.parse(decodeURIComponent(Array.from(raw).map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
-    } catch(e) {
-      data = JSON.parse(raw);
-    }
-    if (!data.permits) return false;
-    if (_lastRemoteVersion && data.version <= _lastRemoteVersion) return false;
-    // GitHub is always the source of truth on load — never push local over it
-    state.permits = (data.permits || []).map(sanitizePermit);
-    if (data.stageConfig && Object.keys(data.stageConfig).length > 0){ STAGE_CONFIG = data.stageConfig; saveStageConfig(); }
-    if (data.customFields && Array.isArray(data.customFields) && data.customFields.length > 0){ CUSTOM_PERMIT_FIELDS = data.customFields; saveCustomFields(); }
-    if (data.optionsList && Array.isArray(data.optionsList) && data.optionsList.length > 0){ OPTIONS_LIST = data.optionsList; saveOptionsList(); }
-    if (data.reviewConfig){ if (data.reviewConfig.docs && data.reviewConfig.docs.length) REVIEW_DOCS = data.reviewConfig.docs; if (data.reviewConfig.fields && data.reviewConfig.fields.length) REVIEW_FIELDS = data.reviewConfig.fields; saveReviewConfig(); }
-    _lastRemoteVersion = data.version;
+    const { data, error } = await sb.from('permit_database').select('data').eq('id', 1).single();
+    if (error || !data) return false;
+    const d = data.data;
+    if (!d || !d.permits) return false;
+    if (_lastRemoteVersion && d.version <= _lastRemoteVersion) return false;
+    state.permits = (d.permits || []).map(sanitizePermit);
+    if (d.stageConfig && Object.keys(d.stageConfig).length > 0) { STAGE_CONFIG = d.stageConfig; saveStageConfig(); }
+    if (d.customFields && Array.isArray(d.customFields) && d.customFields.length > 0) { CUSTOM_PERMIT_FIELDS = d.customFields; saveCustomFields(); }
+    if (d.optionsList && Array.isArray(d.optionsList) && d.optionsList.length > 0) { OPTIONS_LIST = d.optionsList; saveOptionsList(); }
+    _lastRemoteVersion = d.version;
     localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
-    return { updated: true, updatedBy: data.updatedBy || 'a team member', updatedAt: data.updatedAt };
+    localStorage.setItem('estela_local_version', String(d.version));
+    return { updated: true, updatedBy: d.updatedBy || 'a team member', updatedAt: d.updatedAt };
   } catch(e) {
-    console.warn('GitHub DB load failed:', e);
+    console.warn('Supabase load failed:', e);
     return false;
   }
 }
 
-// Poll for remote changes every 10 seconds
 let _pollInterval = null;
 function startDBPolling() {
+  _startRealtimeSync();
+  // Fallback poll every 30s in case realtime drops
   if (_pollInterval) clearInterval(_pollInterval);
   _pollInterval = setInterval(async () => {
     const result = await loadFromGitHub();
-    if (result && result.updated) {
-      render();
-      showToast('🔄 Updated by ' + (result.updatedBy || 'a team member'));
-    }
-    updateSyncBadge('live');
-  }, 10000);
+    if (result && result.updated) { render(); showToast('🔄 Updated by ' + (result.updatedBy || 'a team member')); }
+  }, 30000);
 }
 
 function stopDBPolling() {
-  if (_pollInterval) clearInterval(_pollInterval);
-  _pollInterval = null;
+  const sb = _getSB();
+  if (sb && _realtimeChannel) { sb.removeChannel(_realtimeChannel); _realtimeChannel = null; }
+  if (_pollInterval) { clearInterval(_pollInterval); _pollInterval = null; }
+}
+
+function _startRealtimeSync() {
+  const sb = _getSB();
+  if (!sb) return;
+  if (_realtimeChannel) sb.removeChannel(_realtimeChannel);
+  _realtimeChannel = sb
+    .channel('permit-db')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'permit_database', filter: 'id=eq.1' },
+      (payload) => {
+        if (!payload.new || !payload.new.data) return;
+        const d = payload.new.data;
+        if (_lastRemoteVersion && d.version <= _lastRemoteVersion) return;
+        _lastRemoteVersion = d.version;
+        const incoming = (d.permits || []).map(sanitizePermit);
+        // Merge: keep local permits that are newer
+        const remoteMap = {};
+        incoming.forEach(p => remoteMap[p.id] = p);
+        state.permits.forEach(local => {
+          const rem = remoteMap[local.id];
+          if (rem && (local._ts||0) > (rem._ts||0)) remoteMap[local.id] = local;
+        });
+        state.permits = Object.values(remoteMap);
+        if (d.stageConfig && Object.keys(d.stageConfig).length > 0) { STAGE_CONFIG = d.stageConfig; saveStageConfig(); }
+        if (d.customFields && d.customFields.length > 0) { CUSTOM_PERMIT_FIELDS = d.customFields; saveCustomFields(); }
+        if (d.optionsList && d.optionsList.length > 0) { OPTIONS_LIST = d.optionsList; saveOptionsList(); }
+        localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
+        render();
+        updateSyncBadge('live');
+        showToast('🔄 Updated by ' + (d.updatedBy || 'a team member'));
+      }
+    )
+    .subscribe(status => {
+      if (status === 'SUBSCRIBED') updateSyncBadge('live');
+    });
 }
 
 
