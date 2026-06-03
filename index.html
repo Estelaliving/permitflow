@@ -621,6 +621,18 @@ const DEFAULT_STAGE_CONFIG = {
 let STAGE_CONFIG = Object.assign({}, DEFAULT_STAGE_CONFIG);
 
 const COMMUNITIES = ['All','Sawmill Branch','Sabana Reserve','Palm Coast Scattered','Marion Oaks','Ocala Waterways','Juliette Falls'];
+const OWNERS = [
+  '001 · Estela Living, LLC',
+  '002 · Estela Specs 1 LLC',
+  '003 · Estela Specs 2 LLC',
+  '004 · Estela Specs 3 LLC',
+  '005 · Estela Specs 4 LLC',
+  '006 · Estela Specs 6 LLC',
+  '007 · Estela Specs 7 LLC',
+  '008 · Estela Specs 8 LLC',
+  '009 · Estela Specs 9 LLC',
+  '100 · Sabana Owner, LLC',
+];
 
 // City Review — reviewing agencies / departments
 const REVIEW_AGENCIES = [
@@ -765,6 +777,7 @@ function sanitizePermit(p) {
   if (!p.drawingReview) p.drawingReview = { checks:{}, notes:'', completedAt:null, completedBy:'' };
   if (!p.phaseTimestamps) p.phaseTimestamps = {};
   if (p.water === undefined) p.water = '';
+  if (p.owner === undefined) p.owner = '';
   return p;
 }
 
@@ -3412,6 +3425,12 @@ function renderExpandContent(permit) {
           <option value="Both" ${permit.water==='Both'?'selected':''}>City Water + Well</option>
         </select>
       </div>
+      <div class="info-field">
+        <span class="info-label">Owner / LLC</span>
+        <input class="info-input" list="owner-list-inline" value="${permit.owner||''}" placeholder="Type code or name..."
+          autocomplete="off" onchange="updatePermitField('${permit.id}','owner',this.value)">
+        <datalist id="owner-list-inline">${OWNERS.map(o=>`<option value="${o}">`).join('')}</datalist>
+      </div>
       <div class="info-field" style="grid-column:1/-1">
         <span class="info-label">Notes</span>
         <input class="info-input" value="${permit.notes||''}" placeholder="Add notes..."
@@ -4667,6 +4686,12 @@ function buildModalForm(permit) {
     <option value="Both" ${v('water')==='Both'?'selected':''}>City Water + Well</option>
   </select>
 </div>
+<div class="form-field"><label class="form-label">Owner / LLC</label>
+  <input class="form-input" id="f-owner" list="owner-list" value="${v('owner')}" placeholder="Type code or name (e.g. 001 or Estela)..." autocomplete="off">
+  <datalist id="owner-list">
+    ${OWNERS.map(o=>`<option value="${o}">`).join('')}
+  </datalist>
+</div>
 <div class="form-field"><label class="form-label">Project Manager</label><input class="form-input" id="f-projectManager" value="${v('projectManager')}" placeholder="PM initials or name"></div>
     <div class="form-field"><label class="form-label">Est. Weeks to Approval</label><input class="form-input" id="f-estWeeks" value="${v('estWeeks')}" placeholder="e.g. 3 weeks"></div>
     <div class="form-field"><label class="form-label">Permit Number</label><input class="form-input" id="f-permitNumber" value="${v('permitNumber')}"></div>
@@ -4697,7 +4722,7 @@ function saveModal() {
   const addr = document.getElementById('f-address').value.trim();
   if (!addr) { alert('Address is required.'); return; }
   const today = new Date().toISOString().split('T')[0];
-  const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','water','projectManager','estWeeks','permitNumber','permitFee','utilities','options','notes'];
+  const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','water','owner','projectManager','estWeeks','permitNumber','permitFee','utilities','options','notes'];
   if (state.editingId) {
     const permit = state.permits.find(p=>p.id===state.editingId);
     if (permit) {
