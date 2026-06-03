@@ -3916,20 +3916,117 @@ function renderOptionsPicker(permitId, permit, mode) {
   // mode: 'inline' = in expand row, 'form' = in add/edit modal
   const sel = getSelectedOptions(permit);
   const idPfx = mode==='form' ? 'form-opt' : 'opt';
-  return `<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px" id="${idPfx}-grid-${permitId}">
-    ${OPTIONS_LIST.map(opt=>{
-      const active = sel.includes(opt);
-      return `<button type="button"
-        style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid ${active?'#2d5a8e':'var(--border)'};background:${active?'#2d5a8e':'var(--card)'};color:${active?'#fff':'var(--text)'};transition:all .15s"
-        onclick="${mode==='form'?`toggleFormOption('${permitId}','${opt}',this)`:`togglePermitOption('${permitId}','${opt}',this)`}">${(()=>{const p=opt.indexOf(' · ');return p>-1?'<span style="font-size:9px;opacity:0.5;margin-right:3px">'+opt.slice(0,p)+'</span>'+opt.slice(p+3):opt;})()} </button>`;
-    }).join('')}
-    <div style="display:flex;align-items:center;gap:4px;margin-top:2px;width:100%">
-      <input id="${idPfx}-new-${permitId}" style="padding:3px 8px;border:1px dashed var(--border);border-radius:20px;font-size:11px;background:var(--bg);color:var(--text);width:130px" placeholder="+ Add option...">
-      <button type="button" style="padding:3px 8px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)"
-        onclick="${mode==='form'?`addFormOption('${permitId}',document.getElementById('${idPfx}-new-${permitId}').value)`:`addPermitOption('${permitId}',document.getElementById('${idPfx}-new-${permitId}').value)`}">Add</button>
+  const searchId = `${idPfx}-search-${permitId}`;
+  const gridId   = `${idPfx}-grid-${permitId}`;
+  const newId    = `${idPfx}-new-${permitId}`;
+
+  // Group options by category comment blocks
+  const CATEGORIES = [
+    { label: 'Layout / Floor Plan',        prefix: ['0000','0001'] },
+    { label: 'Hardware & Fixtures',        prefix: ['0002','0003','0503','7000','7001'] },
+    { label: 'Electrical',                 prefix: ['100'] },
+    { label: 'Smart Home',                 prefix: ['150'] },
+    { label: 'Windows & Doors',            prefix: ['200','500'] },
+    { label: 'Kitchen & Cabinetry',        prefix: ['300','050','351'] },
+    { label: 'Flooring & Trim',            prefix: ['350','550'] },
+    { label: 'Garage & Exterior',          prefix: ['250','600','050'] },
+    { label: 'Appliances & Treatments',    prefix: ['650','702'] },
+    { label: 'Landscaping',                prefix: ['750'] },
+    { label: 'Interior Color Packages',    prefix: ['850'] },
+    { label: 'Exterior Color Packages',    prefix: ['860'] },
+  ];
+
+  function getCategory(opt) {
+    const code = opt.slice(0,5).replace(/\D/g,'');
+    const num = parseInt(code);
+    if (num <= 199)   return 'Layout / Floor Plan';
+    if (num <= 599)   return 'Hardware & Fixtures';
+    if (num >= 10000 && num <= 10999) return 'Electrical';
+    if (num >= 15000 && num <= 15999) return 'Smart Home';
+    if (num >= 20000 && num <= 20999) return 'Windows & Doors';
+    if (num >= 25000 && num <= 25999) return 'Garage & Exterior';
+    if (num >= 5000  && num <= 5999)  return 'Kitchen & Cabinetry';
+    if (num >= 30000 && num <= 35999) return 'Kitchen & Cabinetry';
+    if (num >= 50000 && num <= 50999) return 'Windows & Doors';
+    if (num >= 55000 && num <= 55999) return 'Flooring & Trim';
+    if (num >= 60000 && num <= 60999) return 'Garage & Exterior';
+    if (num >= 65000 && num <= 65999) return 'Appliances & Treatments';
+    if (num >= 70000 && num <= 70999) return 'Appliances & Treatments';
+    if (num >= 75000 && num <= 75999) return 'Landscaping';
+    if (num >= 85000 && num <= 85999) return 'Interior Color Packages';
+    if (num >= 86000 && num <= 86999) return 'Exterior Color Packages';
+    return 'Other';
+  }
+
+  // Selected chips shown at top
+  const selectedChips = sel.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;padding:6px 8px;background:var(--primary-light,#e8f0fb);border-radius:8px;margin-bottom:8px">
+    <span style="font-size:10px;font-weight:700;color:#2d5a8e;align-self:center;margin-right:4px">SELECTED:</span>
+    ${sel.map(opt=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;background:#2d5a8e;color:#fff;font-size:11px;font-weight:600">
+      ${opt.slice(0,5)} · ${opt.indexOf(' · ')>-1?opt.slice(opt.indexOf(' · ')+3):opt}
+      <span onclick="${mode==='form'?`toggleFormOption('${permitId}','${opt}',null)`:`togglePermitOption('${permitId}','${opt}',null)`}" style="cursor:pointer;opacity:0.7;font-size:13px;line-height:1" title="Remove">×</span>
+    </span>`).join('')}
+  </div>` : '';
+
+  // Build grouped option buttons
+  const groups = {};
+  OPTIONS_LIST.forEach(opt => {
+    const cat = getCategory(opt);
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push(opt);
+  });
+
+  const groupsHtml = Object.entries(groups).map(([cat, opts]) => `
+    <div class="opt-group" data-cat="${cat}" style="margin-bottom:8px">
+      <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;padding:2px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px">${cat}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">
+        ${opts.map(opt => {
+          const code = opt.indexOf(' · ')>-1 ? opt.slice(0,opt.indexOf(' · ')) : '';
+          const label = opt.indexOf(' · ')>-1 ? opt.slice(opt.indexOf(' · ')+3) : opt;
+          const active = sel.includes(opt);
+          const fn = mode==='form' ? `toggleFormOption('${permitId}','${opt}',this)` : `togglePermitOption('${permitId}','${opt}',this)`;
+          return `<button type="button" data-opt="${opt.toLowerCase()}"
+            style="padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid ${active?'#2d5a8e':'var(--border)'};background:${active?'#2d5a8e':'var(--card)'};color:${active?'#fff':'var(--text)'};transition:all .15s;white-space:nowrap"
+            onclick="${fn}"><span style="font-size:9px;opacity:0.6;margin-right:3px">${code}</span>${label}</button>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+
+  return `<div id="${gridId}" style="margin-top:4px">
+    ${selectedChips}
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px">
+      <input id="${searchId}" type="text" placeholder="🔍 Search by code or name (e.g. 00035 or 'door')..."
+        style="flex:1;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--bg);color:var(--text)"
+        oninput="filterOptions('${gridId}','${searchId}')">
+      <button type="button" onclick="filterOptions('${gridId}','${searchId}',true)"
+        style="padding:5px 10px;border-radius:8px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)">Clear</button>
+    </div>
+    <div id="${gridId}-groups" style="max-height:280px;overflow-y:auto;padding-right:4px">${groupsHtml}</div>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)">
+      <input id="${newId}" style="padding:4px 10px;border:1px dashed var(--border);border-radius:20px;font-size:11px;background:var(--bg);color:var(--text);flex:1" placeholder="+ Add custom option code/name...">
+      <button type="button" style="padding:4px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)"
+        onclick="${mode==='form'?`addFormOption('${permitId}',document.getElementById('${newId}').value)`:`addPermitOption('${permitId}',document.getElementById('${newId}').value)`}">Add</button>
     </div>
   </div>`;
 }
+
+function filterOptions(gridId, searchId, clear) {
+  const input = document.getElementById(searchId);
+  if (clear && input) { input.value = ''; }
+  const q = (input?.value || '').toLowerCase().trim();
+  const groups = document.querySelectorAll(`#${gridId}-groups .opt-group`);
+  groups.forEach(grp => {
+    let anyVisible = false;
+    grp.querySelectorAll('button[data-opt]').forEach(btn => {
+      const match = !q || btn.dataset.opt.includes(q);
+      btn.style.display = match ? '' : 'none';
+      if (match) anyVisible = true;
+    });
+    grp.style.display = anyVisible ? '' : 'none';
+  });
+}
+
+function togglePermitOptionForm(permitId, opt, btn) { toggleFormOption(permitId, opt, btn); }
+function togglePermitOptionInline(permitId, opt, btn) { togglePermitOption(permitId, opt, btn); }
 
 function togglePermitOption(permitId, opt, btn) {
   const p = state.permits.find(x=>x.id===permitId);
