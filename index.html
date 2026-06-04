@@ -2078,13 +2078,13 @@ function renderDashboard(el, alerts) {
 // ══════════════════════════════════════════════════
 function getCurrentPhase(permit) {
   const s = permit.overallStatus;
-  if (s === 'co' || s === 'permitted') return 4;
-  if (s === 'submitted') return 3;
-  if (s === 'active') return getPermitDocsStatus(permit) === 'complete' ? 2 : 1;
-  return 1;
+  if (s === 'co') return 4;
+  if (s === 'permitted') return 3;
+  if (s === 'submitted') return 2;
+  return 1; // active
 }
 function getPhaseLabel(n) {
-  return ['','Phase 1 — Info Gathering','Phase 2 — Ready to Submit','Phase 3 — Under City Review','Phase 4 — Approved / CO'][n] || 'Unknown';
+  return ['','Phase 1 — Pre-Permit Docs','Phase 2 — Under City Review','Phase 3 — Permit Issued','Phase 4 — CO Received'][n] || 'Unknown';
 }
 function getDaysInPhase(permit) {
   const phase = getCurrentPhase(permit);
@@ -2173,19 +2173,19 @@ function kanbanDrop(e, phase) {
   const permit = state.permits.find(p=>p.id===_kanbanDragId); if (!permit) return;
   const ts = permit.phaseTimestamps || {}; permit.phaseTimestamps = ts;
   const today = new Date().toISOString().split('T')[0];
-  if (phase===1) { permit.overallStatus='active'; if(!ts.p1Start) ts.p1Start=today; }
-  else if (phase===2) { permit.overallStatus='active'; if(!ts.p2Start) ts.p2Start=today; }
-  else if (phase===3) { permit.overallStatus='submitted'; if(!ts.p3Start) ts.p3Start=today; }
-  else if (phase===4) { permit.overallStatus='permitted'; if(!ts.p4Start) ts.p4Start=today; }
+  if (phase===1) { permit.overallStatus='active';    if(!ts.p1Start) ts.p1Start=today; }
+  else if (phase===2) { permit.overallStatus='submitted'; if(!ts.p2Start) ts.p2Start=today; }
+  else if (phase===3) { permit.overallStatus='permitted'; if(!ts.p3Start) ts.p3Start=today; }
+  else if (phase===4) { permit.overallStatus='co';        if(!ts.p4Start) ts.p4Start=today; }
   permit._ts = Date.now();
   saveData(); render();
 }
 function renderPipelineView(el) {
   const cols = [
-    { phase:1, label:'Phase 1', sub:'Info Gathering',       color:'#3b82f6', bg:'#eff6ff' },
-    { phase:2, label:'Phase 2', sub:'Ready to Submit',      color:'#f59e0b', bg:'#fffbeb' },
-    { phase:3, label:'Phase 3', sub:'Under City Review',    color:'#8b5cf6', bg:'#f5f3ff' },
-    { phase:4, label:'Phase 4', sub:'Approved / CO',        color:'#10b981', bg:'#f0fdf4' },
+    { phase:1, label:'Phase 1', sub:'Pre-Permit Docs',      color:'#3b82f6', bg:'#eff6ff' },
+    { phase:2, label:'Phase 2', sub:'Under City Review',    color:'#8b5cf6', bg:'#f5f3ff' },
+    { phase:3, label:'Phase 3', sub:'Permit Issued',        color:'#f59e0b', bg:'#fffbeb' },
+    { phase:4, label:'Phase 4', sub:'CO Received',          color:'#10b981', bg:'#f0fdf4' },
   ];
   let permits = state.permits;
   if (state.community !== 'All') permits = permits.filter(p=>p.community===state.community);
