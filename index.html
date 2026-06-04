@@ -4333,13 +4333,19 @@ function renderOptionsPicker(permitId, permit, mode) {
     return 'Other';
   }
 
+  // Use index-based toggle to avoid quote-breaking in onclick attributes
+  const toggleFn = mode==='form' ? 'toggleFormOptionByIdx' : 'togglePermitOptionByIdx';
+  const removeFn = mode==='form' ? 'removeFormOptionByIdx' : 'removePermitOptionByIdx';
+
   // Selected chips shown at top
   const selectedChips = sel.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;padding:6px 8px;background:var(--primary-light,#e8f0fb);border-radius:8px;margin-bottom:8px">
     <span style="font-size:10px;font-weight:700;color:#2d5a8e;align-self:center;margin-right:4px">SELECTED:</span>
-    ${sel.map(opt=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;background:#2d5a8e;color:#fff;font-size:11px;font-weight:600">
+    ${sel.map(opt=>{
+      const idx = OPTIONS_LIST.indexOf(opt);
+      return `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;background:#2d5a8e;color:#fff;font-size:11px;font-weight:600">
       ${opt.slice(0,5)} · ${opt.indexOf(' · ')>-1?opt.slice(opt.indexOf(' · ')+3):opt}
-      <span onclick="${mode==='form'?`toggleFormOption('${permitId}','${opt}',null)`:`togglePermitOption('${permitId}','${opt}',null)`}" style="cursor:pointer;opacity:0.7;font-size:13px;line-height:1" title="Remove">×</span>
-    </span>`).join('')}
+      <span onclick="${removeFn}('${permitId}',${idx})" style="cursor:pointer;opacity:0.7;font-size:13px;line-height:1" title="Remove">×</span>
+    </span>`;}).join('')}
   </div>` : '';
 
   // Build grouped option buttons
@@ -4355,13 +4361,13 @@ function renderOptionsPicker(permitId, permit, mode) {
       <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;padding:2px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px">${cat}</div>
       <div style="display:flex;flex-wrap:wrap;gap:4px">
         ${opts.map(opt => {
+          const idx = OPTIONS_LIST.indexOf(opt);
           const code = opt.indexOf(' · ')>-1 ? opt.slice(0,opt.indexOf(' · ')) : '';
           const label = opt.indexOf(' · ')>-1 ? opt.slice(opt.indexOf(' · ')+3) : opt;
           const active = sel.includes(opt);
-          const fn = mode==='form' ? `toggleFormOption('${permitId}','${opt}',this)` : `togglePermitOption('${permitId}','${opt}',this)`;
-          return `<button type="button" data-opt="${opt.toLowerCase()}"
+          return `<button type="button" data-opt="${opt.toLowerCase().replace(/"/g,'&quot;')}"
             style="padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid ${active?'#2d5a8e':'var(--border)'};background:${active?'#2d5a8e':'var(--card)'};color:${active?'#fff':'var(--text)'};transition:all .15s;white-space:nowrap"
-            onclick="${fn}"><span style="font-size:9px;opacity:0.6;margin-right:3px">${code}</span>${label}</button>`;
+            onclick="${toggleFn}('${permitId}',${idx},this)"><span style="font-size:9px;opacity:0.6;margin-right:3px">${code}</span>${label}</button>`;
         }).join('')}
       </div>
     </div>`).join('');
@@ -4399,6 +4405,12 @@ function filterOptions(gridId, searchId, clear) {
     grp.style.display = anyVisible ? '' : 'none';
   });
 }
+
+// Index-based helpers — safe for options with quotes/apostrophes in their names
+function togglePermitOptionByIdx(permitId, idx, btn) { togglePermitOption(permitId, OPTIONS_LIST[idx], btn); }
+function toggleFormOptionByIdx(permitId, idx, btn)   { toggleFormOption(permitId, OPTIONS_LIST[idx], btn); }
+function removePermitOptionByIdx(permitId, idx)      { togglePermitOption(permitId, OPTIONS_LIST[idx], null); }
+function removeFormOptionByIdx(permitId, idx)        { toggleFormOption(permitId, OPTIONS_LIST[idx], null); }
 
 function togglePermitOptionForm(permitId, opt, btn) { toggleFormOption(permitId, opt, btn); }
 function togglePermitOptionInline(permitId, opt, btn) { togglePermitOption(permitId, opt, btn); }
