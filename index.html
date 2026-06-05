@@ -2252,78 +2252,128 @@ function renderPipelineView(el) {
 // ══════════════════════════════════════════════════
 //  WEEKLY REPORT + EXCEL EXPORT
 // ══════════════════════════════════════════════════
+function _xmlCell(val, type, style) {
+  const v = String(val||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return `<Cell${style?' ss:StyleID="'+style+'"':''}><Data ss:Type="${type||'String'}">${v}</Data></Cell>`;
+}
+function _xmlRow(cells) { return `<Row>${cells.join('')}</Row>`; }
+
 function exportWeeklyReportExcel() {
   const d = new Date().toISOString().split('T')[0];
-  const statusColor = { active:'#fef3c7', submitted:'#dbeafe', permitted:'#dcfce7', co:'#cffafe' };
+  const dateStr = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   const statusLabel = { active:'Collecting Docs', submitted:'Under Review', permitted:'Permitted', co:'CO Received' };
-  const phaseColor  = { 1:'#eff6ff', 2:'#f5f3ff', 3:'#fffbeb', 4:'#f0fdf4' };
-
   const getOwner = p => (p.customFields&&p.customFields[Object.keys(p.customFields||{}).find(k=>{const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k);return cf&&cf.label.toUpperCase().includes('OWNER');})||''])||p.owner||'';
 
-  const rows = state.permits.map(p => {
+  // ── Build critical + upcoming lists (same logic as renderWeeklyReport) ──
+  const criticalList = state.permits
+    .filter(p=>{ const e=getEstApprovalInfo(p); return !e.approved&&e.daysRemaining!==null&&e.daysRemaining<=14; })
+    .sort((a,b)=>{ const ea=getEstApprovalInfo(a),eb=getEstApprovalInfo(b); return (ea.daysRemaining||99)-(eb.daysRemaining||99); });
+  const critIds = new Set(criticalList.map(p=>p.id));
+  const pipelineList = state.permits
+    .filter(p=>!critIds.has(p.id)&&(p.overallStatus==='active'||p.overallStatus==='submitted'))
+    .sort((a,b)=>{ const ea=getEstApprovalInfo(a),eb=getEstApprovalInfo(b); return (ea.daysRemaining||999)-(eb.daysRemaining||999); });
+
+  // ── Styles for XMLSS ──
+  const styles = `<Styles>
+    <Style ss:ID="title"><Font ss:Bold="1" ss:Size="14" ss:Color="#FFFFFF"/><Interior ss:Color="#1e3a5f" ss:Pattern="Solid"/></Style>
+    <Style ss:ID="hdr"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#1e3a5f" ss:Pattern="Solid"/><Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#FFFFFF"/></Borders></Style>
+    <Style ss:ID="hdr_red"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#991b1b" ss:Pattern="Solid"/></Style>
+    <Style ss:ID="hdr_blue"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#1e40af" ss:Pattern="Solid"/></Style>
+    <Style ss:ID="bold"><Font ss:Bold="1"/></Style>
+    <Style ss:ID="red"><Font ss:Bold="1" ss:Color="#dc2626"/></Style>
+    <Style ss:ID="warn"><Font ss:Bold="1" ss:Color="#d97706"/></Style>
+    <Style ss:ID="act"><Interior ss:Color="#fef3c7" ss:Pattern="Solid"/></Style>
+    <Style ss:ID="sub"><Interior ss:Color="#dbeafe" ss:Pattern="Solid"/></Style>
+    <Style ss:ID="perm"><Interior ss:Color="#dcfce7" ss:Pattern="Solid"/></Style>
+    <Style ss:ID="co"><Interior ss:Color="#cffafe" ss:Pattern="Solid"/></Style>
+    <Style ss:ID="alt"><Interior ss:Color="#f8fafc" ss:Pattern="Solid"/></Style>
+  </Styles>`;
+
+  function permitRow(p, i) {
     const eta = getEstApprovalInfo(p);
     const days = getDaysInPhase(p);
-    const phase = getCurrentPhase(p);
-    const sc = statusColor[p.overallStatus]||'#f8fafc';
-    const pc = phaseColor[phase]||'#f8fafc';
-    const urgent = !eta.approved && eta.daysRemaining!==null && eta.daysRemaining<=14;
-    return `<tr>
-      <td style="font-weight:600">${p.lotNumber||''}</td>
-      <td style="font-weight:600">${(p.address||'').split(',')[0]}</td>
-      <td style="font-size:11px;font-family:Courier New">${p.parcelId||''}</td>
-      <td style="font-size:11px">${getOwner(p)}</td>
-      <td>${p.community||''}</td>
-      <td>${p.market||''}</td>
-      <td>${p.model||''}</td>
-      <td>${p.elevation||''}</td>
-      <td>${p.garage||''}</td>
-      <td>${p.water||''}</td>
-      <td style="background:${sc};font-weight:600;text-align:center">${statusLabel[p.overallStatus]||p.overallStatus||''}</td>
-      <td style="background:${pc};text-align:center">Phase ${phase}</td>
-      <td style="font-family:Courier New">${p.permitNumber||''}</td>
-      <td style="text-align:right">${days!==null?days+' days':''}</td>
-      <td style="text-align:center;font-weight:${urgent?700:400};color:${urgent?'#dc2626':'inherit'}">${eta.targetDate||''}</td>
-      <td style="text-align:center;font-weight:${urgent?700:400};color:${urgent?'#dc2626':'inherit'}">${eta.daysRemaining!==null?eta.daysRemaining+'d':''}</td>
-      <td>${p.projectManager||''}</td>
-      <td style="font-size:11px">${(p.notes||'').replace(/\n/g,' ')}</td>
-    </tr>`;
-  }).join('');
+    const urgent = !eta.approved&&eta.daysRemaining!==null&&eta.daysRemaining<=14;
+    const stStyle = {active:'act',submitted:'sub',permitted:'perm',co:'co'}[p.overallStatus]||'';
+    const rowStyle = i%2===0?'alt':'';
+    const etaStyle = urgent?'red':eta.daysRemaining!==null&&eta.daysRemaining<=30?'warn':'';
+    return `<Row>
+      ${_xmlCell(p.lotNumber,'String',rowStyle||'bold')}
+      ${_xmlCell((p.address||'').split(',')[0],'String',rowStyle)}
+      ${_xmlCell(p.parcelId,'String',rowStyle)}
+      ${_xmlCell(getOwner(p),'String',rowStyle)}
+      ${_xmlCell(p.community,'String',rowStyle)}
+      ${_xmlCell(p.market,'String',rowStyle)}
+      ${_xmlCell(p.model,'String',rowStyle)}
+      ${_xmlCell(p.elevation,'String',rowStyle)}
+      ${_xmlCell(p.garage,'String',rowStyle)}
+      ${_xmlCell(statusLabel[p.overallStatus]||p.overallStatus,'String',stStyle||rowStyle)}
+      ${_xmlCell('Phase '+getCurrentPhase(p),'String',rowStyle)}
+      ${_xmlCell(p.permitNumber,'String',rowStyle)}
+      ${_xmlCell(days!==null?days:'','Number',rowStyle)}
+      ${_xmlCell(eta.targetDate||'','String',etaStyle||rowStyle)}
+      ${_xmlCell(eta.daysRemaining!==null?eta.daysRemaining:'','Number',etaStyle||rowStyle)}
+      ${_xmlCell(p.projectManager,'String',rowStyle)}
+      ${_xmlCell((p.notes||'').replace(/\n/g,' '),'String',rowStyle)}
+    </Row>`;
+  }
 
-  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
-<head><meta charset="UTF-8">
-<style>
-  body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; }
-  table { border-collapse: collapse; width: 100%; }
-  th { background: #1e3a5f; color: #ffffff; font-weight: bold; padding: 8px 10px; border: 1px solid #2d5a8e; font-size: 10pt; text-align: left; white-space: nowrap; }
-  td { padding: 6px 10px; border: 1px solid #e2e8f0; font-size: 10pt; vertical-align: middle; }
-  tr:nth-child(even) td { background-color: #f8fafc; }
-  tr:nth-child(odd) td { background-color: #ffffff; }
-  .header-row td { background: #1e3a5f !important; color: white; font-size: 14pt; font-weight: bold; padding: 12px; border: none; }
-  .sub-row td { background: #2d5a8e !important; color: white; font-size: 10pt; padding: 6px 10px; border: none; }
-</style>
-</head><body>
-<table>
-  <tr class="header-row"><td colspan="18">🏗️ Estela Living — Permit Pipeline Report</td></tr>
-  <tr class="sub-row"><td colspan="18">Generated: ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} &nbsp;|&nbsp; Total Permits: ${state.permits.length}</td></tr>
-  <tr><th>Lot</th><th>Address</th><th>Parcel ID</th><th>Owner</th><th>Community</th><th>Market</th><th>Model</th><th>Elevation</th><th>Garage</th><th>Water</th><th>Status</th><th>Phase</th><th>Permit #</th><th>Days in Phase</th><th>ETA Date</th><th>Days Left</th><th>PM</th><th>Notes</th></tr>
-  ${rows}
-</table>
-</body></html>`;
+  const allCols = ['Lot','Address','Parcel ID','Owner','Community','Market','Model','Elevation','Garage','Status','Phase','Permit #','Days in Phase','ETA Date','Days Left','PM','Notes'];
+  const hdrRow = (style) => `<Row>${allCols.map(h=>_xmlCell(h,'String',style)).join('')}</Row>`;
+
+  // ── Sheet 1: All Permits ──
+  const sheet1 = `<Worksheet ss:Name="All Permits">
+    <Table ss:DefaultColumnWidth="80">
+      <Column ss:Width="40"/><Column ss:Width="160"/><Column ss:Width="110"/><Column ss:Width="130"/><Column ss:Width="110"/><Column ss:Width="70"/><Column ss:Width="80"/><Column ss:Width="90"/><Column ss:Width="80"/><Column ss:Width="90"/><Column ss:Width="60"/><Column ss:Width="90"/><Column ss:Width="70"/><Column ss:Width="75"/><Column ss:Width="55"/><Column ss:Width="90"/><Column ss:Width="160"/>
+      <Row><Cell ss:MergeAcross="16" ss:StyleID="title"><Data ss:Type="String">Estela Living — Permit Pipeline | Generated: ${dateStr} | Total: ${state.permits.length}</Data></Cell></Row>
+      ${hdrRow('hdr')}
+      ${state.permits.map((p,i)=>permitRow(p,i)).join('')}
+    </Table>
+  </Worksheet>`;
+
+  // ── Sheet 2: Weekly Report ──
+  const sheet2 = `<Worksheet ss:Name="Weekly Report">
+    <Table ss:DefaultColumnWidth="80">
+      <Column ss:Width="40"/><Column ss:Width="160"/><Column ss:Width="110"/><Column ss:Width="130"/><Column ss:Width="110"/><Column ss:Width="70"/><Column ss:Width="80"/><Column ss:Width="90"/><Column ss:Width="80"/><Column ss:Width="90"/><Column ss:Width="60"/><Column ss:Width="90"/><Column ss:Width="70"/><Column ss:Width="75"/><Column ss:Width="55"/><Column ss:Width="90"/><Column ss:Width="160"/>
+      <Row><Cell ss:MergeAcross="16" ss:StyleID="title"><Data ss:Type="String">Estela Living — Weekly Permit Report | ${dateStr}</Data></Cell></Row>
+      <Row><Cell ss:MergeAcross="16" ss:StyleID="hdr_red"><Data ss:Type="String">⚡ CRITICAL — Approving in 14 Days or Less (${criticalList.length} permits)</Data></Cell></Row>
+      ${hdrRow('hdr_red')}
+      ${criticalList.map((p,i)=>permitRow(p,i)).join('')}
+      <Row/>
+      <Row><Cell ss:MergeAcross="16" ss:StyleID="hdr_blue"><Data ss:Type="String">📋 FULL PIPELINE — Collecting Docs &amp; Under Review (${pipelineList.length} permits)</Data></Cell></Row>
+      ${hdrRow('hdr_blue')}
+      ${pipelineList.map((p,i)=>permitRow(p,i)).join('')}
+    </Table>
+  </Worksheet>`;
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:x="urn:schemas-microsoft-com:office:excel">
+  ${styles}
+  ${sheet1}
+  ${sheet2}
+</Workbook>`;
 
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'}));
+  a.href = URL.createObjectURL(new Blob([xml], {type:'application/vnd.ms-excel;charset=utf-8'}));
   a.download = `Estela-Living-Permit-Report-${d}.xls`;
   a.click();
-  showToast('✅ Professional Excel report downloaded!');
+  showToast('✅ Excel downloaded — 2 sheets: All Permits + Weekly Report');
 }
 
 function renderWeeklyReport(el) {
   const today = new Date(); today.setHours(0,0,0,0);
   const dateStr = today.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const upcoming = state.permits
-    .filter(p=>{ const e=getEstApprovalInfo(p); return !e.approved&&e.daysRemaining!==null&&e.daysRemaining<=30; })
+  // Critical: not yet approved, ETA within 14 days
+  const critical = state.permits
+    .filter(p=>{ const e=getEstApprovalInfo(p); return !e.approved&&e.daysRemaining!==null&&e.daysRemaining<=14; })
     .sort((a,b)=>{ const ea=getEstApprovalInfo(a),eb=getEstApprovalInfo(b); return (ea.daysRemaining||99)-(eb.daysRemaining||99); });
-  const critical = upcoming.filter(p=>{ const e=getEstApprovalInfo(p); return e.daysRemaining<=14; });
+  const criticalIds = new Set(critical.map(p=>p.id));
+  // Upcoming: all active/submitted permits NOT in critical (collecting docs or under review)
+  const upcoming = state.permits
+    .filter(p=>!criticalIds.has(p.id) && (p.overallStatus==='active'||p.overallStatus==='submitted'))
+    .sort((a,b)=>{ const ea=getEstApprovalInfo(a),eb=getEstApprovalInfo(b); return (ea.daysRemaining||999)-(eb.daysRemaining||999); });
   const phaseCounts = [1,2,3,4].map(n=>({ phase:n, label:getPhaseLabel(n), count:state.permits.filter(p=>getCurrentPhase(p)===n).length }));
   const phaseAvgs = [1,2,3,4].map(n=>{
     const withData = state.permits.filter(p=>getPhaseDuration(p,n)!==null);
@@ -2367,7 +2417,7 @@ function renderWeeklyReport(el) {
         </tbody></table>
       </div>`:''}
       <div style="margin-bottom:24px">
-        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">🏗️ Upcoming Approvals — Next 30 Days (${upcoming.length})</h3>
+        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">📋 Full Pipeline — Collecting Docs &amp; Under Review (${upcoming.length})</h3>
         ${upcoming.length?`<table style="${tblStyle}"><thead><tr>
           <th style="${thStyle}">Lot</th><th style="${thStyle}">Address</th><th style="${thStyle}">Parcel ID</th><th style="${thStyle}">Owner</th><th style="${thStyle}">Community</th>
           <th style="${thStyle}">Model</th><th style="${thStyle}">Phase</th><th style="${thStyle}">ETA Date</th><th style="${thStyle}">Days Left</th><th style="${thStyle}">PM</th>
