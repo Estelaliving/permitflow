@@ -743,7 +743,7 @@ let state = {
   settings: { clientId: '821a7b2f-4375-4b80-8a01-6ae79db4aab6', tenantId: '9aecb969-8ceb-4c3e-ba5a-53266a072fe8' },
   // Report filters
   _reportCommunity: 'All',
-  _reportStatus: 'All',
+  _reportStatus: 'All', _reportStatuses: [],
   _reportPM: 'All',
   _reportMarket: 'All',
 };
@@ -2253,24 +2253,68 @@ function renderPipelineView(el) {
 //  WEEKLY REPORT + EXCEL EXPORT
 // ══════════════════════════════════════════════════
 function exportWeeklyReportExcel() {
-  const headers = ['Lot','Address','Community','Market','Model','Elevation','Garage','Water','Status','Phase','Permit #','Days in Phase','ETA Date','Days to Approval','PM','Notes'];
+  const d = new Date().toISOString().split('T')[0];
+  const statusColor = { active:'#fef3c7', submitted:'#dbeafe', permitted:'#dcfce7', co:'#cffafe' };
+  const statusLabel = { active:'Collecting Docs', submitted:'Under Review', permitted:'Permitted', co:'CO Received' };
+  const phaseColor  = { 1:'#eff6ff', 2:'#f5f3ff', 3:'#fffbeb', 4:'#f0fdf4' };
+
+  const getOwner = p => (p.customFields&&p.customFields[Object.keys(p.customFields||{}).find(k=>{const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k);return cf&&cf.label.toUpperCase().includes('OWNER');})||''])||p.owner||'';
+
   const rows = state.permits.map(p => {
     const eta = getEstApprovalInfo(p);
     const days = getDaysInPhase(p);
-    return [
-      p.lotNumber||'', p.address||'', p.community||'', p.market||'', p.model||'', p.elevation||'',
-      p.garage||'', p.water||'', p.overallStatus||'', 'Phase '+getCurrentPhase(p),
-      p.permitNumber||'', days!==null?days:'', eta.targetDate||'',
-      eta.daysRemaining!==null?eta.daysRemaining:'', p.projectManager||'', (p.notes||'').replace(/\n/g,' ')
-    ].map(v => '"'+String(v).replace(/"/g,'""')+'"');
-  });
-  const csv = [headers.map(h=>'"'+h+'"').join(','), ...rows.map(r=>r.join(','))].join('\n');
-  const d = new Date().toISOString().split('T')[0];
+    const phase = getCurrentPhase(p);
+    const sc = statusColor[p.overallStatus]||'#f8fafc';
+    const pc = phaseColor[phase]||'#f8fafc';
+    const urgent = !eta.approved && eta.daysRemaining!==null && eta.daysRemaining<=14;
+    return `<tr>
+      <td style="font-weight:600">${p.lotNumber||''}</td>
+      <td style="font-weight:600">${(p.address||'').split(',')[0]}</td>
+      <td style="font-size:11px;font-family:Courier New">${p.parcelId||''}</td>
+      <td style="font-size:11px">${getOwner(p)}</td>
+      <td>${p.community||''}</td>
+      <td>${p.market||''}</td>
+      <td>${p.model||''}</td>
+      <td>${p.elevation||''}</td>
+      <td>${p.garage||''}</td>
+      <td>${p.water||''}</td>
+      <td style="background:${sc};font-weight:600;text-align:center">${statusLabel[p.overallStatus]||p.overallStatus||''}</td>
+      <td style="background:${pc};text-align:center">Phase ${phase}</td>
+      <td style="font-family:Courier New">${p.permitNumber||''}</td>
+      <td style="text-align:right">${days!==null?days+' days':''}</td>
+      <td style="text-align:center;font-weight:${urgent?700:400};color:${urgent?'#dc2626':'inherit'}">${eta.targetDate||''}</td>
+      <td style="text-align:center;font-weight:${urgent?700:400};color:${urgent?'#dc2626':'inherit'}">${eta.daysRemaining!==null?eta.daysRemaining+'d':''}</td>
+      <td>${p.projectManager||''}</td>
+      <td style="font-size:11px">${(p.notes||'').replace(/\n/g,' ')}</td>
+    </tr>`;
+  }).join('');
+
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+<head><meta charset="UTF-8">
+<style>
+  body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; }
+  table { border-collapse: collapse; width: 100%; }
+  th { background: #1e3a5f; color: #ffffff; font-weight: bold; padding: 8px 10px; border: 1px solid #2d5a8e; font-size: 10pt; text-align: left; white-space: nowrap; }
+  td { padding: 6px 10px; border: 1px solid #e2e8f0; font-size: 10pt; vertical-align: middle; }
+  tr:nth-child(even) td { background-color: #f8fafc; }
+  tr:nth-child(odd) td { background-color: #ffffff; }
+  .header-row td { background: #1e3a5f !important; color: white; font-size: 14pt; font-weight: bold; padding: 12px; border: none; }
+  .sub-row td { background: #2d5a8e !important; color: white; font-size: 10pt; padding: 6px 10px; border: none; }
+</style>
+</head><body>
+<table>
+  <tr class="header-row"><td colspan="18">🏗️ Estela Living — Permit Pipeline Report</td></tr>
+  <tr class="sub-row"><td colspan="18">Generated: ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} &nbsp;|&nbsp; Total Permits: ${state.permits.length}</td></tr>
+  <tr><th>Lot</th><th>Address</th><th>Parcel ID</th><th>Owner</th><th>Community</th><th>Market</th><th>Model</th><th>Elevation</th><th>Garage</th><th>Water</th><th>Status</th><th>Phase</th><th>Permit #</th><th>Days in Phase</th><th>ETA Date</th><th>Days Left</th><th>PM</th><th>Notes</th></tr>
+  ${rows}
+</table>
+</body></html>`;
+
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-  a.download = `permit-report-${d}.csv`;
+  a.href = URL.createObjectURL(new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'}));
+  a.download = `Estela-Living-Permit-Report-${d}.xls`;
   a.click();
-  showToast('✅ Excel report downloaded!');
+  showToast('✅ Professional Excel report downloaded!');
 }
 
 function renderWeeklyReport(el) {
@@ -2371,12 +2415,13 @@ function renderWeeklyReport(el) {
 function renderReportsView(el, alerts) {
   const tab = state._reportTab || 'summary';
   const filterCom    = state._reportCommunity || 'All';
-  const filterStatus = state._reportStatus    || 'All';
-  const filterPM     = state._reportPM        || 'All';
-  const filterMarket = state._reportMarket    || 'All';
+  const filterStatus  = state._reportStatus    || 'All';
+  const filterStatuses = state._reportStatuses || [];
+  const filterPM      = state._reportPM        || 'All';
+  const filterMarket  = state._reportMarket    || 'All';
   const all = state.permits
-    .filter(p => filterCom    === 'All' || p.community    === filterCom)
-    .filter(p => filterStatus === 'All' || p.overallStatus === filterStatus)
+    .filter(p => filterCom === 'All' || p.community === filterCom)
+    .filter(p => filterStatuses.length === 0 ? (filterStatus === 'All' || p.overallStatus === filterStatus) : filterStatuses.includes(p.overallStatus))
     .filter(p => filterPM     === 'All' || (p.projectManager||'—') === filterPM)
     .filter(p => filterMarket === 'All' || (p.market||'') === filterMarket);
   const submitted  = all.filter(p=>p.overallStatus==='submitted');
@@ -2873,19 +2918,22 @@ function renderReportsView(el, alerts) {
   }
   const comPills = ['All',...COMMUNITIES.filter(c=>c!=='All')].map(c=>pill(c, c===filterCom, `state._reportCommunity='${c}';render()`)).join('');
   const statusDefs = [
-    {k:'All', lbl:'All'},
     {k:'active',    lbl:'Collecting Docs'},
     {k:'submitted', lbl:'Under Review'},
     {k:'permitted', lbl:'Permitted ✓'},
     {k:'co',        lbl:'CO ★'},
   ];
-  const statusPills = statusDefs.map(({k,lbl})=>pill(lbl, k===filterStatus, `state._reportStatus='${k}';render()`)).join('');
+  const allStatusPill = pill('All', filterStatuses.length===0, `state._reportStatuses=[];state._reportStatus='All';render()`);
+  const statusPills = allStatusPill + statusDefs.map(({k,lbl})=>{
+    const active = filterStatuses.includes(k);
+    return pill(lbl, active, `(function(){var s=state._reportStatuses||[];var i=s.indexOf('${k}');if(i>-1)s.splice(i,1);else s.push('${k}');state._reportStatuses=[...s];state._reportStatus=s.length?s[0]:'All';render();})()`);
+  }).join('');
   const allReportPMs = ['All',...[...new Set(state.permits.map(p=>p.projectManager||'').filter(Boolean))].sort()];
   const pmPills = allReportPMs.map(pm=>pill(pm==='All'?'All PMs':pm, pm===filterPM, `state._reportPM='${pm}';render()`)).join('');
   const marketDefs = ['All','Palm Coast','Ocala'];
   const marketPills = marketDefs.map(m=>pill(m==='All'?'All Markets':m, m===filterMarket, `state._reportMarket='${m}';render()`)).join('');
-  const hasFilter = filterCom!=='All' || filterStatus!=='All' || filterPM!=='All' || filterMarket!=='All';
-  const clearBtn  = hasFilter ? `<button style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid #dc2626;background:#dc2626;color:#fff" onclick="state._reportCommunity='All';state._reportStatus='All';state._reportPM='All';state._reportMarket='All';render()">✕ Clear Filters</button>` : '';
+  const hasFilter = filterCom!=='All' || filterStatuses.length>0 || filterStatus!=='All' || filterPM!=='All' || filterMarket!=='All';
+  const clearBtn  = hasFilter ? `<button style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid #dc2626;background:#dc2626;color:#fff" onclick="state._reportCommunity='All';state._reportStatus='All';state._reportStatuses=[];state._reportPM='All';state._reportMarket='All';render()">✕ Clear Filters</button>` : '';
   el.innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
       <h2 style="font-size:18px;font-weight:700">Reports & Analytics</h2>
