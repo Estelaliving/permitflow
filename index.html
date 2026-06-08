@@ -684,8 +684,10 @@ function saveStageConfig() {
 function migrateStageConfig() {
   if (STAGE_CONFIG.inspections && STAGE_CONFIG.inspections.phase === 3) STAGE_CONFIG.inspections.phase = 4;
   if (STAGE_CONFIG.co && STAGE_CONFIG.co.phase === 3) STAGE_CONFIG.co.phase = 4;
-  if (!STAGE_CONFIG.powerService) STAGE_CONFIG.powerService = { label:'Power Service', phase:4, sla:14, folder:'Power Service' };
-  if (!STAGE_CONFIG.utilityConn) STAGE_CONFIG.utilityConn = { label:'Utility Connections', phase:4, sla:14, folder:'Utilities' };
+  if (!STAGE_CONFIG.powerService)    STAGE_CONFIG.powerService    = { label:'Power Service',     phase:4, sla:14, folder:'Power Service' };
+  if (!STAGE_CONFIG.utilityConn)     STAGE_CONFIG.utilityConn     = { label:'Utility Connections', phase:4, sla:14, folder:'Utilities' };
+  if (!STAGE_CONFIG.depFinalLetter)  STAGE_CONFIG.depFinalLetter  = { label:'DEP Final Letter',   phase:4, sla:14, folder:'DEP',             markets:['Ocala'] };
+  if (!STAGE_CONFIG.operatingPermit) STAGE_CONFIG.operatingPermit = { label:'Operating Permit',   phase:4, sla:14, folder:'Operating Permit', markets:['Ocala'] };
   // Removed in favour of per-agency review sections
   delete STAGE_CONFIG.planReview;
   delete STAGE_CONFIG.resubmittal;
@@ -1033,7 +1035,7 @@ async function loadFromGitHub() {
     if (!d || !d.permits) return false;
     if (_lastRemoteVersion && d.version <= _lastRemoteVersion) return false;
     state.permits = (d.permits || []).filter(p=>!p._deleted).map(sanitizePermit);
-    if (d.stageConfig && Object.keys(d.stageConfig).length > 0) { STAGE_CONFIG = d.stageConfig; saveStageConfig(); }
+    if (d.stageConfig && Object.keys(d.stageConfig).length > 0) { STAGE_CONFIG = d.stageConfig; migrateStageConfig(); saveStageConfig(); }
     if (d.customFields && Array.isArray(d.customFields) && d.customFields.length > 0) { CUSTOM_PERMIT_FIELDS = d.customFields; saveCustomFields(); }
     if (d.optionsList && Array.isArray(d.optionsList) && d.optionsList.length > 0) { OPTIONS_LIST = d.optionsList; saveOptionsList(); }
     _lastRemoteVersion = d.version;
