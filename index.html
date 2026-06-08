@@ -631,8 +631,8 @@ const DEFAULT_STAGE_CONFIG = {
   permitIssued:    { label:'Permit Issued',       phase:3, sla:10, folder:'Permits' },
   inspections:     { label:'Inspections',         phase:4, sla:5,  folder:'Inspections' },
   co:              { label:'Certificate of Occ.', phase:4, sla:5,  folder:'CO' },
-  depFinalLetter:  { label:'DEP Final Letter',    phase:4, sla:14, folder:'DEP' },
-  operatingPermit: { label:'Operating Permit',    phase:4, sla:14, folder:'Operating Permit' },
+  depFinalLetter:  { label:'DEP Final Letter',    phase:4, sla:14, folder:'DEP',              markets:['Ocala'] },
+  operatingPermit: { label:'Operating Permit',    phase:4, sla:14, folder:'Operating Permit', markets:['Ocala'] },
   powerService:    { label:'Power Service',       phase:4, sla:14, folder:'Power Service' },
   utilityConn:     { label:'Utility Connections', phase:4, sla:14, folder:'Utilities' },
 };
@@ -798,6 +798,17 @@ function sanitizePermit(p) {
   if (!p.phaseTimestamps) p.phaseTimestamps = {};
   if (p.water === undefined) p.water = '';
   if (p.owner === undefined) p.owner = '';
+  // Auto-set market-restricted stages to n/a for non-matching permits
+  const permitMarket = (p.market || '').toLowerCase();
+  Object.entries(STAGE_CONFIG || DEFAULT_STAGE_CONFIG).forEach(([key, cfg]) => {
+    if (cfg.markets && cfg.markets.length > 0) {
+      const matches = cfg.markets.some(m => permitMarket.includes(m.toLowerCase()));
+      if (!matches && (!p.stages || p.stages[key] === undefined || p.stages[key] === 'not-started')) {
+        if (!p.stages) p.stages = {};
+        p.stages[key] = 'n/a';
+      }
+    }
+  });
   return p;
 }
 
@@ -2039,11 +2050,15 @@ function renderStagesView(el) {
 
     keys.forEach(key => {
       const cfg = STAGE_CONFIG[key];
-      html += `<div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:6px;padding:7px 8px;margin-bottom:6px;background:var(--bg);border-radius:7px;border:1px solid var(--border)">
-        <input class="form-input" style="font-size:12px;padding:4px 7px;font-weight:600"
-          id="lbl-${key}" value="${cfg.label.replace(/"/g,'&quot;')}"
-          onblur="STAGE_CONFIG['${key}'].label=this.value;saveStageConfig();render()"
-          onkeydown="if(event.key==='Enter'){STAGE_CONFIG['${key}'].label=this.value;saveStageConfig();render();this.blur()}">
+      const marketTag = cfg.markets && cfg.markets.length ? `<span style="font-size:9px;font-weight:700;background:#d1fae5;color:#065f46;border-radius:4px;padding:1px 5px;margin-left:4px">${cfg.markets.join('/')}</span>` : '';
+      html += `<div style="display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:6px;padding:7px 8px;margin-bottom:6px;background:var(--bg);border-radius:7px;border:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:4px">
+          <input class="form-input" style="font-size:12px;padding:4px 7px;font-weight:600;flex:1"
+            id="lbl-${key}" value="${cfg.label.replace(/"/g,'&quot;')}"
+            onblur="STAGE_CONFIG['${key}'].label=this.value;saveStageConfig();render()"
+            onkeydown="if(event.key==='Enter'){STAGE_CONFIG['${key}'].label=this.value;saveStageConfig();render();this.blur()}">
+          ${marketTag}
+        </div>
         <input class="form-input" style="font-size:12px;padding:4px 6px;width:46px;text-align:center" type="number" min="1"
           id="sla-${key}" value="${cfg.sla}" title="SLA days"
           onblur="STAGE_CONFIG['${key}'].sla=parseInt(this.value)||5;saveStageConfig()"
@@ -3412,6 +3427,13 @@ function renderExpandContent(permit) {
   const phase3 = stageKeys.filter(k=>STAGE_CONFIG[k].phase===3);
 
   function stageRowHtml(k) {
+    const cfg = STAGE_CONFIG[k] || {};
+    // Hide market-restricted stages for non-matching permits
+    if (cfg.markets && cfg.markets.length > 0) {
+      const permitMarket = (permit.market || '').toLowerCase();
+      const matches = cfg.markets.some(m => permitMarket.includes(m.toLowerCase()));
+      if (!matches) return ''; // don't render for wrong market
+    }
     const status = permit.stages[k];
     const isNA = status === 'n/a';
     const requestedAt = permit.stageRequestedAt?.[k] || '';
