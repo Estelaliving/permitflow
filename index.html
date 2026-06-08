@@ -566,6 +566,23 @@ td.address-cell { min-width:200px; }
   </div>
 </div>
 
+<!-- Full-screen permit detail modal — opens from Dashboard, Pipeline, Reports, anywhere -->
+<div id="permit-detail-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1100;overflow-y:auto">
+  <div style="max-width:1200px;margin:20px auto;background:var(--card);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);min-height:calc(100vh - 40px)">
+    <div style="position:sticky;top:0;z-index:10;background:var(--card);border-radius:16px 16px 0 0;border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span id="permit-detail-title" style="font-size:16px;font-weight:700"></span>
+        <span id="permit-detail-status" style="font-size:12px"></span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button onclick="openEditModal(window._detailPermitId)" style="padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:12px;font-weight:600;cursor:pointer;color:var(--text)">✏️ Edit Details</button>
+        <button onclick="closePermitDetail()" style="padding:6px 14px;border-radius:8px;border:none;background:#2d5a8e;color:#fff;font-size:13px;font-weight:700;cursor:pointer">✕ Close</button>
+      </div>
+    </div>
+    <div id="permit-detail-body" style="padding:20px"></div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="settings-overlay">
   <div class="modal">
     <div class="modal-header">
@@ -2255,7 +2272,7 @@ function renderPipelineView(el) {
               const urgent = !eta.approved && eta.daysRemaining!==null && eta.daysRemaining<=14;
               const dayColor = days===null?'#64748b':days>30?'#b91c1c':days>14?'#92400e':'#15803d';
               return `<div draggable="true" ondragstart="kanbanDragStart(event,'${p.id}')"
-                onclick="setState({view:'permits',expandedRow:'${p.id}'})"
+                onclick="openPermit('${p.id}')"
                 style="background:var(--card);border:1.5px solid ${urgent?'#fca5a5':'var(--border)'};border-radius:10px;padding:10px 12px;cursor:grab;transition:box-shadow .15s;${urgent?'background:#fff7f7':''}">
                 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
                   <span style="font-weight:700;font-size:12px">Lot ${p.lotNumber||'—'}</span>
@@ -2651,7 +2668,7 @@ function renderReportsView(el, alerts) {
             const cityDays = getCityDays(p);
             const ownerVal = (p.customFields && p.customFields[Object.keys(p.customFields||{}).find(k=>{ const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k); return cf&&cf.label.toUpperCase().includes('OWNER'); })||'']) || p.owner || '—';
             return `<tr>
-              <td style="font-weight:600;cursor:pointer;color:#2d5a8e" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">${(p.address||'').split(',')[0]}</td>
+              <td style="font-weight:600;cursor:pointer;color:#2d5a8e" onclick="openPermit('${p.id}')">${(p.address||'').split(',')[0]}</td>
               <td>${p.community||''}</td>
               <td>${p.lotNumber||'—'}</td>
               <td style="font-size:11px;font-family:monospace">${p.parcelId||'—'}</td>
@@ -2660,7 +2677,7 @@ function renderReportsView(el, alerts) {
               <td style="font-size:12px">${p.projectManager||'—'}</td>
               <td style="font-size:12px;font-family:monospace">${p.permitNumber||'—'}</td>
               <td>${cityDays!==null?`<span class="dur-pill ${durClass(cityDays)}">${cityDays}d</span>`:'—'}</td>
-              <td><button class="btn btn-sm btn-outline" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">Open →</button></td>
+              <td><button class="btn btn-sm btn-outline" onclick="openPermit('${p.id}')">Open →</button></td>
             </tr>`;
           }).join('')}
         </tbody></table>
@@ -2675,7 +2692,7 @@ function renderReportsView(el, alerts) {
         <div class="kpi-mini"><div class="kpi-mini-val" style="color:#16a34a">${agingList.filter(x=>x.d<=30).length}</div><div class="kpi-mini-lbl">&lt;30 Days</div></div>
       </div>
       ${submitted.length===0?'<div style="text-align:center;padding:40px;color:var(--text-muted)">No permits currently under city review</div>':`<table class="report-table"><thead><tr><th>Address</th><th>Community</th><th>Lot</th><th>Model</th><th>Submitted</th><th>Days at City</th><th>Aging</th><th></th></tr></thead>
-        <tbody>${agingList.map(({p,d})=>{const sub=(p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted;return `<tr><td style="font-weight:600">${p.address.split(',')[0]}</td><td>${p.community}</td><td>${p.lotNumber||'?'}</td><td style="font-size:12px">${p.model||'?'}</td><td style="font-size:12px;color:var(--text-muted)">${fmtDate(sub)}</td><td><span class="dur-pill ${durClass(d)}">${d}d</span></td><td>${durBar(d,maxCity||90)}</td><td><button class="btn btn-sm btn-outline" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">Open</button></td></tr>`;}).join('')}</tbody></table>`}
+        <tbody>${agingList.map(({p,d})=>{const sub=(p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted;return `<tr><td style="font-weight:600">${p.address.split(',')[0]}</td><td>${p.community}</td><td>${p.lotNumber||'?'}</td><td style="font-size:12px">${p.model||'?'}</td><td style="font-size:12px;color:var(--text-muted)">${fmtDate(sub)}</td><td><span class="dur-pill ${durClass(d)}">${d}d</span></td><td>${durBar(d,maxCity||90)}</td><td><button class="btn btn-sm btn-outline" onclick="openPermit('${p.id}')">Open</button></td></tr>`;}).join('')}</tbody></table>`}
       <button class="btn btn-sm btn-outline" style="margin-top:12px" onclick="exportAgingCSV()">Export CSV</button>`;
   }
   if (tab==='eta') {
@@ -2753,7 +2770,7 @@ function renderReportsView(el, alerts) {
           const etaBg   = eta.overdue ? '#fee2e2' : eta.daysRemaining !== null && eta.daysRemaining <= 14 ? '#fef3c7' : '';
           const etaColor = eta.overdue ? '#b91c1c' : eta.daysRemaining !== null && eta.daysRemaining <= 14 ? '#92400e' : '#16a34a';
           return `<tr style="${eta.overdue?'background:#fff8f8':''}">
-            <td style="font-weight:600;cursor:pointer" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">${p.address.split(',')[0]}</td>
+            <td style="font-weight:600;cursor:pointer" onclick="openPermit('${p.id}')">${p.address.split(',')[0]}</td>
             <td style="font-size:12px">${p.community}</td>
             <td style="font-size:12px">${p.projectManager||'—'}</td>
             <td><span class="status-badge status-${p.overallStatus}">${STATUS_LABELS[p.overallStatus]||p.overallStatus}</span></td>
@@ -2765,7 +2782,7 @@ function renderReportsView(el, alerts) {
               </span>
             </td>
             <td style="font-size:11px;color:var(--text-muted)">${eta.basis}</td>
-            <td><button class="btn btn-sm btn-outline" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">Open</button></td>
+            <td><button class="btn btn-sm btn-outline" onclick="openPermit('${p.id}')">Open</button></td>
           </tr>`;
         }).join('')}
         </tbody></table>`}
@@ -2832,7 +2849,7 @@ function renderReportsView(el, alerts) {
         <th>Permit #</th>
       </tr></thead>
         <tbody>${timeline.map(({p,s2p,p2c})=>`<tr>
-          <td style="font-weight:600;cursor:pointer" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">${p.address.split(',')[0]}</td>
+          <td style="font-weight:600;cursor:pointer" onclick="openPermit('${p.id}')">${p.address.split(',')[0]}</td>
           <td style="font-size:12px">${p.community}</td>
           <td><span class="status-badge status-${p.overallStatus}">${STATUS_LABELS[p.overallStatus]||p.overallStatus}</span></td>
           <td>${s2p!==null?`<span class="dur-pill ${durClass(s2p)}">${s2p}d</span>`:'<span style="color:var(--text-muted)">pending</span>'}</td>
@@ -2855,7 +2872,7 @@ function renderReportsView(el, alerts) {
           <div class="kpi-mini"><div class="kpi-mini-val" style="color:#16a34a">${cs.perm}</div><div class="kpi-mini-lbl">Permitted</div></div>
           <div class="kpi-mini"><div class="kpi-mini-val" style="color:#0ea5e9">${cs.co}</div><div class="kpi-mini-lbl">CO</div></div>
         </div>
-        ${city.length?`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Under City Review</div>${city.map(({p,d})=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px"><span class="dur-pill ${durClass(d)}">${d}d</span><span style="font-weight:600;flex:1">${p.address.split(',')[0]}</span><span style="color:var(--text-muted)">Lot ${p.lotNumber||'?'} � ${p.model||''}</span><button class="btn btn-sm btn-outline" style="font-size:10px;padding:2px 8px" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">Open</button></div>`).join('')}</div>`:''}
+        ${city.length?`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Under City Review</div>${city.map(({p,d})=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px"><span class="dur-pill ${durClass(d)}">${d}d</span><span style="font-weight:600;flex:1">${p.address.split(',')[0]}</span><span style="color:var(--text-muted)">Lot ${p.lotNumber||'?'} � ${p.model||''}</span><button class="btn btn-sm btn-outline" style="font-size:10px;padding:2px 8px" onclick="openPermit('${p.id}')">Open</button></div>`).join('')}</div>`:''}
         ${long.length?`<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Longest in Process</div>${long.map(({p,d})=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px"><span class="dur-pill ${durClass(d)}">${d}d</span><span style="flex:1">${p.address.split(',')[0]}</span><span class="status-badge status-${p.overallStatus}" style="font-size:10px">${STATUS_LABELS[p.overallStatus]||p.overallStatus}</span></div>`).join('')}`:''}
       </div>`;
     }).join('');
@@ -2901,7 +2918,7 @@ function renderReportsView(el, alerts) {
         const cd=getCityDays(p)||0;
         return `<tr>
           <td style="font-weight:600">${r.pm}</td>
-          <td style="cursor:pointer;font-weight:600" onclick="setView('permits');state.community='${p.community}';state.expandedRow='${p.id}';render()">${p.address.split(',')[0]}</td>
+          <td style="cursor:pointer;font-weight:600" onclick="openPermit('${p.id}')">${p.address.split(',')[0]}</td>
           <td>${p.community}</td>
           <td><span class="status-badge status-${p.overallStatus}">${STATUS_LABELS[p.overallStatus]||p.overallStatus}</span></td>
           <td>${p.overallStatus==='submitted'?`<span class="dur-pill ${durClass(cd)}">${cd}d</span>`:'<span style="color:var(--text-muted)">—</span>'}</td>
@@ -3112,7 +3129,7 @@ function renderAlertsView(el, alerts) {
           <div style="font-size:12px;opacity:0.8;margin-bottom:4px">${a.permit.community} · Lot ${a.permit.lotNumber||'N/A'} · ${a.permit.model}</div>
           <div style="font-weight:600">${a.msg}</div>
         </div>
-        <button class="btn btn-sm btn-outline" onclick="setView('permits');state.community='${a.permit.community}';state.expandedRow='${a.permit.id}';render()">Open →</button>
+        <button class="btn btn-sm btn-outline" onclick="openPermit('${a.permit.id}')">Open →</button>
       </div>`).join('')}</div>`}
   </div>`;
 }
@@ -3358,6 +3375,35 @@ function renderPermitRow(permit, allAlerts, compact) {
   }
   return rows;
 }
+
+// ── Permit Detail Modal — opens from anywhere ──────────────────────────────
+function openPermit(permitId) {
+  const permit = state.permits.find(p=>p.id===permitId);
+  if (!permit) return;
+  window._detailPermitId = permitId;
+  const overlay = document.getElementById('permit-detail-overlay');
+  document.getElementById('permit-detail-title').textContent = (permit.address||'').split(',')[0] + (permit.lotNumber?' — Lot '+permit.lotNumber:'');
+  const stMap = { active:'🟡 Collecting Docs', submitted:'🔵 Under Review', permitted:'🟢 Permitted', co:'🩵 CO Received' };
+  document.getElementById('permit-detail-status').textContent = stMap[permit.overallStatus]||permit.overallStatus;
+  document.getElementById('permit-detail-body').innerHTML = renderExpandContent(permit);
+  overlay.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closePermitDetail() {
+  document.getElementById('permit-detail-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  window._detailPermitId = null;
+  render(); // refresh underlying view
+}
+function refreshPermitDetail() {
+  if (!window._detailPermitId) return;
+  const permit = state.permits.find(p=>p.id===window._detailPermitId);
+  if (!permit) return;
+  const body = document.getElementById('permit-detail-body');
+  if (body) body.innerHTML = renderExpandContent(permit);
+}
+// Override refreshExpandRow to also refresh the detail modal if open
+const _origRefreshExpandRow = typeof refreshExpandRow === 'function' ? refreshExpandRow : null;
 
 function renderExpandContent(permit) {
   const stageKeys = Object.keys(STAGE_CONFIG);
@@ -4171,6 +4217,11 @@ function updatePermitField(permitId, field, value) {
 }
 
 function refreshExpandRow(permitId) {
+  // If detail modal is open for this permit, refresh it
+  if (window._detailPermitId === permitId) {
+    refreshPermitDetail();
+    return;
+  }
   const expandEl = document.getElementById('expand-'+permitId);
   if (expandEl) { expandEl.querySelector('td').innerHTML = renderExpandContent(state.permits.find(p=>p.id===permitId)); }
   const rowEl = document.getElementById('row-'+permitId);
