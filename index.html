@@ -614,13 +614,16 @@ const DEFAULT_STAGE_CONFIG = {
   permitIssued:    { label:'Permit Issued',       phase:3, sla:10, folder:'Permits' },
   inspections:     { label:'Inspections',         phase:4, sla:5,  folder:'Inspections' },
   co:              { label:'Certificate of Occ.', phase:4, sla:5,  folder:'CO' },
+  depFinalLetter:  { label:'DEP Final Letter',    phase:4, sla:14, folder:'DEP' },
+  operatingPermit: { label:'Operating Permit',    phase:4, sla:14, folder:'Operating Permit' },
   powerService:    { label:'Power Service',       phase:4, sla:14, folder:'Power Service' },
-  utilityConn:     { label:'Utility Connections',  phase:4, sla:14, folder:'Utilities' },
+  utilityConn:     { label:'Utility Connections', phase:4, sla:14, folder:'Utilities' },
 };
 
 let STAGE_CONFIG = Object.assign({}, DEFAULT_STAGE_CONFIG);
 
 const COMMUNITIES = ['All','Sawmill Branch','Sabana Reserve','Palm Coast Scattered','Marion Oaks','Ocala Waterways','Juliette Falls'];
+const PROJECT_MANAGERS = ['Jason Bedaw','Michael Bedaw','Jim Humphreys','Jon Frantz'];
 const OWNERS = [
   '001 · Estela Living, LLC',
   '002 · Estela Specs 1 LLC',
@@ -1998,8 +2001,8 @@ function render() {
 }
 
 function renderStagesView(el) {
-  const phaseNames = { 1:'Phase 1 — Pre-Permit Documents', 2:'Phase 2 — Submission', 3:'Phase 3 — Post-Submission' };
-  const phaseColors = { 1:'#3b82f6', 2:'#f59e0b', 3:'#10b981' };
+  const phaseNames  = { 1:'Phase 1 — Pre-Permit Docs', 2:'Phase 2 — Under City Review', 3:'Phase 3 — Permit Issued', 4:'Phase 4 — CO & Close-out' };
+  const phaseColors = { 1:'#3b82f6', 2:'#8b5cf6', 3:'#f59e0b', 4:'#10b981' };
 
   let html = `<div style="padding:24px;max-width:1100px;margin:0 auto">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
@@ -2011,7 +2014,7 @@ function renderStagesView(el) {
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">`;
 
-  for (const phase of [1,2,3]) {
+  for (const phase of [1,2,3,4]) {
     const keys = Object.keys(STAGE_CONFIG).filter(k => STAGE_CONFIG[k].phase === phase);
     html += `<div style="background:var(--card);border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column">
       <div style="background:${phaseColors[phase]};color:#fff;padding:12px 16px;font-weight:700;font-size:13px;border-radius:12px 12px 0 0">${phaseNames[phase]} <span style="font-weight:400;opacity:0.85">(${keys.length} stages)</span></div>
@@ -3521,8 +3524,9 @@ function renderExpandContent(permit) {
       </div>
       <div class="info-field">
         <span class="info-label">Project Manager</span>
-        <input class="info-input" value="${permit.projectManager||''}" placeholder="PM initials or name"
+        <input class="info-input" list="pm-list-inline-${permit.id}" value="${permit.projectManager||''}" placeholder="Type or select PM..." autocomplete="off"
                onchange="updatePermitField('${permit.id}','projectManager',this.value)">
+        <datalist id="pm-list-inline-${permit.id}">${PROJECT_MANAGERS.map(pm=>`<option value="${pm}">`).join('')}</datalist>
       </div>
       <div class="info-field">
         <span class="info-label">Est. Weeks to Approval</span>
@@ -4836,7 +4840,10 @@ function buildModalForm(permit) {
     <option value="Both" ${v('water')==='Both'?'selected':''}>City Water + Well</option>
   </select>
 </div>
-<div class="form-field"><label class="form-label">Project Manager</label><input class="form-input" id="f-projectManager" value="${v('projectManager')}" placeholder="PM initials or name"></div>
+<div class="form-field"><label class="form-label">Project Manager</label>
+  <input class="form-input" id="f-projectManager" list="pm-list-form" value="${v('projectManager')}" placeholder="Type or select PM..." autocomplete="off">
+  <datalist id="pm-list-form">${PROJECT_MANAGERS.map(pm=>`<option value="${pm}">`).join('')}</datalist>
+</div>
     <div class="form-field"><label class="form-label">Est. Weeks to Approval</label><input class="form-input" id="f-estWeeks" value="${v('estWeeks')}" placeholder="e.g. 3 weeks"></div>
     <div class="form-field"><label class="form-label">Permit Number</label><input class="form-input" id="f-permitNumber" value="${v('permitNumber')}"></div>
     <div class="form-field"><label class="form-label">Permit Fee</label><input class="form-input" id="f-permitFee" value="${v('permitFee')}" placeholder="$ 0.00"></div>
