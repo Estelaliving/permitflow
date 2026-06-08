@@ -3473,8 +3473,14 @@ function renderExpandContent(permit) {
     const rcvValue = completedAt || (status==='complete'?legacyDate:'');
     const stageNote = permit.stageNotes?.[k] || '';
 
-    return `<div class="stage-row">
-      <div style="width:16px;font-size:13px;text-align:center">${statusIcon}</div>
+    return `<div class="stage-row" draggable="true"
+      ondragstart="stageDragStart(event,'${k}')"
+      ondragover="stageDragOver(event,'${k}')"
+      ondragleave="stageDragLeave(event)"
+      ondrop="stageDrop(event,'${k}','${permit.id}')"
+      style="cursor:grab">
+      <span style="color:var(--text-muted);font-size:14px;cursor:grab;padding:0 2px;flex-shrink:0" title="Drag to reorder">⠿</span>
+      <div style="width:16px;font-size:13px;text-align:center;flex-shrink:0">${statusIcon}</div>
       <span class="stage-name">${STAGE_CONFIG[k].label}</span>
       <select class="stage-status-select" onchange="updateStageField('${permit.id}','${k}','status',this.value)">
         <option value="not-started" ${status==='not-started'?'selected':''}>○ Not Started</option>
@@ -4613,6 +4619,45 @@ function filterOptions(gridId, searchId, clear) {
     });
     grp.style.display = anyVisible ? '' : 'none';
   });
+}
+
+// ── Stage drag-to-reorder ──────────────────────────────────────────────────
+let _dragStageKey = null;
+function stageDragStart(e, key) {
+  _dragStageKey = key;
+  e.dataTransfer.effectAllowed = 'move';
+  e.currentTarget.style.opacity = '0.5';
+}
+function stageDragOver(e, key) {
+  if (!_dragStageKey || _dragStageKey === key) return;
+  e.preventDefault();
+  e.currentTarget.style.borderTop = '2px solid #2d5a8e';
+}
+function stageDragLeave(e) {
+  e.currentTarget.style.borderTop = '';
+  e.currentTarget.style.opacity = '';
+}
+function stageDrop(e, dropKey, permitId) {
+  e.preventDefault();
+  e.currentTarget.style.borderTop = '';
+  e.currentTarget.style.opacity = '';
+  if (!_dragStageKey || _dragStageKey === dropKey) { _dragStageKey = null; return; }
+  // Reorder within same phase only
+  const dragPhase = STAGE_CONFIG[_dragStageKey]?.phase;
+  const dropPhase = STAGE_CONFIG[dropKey]?.phase;
+  if (dragPhase !== dropPhase) { _dragStageKey = null; return; }
+  // Rebuild STAGE_CONFIG with new order
+  const keys = Object.keys(STAGE_CONFIG);
+  const fromIdx = keys.indexOf(_dragStageKey);
+  const toIdx   = keys.indexOf(dropKey);
+  keys.splice(fromIdx, 1);
+  keys.splice(toIdx, 0, _dragStageKey);
+  const newCfg = {};
+  keys.forEach(k => newCfg[k] = STAGE_CONFIG[k]);
+  STAGE_CONFIG = newCfg;
+  _dragStageKey = null;
+  saveStageConfig();
+  refreshExpandRow(permitId);
 }
 
 // Index-based helpers — safe for options with quotes/apostrophes in their names
