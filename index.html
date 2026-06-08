@@ -961,7 +961,8 @@ async function syncToGitHub() {
         const rem = remoteMap[local.id];
         if (!rem || (local._ts||0) >= (rem._ts||0)) remoteMap[local.id] = local;
       });
-      state.permits = Object.values(remoteMap);
+      // Respect soft-deletes: remove any permit flagged _deleted
+      state.permits = Object.values(remoteMap).filter(p => !p._deleted);
       localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
     }
     const payload = {
@@ -1000,7 +1001,7 @@ async function loadFromGitHub() {
     const d = data.data;
     if (!d || !d.permits) return false;
     if (_lastRemoteVersion && d.version <= _lastRemoteVersion) return false;
-    state.permits = (d.permits || []).map(sanitizePermit);
+    state.permits = (d.permits || []).filter(p=>!p._deleted).map(sanitizePermit);
     if (d.stageConfig && Object.keys(d.stageConfig).length > 0) { STAGE_CONFIG = d.stageConfig; saveStageConfig(); }
     if (d.customFields && Array.isArray(d.customFields) && d.customFields.length > 0) { CUSTOM_PERMIT_FIELDS = d.customFields; saveCustomFields(); }
     if (d.optionsList && Array.isArray(d.optionsList) && d.optionsList.length > 0) { OPTIONS_LIST = d.optionsList; saveOptionsList(); }
@@ -1051,7 +1052,7 @@ function _startRealtimeSync() {
           const rem = remoteMap[local.id];
           if (rem && (local._ts||0) > (rem._ts||0)) remoteMap[local.id] = local;
         });
-        state.permits = Object.values(remoteMap);
+        state.permits = Object.values(remoteMap).filter(p=>!p._deleted);
         if (d.stageConfig && Object.keys(d.stageConfig).length > 0) { STAGE_CONFIG = d.stageConfig; saveStageConfig(); }
         if (d.customFields && d.customFields.length > 0) { CUSTOM_PERMIT_FIELDS = d.customFields; saveCustomFields(); }
         if (d.optionsList && d.optionsList.length > 0) { OPTIONS_LIST = d.optionsList; saveOptionsList(); }
@@ -1728,10 +1729,33 @@ function updateOverallStatus(permit) {
   }
 
   // ── Legacy overallStatus (kept for filtering) ──
+  const prevStatus = permit.overallStatus;
   if (permit.stages.co === 'complete') permit.overallStatus = 'co';
   else if (permit.stages.permitIssued === 'complete') permit.overallStatus = 'permitted';
   else if (permit.stages.submitted === 'complete') permit.overallStatus = 'submitted';
   else permit.overallStatus = 'active';
+
+  // ── Auto-fill phase timestamps on status transitions ──
+  if (!permit.phaseTimestamps) permit.phaseTimestamps = {};
+  const ts = permit.phaseTimestamps;
+  const today = new Date().toISOString().split('T')[0];
+  // Phase 1 start — always set on first save if missing
+  if (!ts.p1Start) ts.p1Start = today;
+  // Transition: active → submitted
+  if (permit.overallStatus === 'submitted' && prevStatus === 'active') {
+    if (!ts.p1End)   ts.p1End   = today;
+    if (!ts.p2Start) ts.p2Start = today;
+  }
+  // Transition: submitted → permitted
+  if (permit.overallStatus === 'permitted' && prevStatus === 'submitted') {
+    if (!ts.p2End)   ts.p2End   = today;
+    if (!ts.p3Start) ts.p3Start = today;
+  }
+  // Transition: permitted → co
+  if (permit.overallStatus === 'co' && prevStatus === 'permitted') {
+    if (!ts.p3End)   ts.p3End   = today;
+    if (!ts.p4Start) ts.p4Start = today;
+  }
 }
 function fmtDate(d) {
   if (!d) return '—';
@@ -4225,9 +4249,17 @@ function markAllComplete(permitId) {
 function confirmDelete(permitId) {
   const permit = state.permits.find(p=>p.id===permitId);
   if (!permit) return;
-  if (confirm(`Remove permit for "${permit.address}"? This cannot be undone.`)) {
-    state.permits = state.permits.filter(p=>p.id!==permitId);
-    state.expandedRow = null; saveData(); render();
+  if (confirm(`Remove permit for "${permit.address||permitId}"? This cannot be undone.`)) {
+    // Soft-delete: mark with _deleted so sync doesn't restore it
+    permit._deleted = true;
+    permit._ts = Date.now();
+    state.expandedRow = null;
+    saveData();
+    // Hard-remove from local state after sync so it disappears immediately
+    setTimeout(() => {
+      state.permits = state.permits.filter(p => !p._deleted);
+      render();
+    }, 100);
   }
 }
 
