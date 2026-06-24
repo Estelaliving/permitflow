@@ -2555,12 +2555,13 @@ function renderReportsView(el, alerts) {
       sub:ps.filter(p=>p.overallStatus==='submitted').length, perm:ps.filter(p=>p.overallStatus==='permitted').length,
       co:ps.filter(p=>p.overallStatus==='co').length, s2p_avg, p2c_avg, alerts:alerts.filter(a=>a.permit.community===c).length };
   }).filter(Boolean);
-  const TABS = {summary:'📊 Dashboard',aging:'⏳ Under Review',eta:'📅 ETA',timeline:'📈 Timeline',community:'🏘 By Community',pm:'👤 By PM',weekly:'📋 Weekly Report',printreport:'🖨 Print Report'};
+  const TABS = {summary:'📊 Dashboard',phase1:'📑 Phase 1 Docs',aging:'⏳ Under Review',eta:'📅 ETA',timeline:'📈 Timeline',community:'🏘 By Community',pm:'👤 By PM',weekly:'📋 Weekly Report',printreport:'🖨 Print Report'};
   const tabsHtml = Object.entries(TABS).map(([k,lbl])=>
     `<div class="report-tab${tab===k?' active':''}" onclick="state._reportTab='${k}';render()">${lbl}</div>`
   ).join('');
   let body = '';
-  if (tab==='summary') {
+  if (tab==='phase1') { body = renderPhase1Tab(all); }
+  else if (tab==='summary') {
     const over60 = agingList.filter(x=>x.d>60).length;
     const over30 = agingList.filter(x=>x.d>30&&x.d<=60).length;
     const critAlerts = alerts.filter(a=>a.type==='danger').length;
@@ -3073,6 +3074,137 @@ function renderReportsView(el, alerts) {
     <div class="report-tabs">${tabsHtml}</div>
     <div class="report-section">${body}</div>`;
 }
+function renderPhase1Tab(permits) {
+  const ph1Keys = Object.entries(STAGE_CONFIG).filter(([k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
+  const today = new Date().toISOString().split('T')[0];
+
+  // Per-stage summary stats
+  const stageStats = ph1Keys.map(({key,label})=>{
+    const applicable = permits.filter(p=>(p.stages?.[key]||'not-started')!=='n/a');
+    const received   = applicable.filter(p=>p.stages?.[key]==='received');
+    const days = received.map(p=>{
+      const req=p.stageRequestedAt?.[key]; const rec=p.stageCompletedAt?.[key];
+      return (req&&rec) ? Math.round((new Date(rec)-new Date(req))/86400000) : null;
+    }).filter(d=>d!==null&&d>=0);
+    const avgDays = days.length ? Math.round(days.reduce((a,b)=>a+b,0)/days.length) : null;
+    const pct = applicable.length ? Math.round(received.length/applicable.length*100) : 0;
+    return {key,label,received:received.length,applicable:applicable.length,avgDays,pct};
+  });
+
+  const summaryCards = stageStats.map(s=>{
+    const c = s.pct>=80?'#15803d':s.pct>=40?'#d97706':'#dc2626';
+    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 13px;min-width:120px;max-width:150px">
+      <div style="font-size:10px;font-weight:700;color:var(--text-muted);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${s.label}">${s.label}</div>
+      <div style="font-size:24px;font-weight:900;color:${c};line-height:1">${s.pct}%</div>
+      <div style="font-size:10px;color:var(--text-muted);margin:2px 0 6px">${s.received}/${s.applicable}${s.avgDays!==null?' · avg '+s.avgDays+'d':''}</div>
+      <div style="height:4px;background:var(--border);border-radius:2px"><div style="height:4px;background:${c};border-radius:2px;width:${s.pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  const stageCell = (p,key)=>{
+    const status = p.stages?.[key]||'not-started';
+    const req = p.stageRequestedAt?.[key]; const rec = p.stageCompletedAt?.[key];
+    if (status==='n/a') return `<td style="background:#f8fafc;text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">·</td>`;
+    if (status==='not-started') return `<td style="text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">—</td>`;
+    if (status==='received') {
+      const d = (req&&rec) ? Math.round((new Date(rec)-new Date(req))/86400000) : null;
+      const tip = 'Requested: '+(req||'?')+'\nReceived: '+(rec||'?')+(d!==null?'\n'+d+' days':'');
+      return `<td style="background:#f0fdf4;text-align:center;padding:5px 4px;cursor:default" title="${tip}">
+        <div style="color:#15803d;font-weight:700;font-size:11px">✓</div>
+        <div style="color:#15803d;font-size:9px">${d!==null?d+'d':(rec?rec.slice(5).replace('-','/'):'-')}</div>
+      </td>`;
+    }
+    if (status==='requested') {
+      const d = req ? Math.round((new Date(today)-new Date(req))/86400000) : null;
+      const col = (d!==null&&d>14)?'#dc2626':'#d97706';
+      const tip = 'Requested: '+(req||'?')+'\nPending: '+(d!==null?d+' days':'unknown');
+      return `<td style="background:#fffbeb;text-align:center;padding:5px 4px;cursor:default" title="${tip}">
+        <div style="color:${col};font-weight:700;font-size:11px">⏳</div>
+        <div style="color:${col};font-size:9px">${d!==null?d+'d':(req?req.slice(5).replace('-','/'):'-')}</div>
+      </td>`;
+    }
+    return `<td style="text-align:center;font-size:11px;color:#94a3b8;padding:5px 4px">?</td>`;
+  };
+
+  const rows = permits.map(p=>{
+    const appl = ph1Keys.filter(({key})=>(p.stages?.[key]||'not-started')!=='n/a');
+    const rec  = appl.filter(({key})=>p.stages?.[key]==='received').length;
+    const pct  = appl.length ? Math.round(rec/appl.length*100) : 0;
+    return {p,rec,appl:appl.length,pct};
+  }).sort((a,b)=>a.pct-b.pct);
+
+  const thCells = ph1Keys.map(({label})=>
+    `<th style="font-size:9px;text-transform:uppercase;letter-spacing:.3px;padding:6px 4px;background:#f1f5f9;white-space:nowrap;min-width:52px;text-align:center;border-bottom:2px solid #cbd5e1;color:#64748b">${label}</th>`
+  ).join('');
+
+  const tableRows = rows.map(({p,rec,appl,pct})=>{
+    const addr = (p.address||'').split(',')[0];
+    const bc = pct>=80?'#22c55e':pct>=40?'#f59e0b':'#ef4444';
+    const prog = `<div style="display:flex;align-items:center;gap:4px">
+      <div style="flex:1;height:5px;background:#e2e8f0;border-radius:3px"><div style="height:5px;background:${bc};border-radius:3px;width:${pct}%"></div></div>
+      <span style="font-size:9px;color:var(--text-muted);white-space:nowrap">${rec}/${appl}</span>
+    </div>`;
+    return `<tr onmouseenter="this.style.background='#f8fafc'" onmouseleave="this.style.background=''">
+      <td style="white-space:nowrap;font-size:12px;font-weight:600;padding:6px 10px;cursor:pointer;color:#2d5a8e" onclick="openPermit('${p.id}')" title="${p.address||''}">${addr}</td>
+      <td style="font-size:11px;color:var(--text-muted);padding:6px 8px;white-space:nowrap">${p.community||'—'}</td>
+      <td style="font-size:11px;padding:6px 8px;text-align:center">${p.lotNumber||'—'}</td>
+      <td style="font-size:11px;padding:6px 8px;white-space:nowrap">${p.projectManager||'—'}</td>
+      <td style="padding:6px 8px;min-width:80px">${prog}</td>
+      ${ph1Keys.map(({key})=>stageCell(p,key)).join('')}
+    </tr>`;
+  }).join('');
+
+  return `
+    <div style="margin-bottom:18px">
+      <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Completion Rate &amp; Avg Days to Receive — Per Stage</div>
+      <div style="display:flex;flex-wrap:wrap;gap:9px">${summaryCards}</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+      <div style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-size:14px;font-weight:700">Phase 1 — Document Collection Timing</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${rows.length} permits · <span style="color:#15803d;font-weight:600">✓ = received (days to get)</span> · <span style="color:#d97706;font-weight:600">⏳ = pending (days waiting)</span> · sorted by least complete</div>
+        </div>
+        <button class="btn btn-sm btn-outline" onclick="exportPhase1CSV()">⬇ Export CSV</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="border-collapse:collapse;width:100%">
+          <thead><tr>
+            <th style="font-size:10px;text-transform:uppercase;padding:7px 10px;background:#f1f5f9;text-align:left;border-bottom:2px solid #cbd5e1;white-space:nowrap;color:#64748b">Address</th>
+            <th style="font-size:10px;text-transform:uppercase;padding:7px 8px;background:#f1f5f9;text-align:left;border-bottom:2px solid #cbd5e1;white-space:nowrap;color:#64748b">Community</th>
+            <th style="font-size:10px;text-transform:uppercase;padding:7px 8px;background:#f1f5f9;text-align:center;border-bottom:2px solid #cbd5e1;color:#64748b">Lot</th>
+            <th style="font-size:10px;text-transform:uppercase;padding:7px 8px;background:#f1f5f9;text-align:left;border-bottom:2px solid #cbd5e1;white-space:nowrap;color:#64748b">PM</th>
+            <th style="font-size:10px;text-transform:uppercase;padding:7px 8px;background:#f1f5f9;text-align:left;border-bottom:2px solid #cbd5e1;min-width:80px;color:#64748b">Progress</th>
+            ${thCells}
+          </tr></thead>
+          <tbody>${tableRows||'<tr><td colspan="100" style="text-align:center;padding:30px;color:#94a3b8">No permits match current filters</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function exportPhase1CSV() {
+  const ph1Keys = Object.entries(STAGE_CONFIG).filter(([k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
+  const headers = ['Address','Community','Lot','PM','Status','Ph1 Progress',
+    ...ph1Keys.flatMap(({label})=>[label+' Status',label+' Requested',label+' Received',label+' Days'])];
+  const rows = state.permits.map(p=>{
+    const appl = ph1Keys.filter(({key})=>(p.stages?.[key]||'not-started')!=='n/a');
+    const rec  = appl.filter(({key})=>p.stages?.[key]==='received').length;
+    const stageCols = ph1Keys.flatMap(({key})=>{
+      const st=p.stages?.[key]||'not-started';
+      const req=p.stageRequestedAt?.[key]||''; const rec2=p.stageCompletedAt?.[key]||'';
+      const d=(req&&rec2)?Math.round((new Date(rec2)-new Date(req))/86400000):'';
+      return [st,req,rec2,d];
+    });
+    return [p.address||'',p.community||'',p.lotNumber||'',p.projectManager||'',
+      STATUS_LABELS[p.overallStatus]||p.overallStatus, rec+'/'+appl.length, ...stageCols];
+  });
+  const lines=[headers.join(','),...rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','))];
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/csv'}));
+  a.download='phase1-timing.csv'; a.click();
+}
+
 function exportSummaryCSV() {
   const all=state.permits; const cols=['Community','Total','Active','Submitted','Permitted','CO','Avg Days'];
   const rows=COMMUNITIES.filter(c=>c!=='All').map(c=>{const ps=all.filter(p=>p.community===c);if(!ps.length)return null;const wd=ps.map(p=>getProcessDays(p)).filter(d=>d!==null);const avg=wd.length?Math.round(wd.reduce((a,b)=>a+b,0)/wd.length):'';return [c,ps.length,ps.filter(p=>p.overallStatus==='active').length,ps.filter(p=>p.overallStatus==='submitted').length,ps.filter(p=>p.overallStatus==='permitted').length,ps.filter(p=>p.overallStatus==='co').length,avg];}).filter(Boolean);
