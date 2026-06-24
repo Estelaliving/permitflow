@@ -3105,15 +3105,16 @@ function renderPhase1Tab(permits) {
     </div>`;
   }).join('');
 
+  // color thresholds: ≤3d = green, 4-5d = yellow, 6+d = red
+  const dayColor = d => d===null ? null : d<=3 ? {bg:'#f0fdf4',fg:'#15803d'} : d<=5 ? {bg:'#fef9c3',fg:'#a16207'} : {bg:'#fef2f2',fg:'#b91c1c'};
+
   const stageCell = (p,key)=>{
     const rawSt = p.stages?.[key];
-    // normalize: treat any truthy non-'requested'/'n/a' value as complete
     const status = !rawSt ? 'not-started'
                  : rawSt==='n/a' ? 'n/a'
                  : rawSt==='requested' ? 'requested'
                  : isDone(rawSt) ? 'complete'
                  : 'not-started';
-    // date sources with fallbacks
     const req = p.stageRequestedAt?.[key];
     const rec = p.stageCompletedAt?.[key] || p.stageDates?.[key];
     const upd = p.stageUpdatedAt?.[key];
@@ -3122,29 +3123,44 @@ function renderPhase1Tab(permits) {
     if (status==='not-started') return `<td style="text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">—</td>`;
 
     if (status==='complete') {
-      const recDate = rec || upd;                      // best available completion date
-      const reqDate = req;                             // only use explicit requested date for day calc
+      const recDate = rec || upd;
+      const reqDate = req;
       const d = (reqDate&&recDate) ? Math.round((new Date(recDate)-new Date(reqDate))/86400000) : null;
+      const clr = dayColor(d) || {bg:'#f0fdf4',fg:'#15803d'};
       const displaySub = d!==null ? d+'d' : (recDate ? recDate.slice(5).replace('-','/') : '✓');
-      const tip = 'Requested: '+(reqDate||'—')+'\nReceived: '+(recDate||'—')+(d!==null?'\n'+d+' days to receive':'');
-      return `<td style="background:#f0fdf4;text-align:center;padding:5px 4px;cursor:default" title="${tip}">
-        <div style="color:#15803d;font-weight:700;font-size:11px">✓</div>
-        <div style="color:#15803d;font-size:9px">${displaySub}</div>
+      const tip = 'Requested: '+(reqDate||'—')+'\nReceived: '+(recDate||'—')+(d!==null?'\nTook '+d+' days':'');
+      return `<td style="background:${clr.bg};text-align:center;padding:5px 4px;cursor:default" title="${tip}">
+        <div style="color:${clr.fg};font-weight:700;font-size:11px">✓</div>
+        <div style="color:${clr.fg};font-size:9px">${displaySub}</div>
       </td>`;
     }
 
     if (status==='requested') {
       const reqDate = req || upd;
       const d = reqDate ? Math.round((new Date(today)-new Date(reqDate))/86400000) : null;
-      const col = (d!==null&&d>14)?'#dc2626':'#d97706';
-      const tip = 'Requested: '+(reqDate||'—')+'\nPending: '+(d!==null?d+' days':'unknown');
-      return `<td style="background:#fffbeb;text-align:center;padding:5px 4px;cursor:default" title="${tip}">
-        <div style="color:${col};font-weight:700;font-size:11px">⏳</div>
-        <div style="color:${col};font-size:9px">${d!==null?d+'d':(reqDate?reqDate.slice(5).replace('-','/'):'-')}</div>
+      const clr = dayColor(d) || {bg:'#fffbeb',fg:'#d97706'};
+      const tip = 'Requested: '+(reqDate||'—')+'\nPending: '+(d!==null?d+' days':'unknown')+(d!==null&&d>=3?'\n⚠️ Alert threshold reached':'');
+      const icon = d!==null&&d>=3 ? '🔴' : d!==null&&d>=4 ? '⚠️' : '⏳';
+      return `<td style="background:${clr.bg};text-align:center;padding:5px 4px;cursor:default" title="${tip}">
+        <div style="color:${clr.fg};font-weight:700;font-size:11px">${icon}</div>
+        <div style="color:${clr.fg};font-size:9px">${d!==null?d+'d':(reqDate?reqDate.slice(5).replace('-','/'):'-')}</div>
       </td>`;
     }
     return `<td style="text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">—</td>`;
   };
+
+  // collect overdue items (pending 3+ days)
+  const overdue = [];
+  permits.forEach(p=>{
+    ph1Keys.forEach(({key,label})=>{
+      if ((p.stages?.[key]||'not-started')==='requested') {
+        const reqDate = p.stageRequestedAt?.[key] || p.stageUpdatedAt?.[key];
+        const d = reqDate ? Math.round((new Date(today)-new Date(reqDate))/86400000) : null;
+        if (d!==null && d>=3) overdue.push({p,key,label,d,reqDate});
+      }
+    });
+  });
+  overdue.sort((a,b)=>b.d-a.d);
 
   const rows = permits.map(p=>{
     const appl = ph1Keys.filter(({key})=>(p.stages?.[key]||'not-started')!=='n/a');
@@ -3174,7 +3190,48 @@ function renderPhase1Tab(permits) {
     </tr>`;
   }).join('');
 
+  // build overdue alert banner + email draft
+  const overdueHtml = overdue.length===0 ? '' : (()=>{
+    const lines = overdue.map(({p,label,d,reqDate})=>{
+      const addr=(p.address||'').split(',')[0];
+      return `  • ${addr} (${p.community||''}, Lot ${p.lotNumber||'?'}) — ${label}: ${d} days pending since ${reqDate}`;
+    }).join('%0D%0A');
+    const subj = encodeURIComponent(`Phase 1 Doc Alert — ${overdue.length} item${overdue.length>1?'s':''} overdue (3+ days pending)`);
+    const body = encodeURIComponent(`Hi,\n\nThe following Phase 1 documents have been pending for 3 or more days and need follow-up:\n\n`)
+               + lines
+               + encodeURIComponent(`\n\nPlease review and request updates from the responsible parties.\n\nThank you`);
+    const mailto = `mailto:?subject=${subj}&body=${body}`;
+    const itemRows = overdue.map(({p,label,d,reqDate})=>{
+      const addr=(p.address||'').split(',')[0];
+      const clr = d>=6?'#b91c1c':d>=4?'#a16207':'#374151';
+      const bg  = d>=6?'#fef2f2':d>=4?'#fef9c3':'#f8fafc';
+      return `<div style="display:flex;align-items:center;gap:10px;padding:7px 14px;background:${bg};border-bottom:1px solid #e2e8f0">
+        <span style="font-size:13px">${d>=6?'🔴':d>=4?'⚠️':'🟡'}</span>
+        <div style="flex:1;min-width:0">
+          <span style="font-weight:600;font-size:12px;color:${clr};cursor:pointer" onclick="openPermit('${p.id}')">${addr}</span>
+          <span style="font-size:11px;color:#64748b;margin-left:6px">${p.community||''} · Lot ${p.lotNumber||'?'} · ${p.projectManager||'—'}</span>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:${clr};white-space:nowrap">${label}</div>
+        <div style="font-size:12px;font-weight:800;color:${clr};white-space:nowrap;min-width:32px;text-align:right">${d}d</div>
+      </div>`;
+    }).join('');
+    return `<div style="border:2px solid #fca5a5;border-radius:12px;overflow:hidden;margin-bottom:18px">
+      <div style="background:#fee2e2;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:18px">🚨</span>
+          <div>
+            <div style="font-weight:700;font-size:13px;color:#b91c1c">${overdue.length} stage${overdue.length>1?'s':''} overdue — pending 3+ days without response</div>
+            <div style="font-size:11px;color:#7f1d1d;margin-top:1px">Target: ≤3 days · <span style="color:#15803d">green</span> = on track · <span style="color:#a16207">yellow</span> = +1-2d late · <span style="color:#b91c1c">red</span> = 3+d late</div>
+          </div>
+        </div>
+        <a href="${mailto}" style="background:#b91c1c;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">📧 Draft Alert Email</a>
+      </div>
+      ${itemRows}
+    </div>`;
+  })();
+
   return `
+    ${overdueHtml}
     <div style="margin-bottom:18px">
       <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Completion Rate &amp; Avg Days to Receive — Per Stage</div>
       <div style="display:flex;flex-wrap:wrap;gap:9px">${summaryCards}</div>
@@ -3183,7 +3240,7 @@ function renderPhase1Tab(permits) {
       <div style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div>
           <div style="font-size:14px;font-weight:700">Phase 1 — Document Collection Timing</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${rows.length} permits · <span style="color:#15803d;font-weight:600">✓ = received (days to get)</span> · <span style="color:#d97706;font-weight:600">⏳ = pending (days waiting)</span> · sorted by least complete</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${rows.length} permits · <span style="color:#15803d;font-weight:600">✓ green ≤3d</span> · <span style="color:#a16207;font-weight:600">yellow 4-5d</span> · <span style="color:#b91c1c;font-weight:600">red 6+d</span> · sorted least complete first</div>
         </div>
         <button class="btn btn-sm btn-outline" onclick="exportPhase1CSV()">⬇ Export CSV</button>
       </div>
