@@ -2556,9 +2556,13 @@ function renderReportsView(el, alerts) {
       co:ps.filter(p=>p.overallStatus==='co').length, s2p_avg, p2c_avg, alerts:alerts.filter(a=>a.permit.community===c).length };
   }).filter(Boolean);
   const TABS = {summary:'📊 Dashboard',phase1:'📑 Phase 1 Docs',aging:'⏳ Under Review',eta:'📅 ETA',timeline:'📈 Timeline',community:'🏘 By Community',pm:'👤 By PM',weekly:'📋 Weekly Report',printreport:'🖨 Print Report'};
-  const tabsHtml = Object.entries(TABS).map(([k,lbl])=>
-    `<div class="report-tab${tab===k?' active':''}" onclick="state._reportTab='${k}';render()">${lbl}</div>`
-  ).join('');
+  const _ph1OverdueCount = getPhase1Overdue().length;
+  const tabsHtml = Object.entries(TABS).map(([k,lbl])=>{
+    const badge = (k==='phase1' && _ph1OverdueCount>0)
+      ? ` <span style="background:#dc2626;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:800;vertical-align:middle;margin-left:2px">${_ph1OverdueCount}</span>`
+      : '';
+    return `<div class="report-tab${tab===k?' active':''}" onclick="state._reportTab='${k}';render()">${lbl}${badge}</div>`;
+  }).join('');
   let body = '';
   if (tab==='phase1') { body = renderPhase1Tab(all); }
   else if (tab==='summary') {
@@ -3074,6 +3078,62 @@ function renderReportsView(el, alerts) {
     <div class="report-tabs">${tabsHtml}</div>
     <div class="report-section">${body}</div>`;
 }
+function getPhase1Overdue() {
+  const ph1Keys = Object.entries(STAGE_CONFIG).filter(([k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
+  const today = new Date().toISOString().split('T')[0];
+  const overdue = [];
+  state.permits.forEach(p=>{
+    ph1Keys.forEach(({key,label})=>{
+      if ((p.stages?.[key]||'not-started')==='requested') {
+        const reqDate = p.stageRequestedAt?.[key] || p.stageUpdatedAt?.[key];
+        const d = reqDate ? Math.round((new Date(today)-new Date(reqDate))/86400000) : null;
+        if (d!==null && d>=3) overdue.push({p,key,label,d,reqDate});
+      }
+    });
+  });
+  return overdue.sort((a,b)=>b.d-a.d);
+}
+
+function buildOverdueHtml(overdue, marginBottom) {
+  if (!overdue.length) return '';
+  const lines = overdue.map(({p,label,d,reqDate})=>{
+    const addr=(p.address||'').split(',')[0];
+    return `  • ${addr} (${p.community||''}, Lot ${p.lotNumber||'?'}) — ${label}: ${d} days pending since ${reqDate}`;
+  }).join('%0D%0A');
+  const subj = encodeURIComponent(`Phase 1 Doc Alert — ${overdue.length} item${overdue.length>1?'s':''} overdue (3+ days pending)`);
+  const body = encodeURIComponent('Hi,\n\nThe following Phase 1 documents have been pending for 3 or more days and need follow-up:\n\n')
+             + lines
+             + encodeURIComponent('\n\nPlease review and request updates from the responsible parties.\n\nThank you');
+  const mailto = `mailto:?subject=${subj}&body=${body}`;
+  const itemRows = overdue.map(({p,label,d,reqDate})=>{
+    const addr=(p.address||'').split(',')[0];
+    const clr = d>=6?'#b91c1c':d>=4?'#a16207':'#374151';
+    const bg  = d>=6?'#fef2f2':d>=4?'#fef9c3':'#f8fafc';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:7px 14px;background:${bg};border-bottom:1px solid #e2e8f0">
+      <span style="font-size:13px">${d>=6?'🔴':d>=4?'⚠️':'🟡'}</span>
+      <div style="flex:1;min-width:0">
+        <span style="font-weight:600;font-size:12px;color:${clr};cursor:pointer" onclick="openPermit('${p.id}')">${addr}</span>
+        <span style="font-size:11px;color:#64748b;margin-left:6px">${p.community||''} · Lot ${p.lotNumber||'?'} · ${p.projectManager||'—'}</span>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:${clr};white-space:nowrap">${label}</div>
+      <div style="font-size:12px;font-weight:800;color:${clr};white-space:nowrap;min-width:32px;text-align:right">${d}d</div>
+    </div>`;
+  }).join('');
+  return `<div style="border:2px solid #fca5a5;border-radius:12px;overflow:hidden;margin-bottom:${marginBottom||18}px">
+    <div style="background:#fee2e2;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:18px">🚨</span>
+        <div>
+          <div style="font-weight:700;font-size:13px;color:#b91c1c">${overdue.length} stage${overdue.length>1?'s':''} overdue — pending 3+ days without response</div>
+          <div style="font-size:11px;color:#7f1d1d;margin-top:1px">Target: ≤3 days · <span style="color:#15803d;font-weight:600">green</span> = on track · <span style="color:#a16207;font-weight:600">yellow</span> = +1-2d · <span style="color:#b91c1c;font-weight:600">red</span> = 3+d late</div>
+        </div>
+      </div>
+      <a href="${mailto}" style="background:#b91c1c;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">📧 Draft Alert Email</a>
+    </div>
+    ${itemRows}
+  </div>`;
+}
+
 function renderPhase1Tab(permits) {
   const ph1Keys = Object.entries(STAGE_CONFIG).filter(([k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
   const today = new Date().toISOString().split('T')[0];
@@ -3149,18 +3209,7 @@ function renderPhase1Tab(permits) {
     return `<td style="text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">—</td>`;
   };
 
-  // collect overdue items (pending 3+ days)
-  const overdue = [];
-  permits.forEach(p=>{
-    ph1Keys.forEach(({key,label})=>{
-      if ((p.stages?.[key]||'not-started')==='requested') {
-        const reqDate = p.stageRequestedAt?.[key] || p.stageUpdatedAt?.[key];
-        const d = reqDate ? Math.round((new Date(today)-new Date(reqDate))/86400000) : null;
-        if (d!==null && d>=3) overdue.push({p,key,label,d,reqDate});
-      }
-    });
-  });
-  overdue.sort((a,b)=>b.d-a.d);
+  const overdue = getPhase1Overdue();
 
   const rows = permits.map(p=>{
     const appl = ph1Keys.filter(({key})=>(p.stages?.[key]||'not-started')!=='n/a');
@@ -3190,45 +3239,7 @@ function renderPhase1Tab(permits) {
     </tr>`;
   }).join('');
 
-  // build overdue alert banner + email draft
-  const overdueHtml = overdue.length===0 ? '' : (()=>{
-    const lines = overdue.map(({p,label,d,reqDate})=>{
-      const addr=(p.address||'').split(',')[0];
-      return `  • ${addr} (${p.community||''}, Lot ${p.lotNumber||'?'}) — ${label}: ${d} days pending since ${reqDate}`;
-    }).join('%0D%0A');
-    const subj = encodeURIComponent(`Phase 1 Doc Alert — ${overdue.length} item${overdue.length>1?'s':''} overdue (3+ days pending)`);
-    const body = encodeURIComponent(`Hi,\n\nThe following Phase 1 documents have been pending for 3 or more days and need follow-up:\n\n`)
-               + lines
-               + encodeURIComponent(`\n\nPlease review and request updates from the responsible parties.\n\nThank you`);
-    const mailto = `mailto:?subject=${subj}&body=${body}`;
-    const itemRows = overdue.map(({p,label,d,reqDate})=>{
-      const addr=(p.address||'').split(',')[0];
-      const clr = d>=6?'#b91c1c':d>=4?'#a16207':'#374151';
-      const bg  = d>=6?'#fef2f2':d>=4?'#fef9c3':'#f8fafc';
-      return `<div style="display:flex;align-items:center;gap:10px;padding:7px 14px;background:${bg};border-bottom:1px solid #e2e8f0">
-        <span style="font-size:13px">${d>=6?'🔴':d>=4?'⚠️':'🟡'}</span>
-        <div style="flex:1;min-width:0">
-          <span style="font-weight:600;font-size:12px;color:${clr};cursor:pointer" onclick="openPermit('${p.id}')">${addr}</span>
-          <span style="font-size:11px;color:#64748b;margin-left:6px">${p.community||''} · Lot ${p.lotNumber||'?'} · ${p.projectManager||'—'}</span>
-        </div>
-        <div style="font-size:11px;font-weight:700;color:${clr};white-space:nowrap">${label}</div>
-        <div style="font-size:12px;font-weight:800;color:${clr};white-space:nowrap;min-width:32px;text-align:right">${d}d</div>
-      </div>`;
-    }).join('');
-    return `<div style="border:2px solid #fca5a5;border-radius:12px;overflow:hidden;margin-bottom:18px">
-      <div style="background:#fee2e2;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:18px">🚨</span>
-          <div>
-            <div style="font-weight:700;font-size:13px;color:#b91c1c">${overdue.length} stage${overdue.length>1?'s':''} overdue — pending 3+ days without response</div>
-            <div style="font-size:11px;color:#7f1d1d;margin-top:1px">Target: ≤3 days · <span style="color:#15803d">green</span> = on track · <span style="color:#a16207">yellow</span> = +1-2d late · <span style="color:#b91c1c">red</span> = 3+d late</div>
-          </div>
-        </div>
-        <a href="${mailto}" style="background:#b91c1c;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">📧 Draft Alert Email</a>
-      </div>
-      ${itemRows}
-    </div>`;
-  })();
+  const overdueHtml = buildOverdueHtml(overdue);
 
   return `
     ${overdueHtml}
@@ -3341,14 +3352,15 @@ function exportTimelineCSV() {
 
 
 function renderAlertsView(el, alerts) {
-  el.innerHTML = `<div style="max-width:800px">
-    <div style="margin-bottom:16px;display:flex;gap:8px;align-items:center">
-      <h2 style="font-size:18px;font-weight:700">Active Alerts</h2>
-      <span class="status-badge" style="background:#fee2e2;color:#b91c1c">${alerts.filter(a=>a.type==='danger').length} Critical</span>
-      <span class="status-badge" style="background:#fef3c7;color:#92400e">${alerts.filter(a=>a.type==='warning').length} Warnings</span>
-    </div>
-    ${alerts.length===0 ? `<div class="empty-state"><div class="icon">✅</div><p>No active alerts</p><small>All permits are on track!</small></div>` : 
-      `<div style="display:flex;flex-direction:column;gap:10px">${alerts.map(a=>`<div class="alert-item ${a.type}" style="border-radius:10px;padding:14px 16px">
+  const ph1Overdue = getPhase1Overdue();
+  const ph1Html = ph1Overdue.length===0 ? '' : `
+    <div style="margin-bottom:24px">
+      <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Phase 1 — Document Collection Overdue</div>
+      ${buildOverdueHtml(ph1Overdue, 0)}
+    </div>`;
+  const slaSection = alerts.length===0
+    ? `<div class="empty-state"><div class="icon">✅</div><p>No SLA alerts</p><small>All permits are on track!</small></div>`
+    : `<div style="display:flex;flex-direction:column;gap:10px">${alerts.map(a=>`<div class="alert-item ${a.type}" style="border-radius:10px;padding:14px 16px">
         <span class="alert-icon" style="font-size:18px">${a.type==='danger'?'🚨':'⚠️'}</span>
         <div class="alert-text">
           <div style="font-weight:700;font-size:14px;margin-bottom:2px">${a.permit.address}</div>
@@ -3356,7 +3368,15 @@ function renderAlertsView(el, alerts) {
           <div style="font-weight:600">${a.msg}</div>
         </div>
         <button class="btn btn-sm btn-outline" onclick="openPermit('${a.permit.id}')">Open →</button>
-      </div>`).join('')}</div>`}
+      </div>`).join('')}</div>`;
+  el.innerHTML = `<div style="max-width:800px">
+    ${ph1Html}
+    <div style="margin-bottom:16px;display:flex;gap:8px;align-items:center">
+      <h2 style="font-size:18px;font-weight:700">SLA Alerts</h2>
+      <span class="status-badge" style="background:#fee2e2;color:#b91c1c">${alerts.filter(a=>a.type==='danger').length} Critical</span>
+      <span class="status-badge" style="background:#fef3c7;color:#92400e">${alerts.filter(a=>a.type==='warning').length} Warnings</span>
+    </div>
+    ${slaSection}
   </div>`;
 }
 
