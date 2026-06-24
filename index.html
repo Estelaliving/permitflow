@@ -3078,17 +3078,21 @@ function renderPhase1Tab(permits) {
   const ph1Keys = Object.entries(STAGE_CONFIG).filter(([k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
   const today = new Date().toISOString().split('T')[0];
 
+  // stage status is 'complete' in actual data (not 'received')
+  const isDone = s => s==='complete' || s==='received';
+
   // Per-stage summary stats
   const stageStats = ph1Keys.map(({key,label})=>{
     const applicable = permits.filter(p=>(p.stages?.[key]||'not-started')!=='n/a');
-    const received   = applicable.filter(p=>p.stages?.[key]==='received');
-    const days = received.map(p=>{
-      const req=p.stageRequestedAt?.[key]; const rec=p.stageCompletedAt?.[key];
+    const completed  = applicable.filter(p=>isDone(p.stages?.[key]));
+    const days = completed.map(p=>{
+      const req = p.stageRequestedAt?.[key];
+      const rec = p.stageCompletedAt?.[key] || p.stageUpdatedAt?.[key] || p.stageDates?.[key];
       return (req&&rec) ? Math.round((new Date(rec)-new Date(req))/86400000) : null;
     }).filter(d=>d!==null&&d>=0);
     const avgDays = days.length ? Math.round(days.reduce((a,b)=>a+b,0)/days.length) : null;
-    const pct = applicable.length ? Math.round(received.length/applicable.length*100) : 0;
-    return {key,label,received:received.length,applicable:applicable.length,avgDays,pct};
+    const pct = applicable.length ? Math.round(completed.length/applicable.length*100) : 0;
+    return {key,label,completed:completed.length,applicable:applicable.length,avgDays,pct};
   });
 
   const summaryCards = stageStats.map(s=>{
@@ -3096,53 +3100,69 @@ function renderPhase1Tab(permits) {
     return `<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 13px;min-width:120px;max-width:150px">
       <div style="font-size:10px;font-weight:700;color:var(--text-muted);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${s.label}">${s.label}</div>
       <div style="font-size:24px;font-weight:900;color:${c};line-height:1">${s.pct}%</div>
-      <div style="font-size:10px;color:var(--text-muted);margin:2px 0 6px">${s.received}/${s.applicable}${s.avgDays!==null?' · avg '+s.avgDays+'d':''}</div>
+      <div style="font-size:10px;color:var(--text-muted);margin:2px 0 6px">${s.completed}/${s.applicable}${s.avgDays!==null?' · avg '+s.avgDays+'d':''}</div>
       <div style="height:4px;background:var(--border);border-radius:2px"><div style="height:4px;background:${c};border-radius:2px;width:${s.pct}%"></div></div>
     </div>`;
   }).join('');
 
   const stageCell = (p,key)=>{
-    const status = p.stages?.[key]||'not-started';
-    const req = p.stageRequestedAt?.[key]; const rec = p.stageCompletedAt?.[key];
+    const rawSt = p.stages?.[key];
+    // normalize: treat any truthy non-'requested'/'n/a' value as complete
+    const status = !rawSt ? 'not-started'
+                 : rawSt==='n/a' ? 'n/a'
+                 : rawSt==='requested' ? 'requested'
+                 : isDone(rawSt) ? 'complete'
+                 : 'not-started';
+    // date sources with fallbacks
+    const req = p.stageRequestedAt?.[key];
+    const rec = p.stageCompletedAt?.[key] || p.stageDates?.[key];
+    const upd = p.stageUpdatedAt?.[key];
+
     if (status==='n/a') return `<td style="background:#f8fafc;text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">·</td>`;
     if (status==='not-started') return `<td style="text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">—</td>`;
-    if (status==='received') {
-      const d = (req&&rec) ? Math.round((new Date(rec)-new Date(req))/86400000) : null;
-      const tip = 'Requested: '+(req||'?')+'\nReceived: '+(rec||'?')+(d!==null?'\n'+d+' days':'');
+
+    if (status==='complete') {
+      const recDate = rec || upd;                      // best available completion date
+      const reqDate = req;                             // only use explicit requested date for day calc
+      const d = (reqDate&&recDate) ? Math.round((new Date(recDate)-new Date(reqDate))/86400000) : null;
+      const displaySub = d!==null ? d+'d' : (recDate ? recDate.slice(5).replace('-','/') : '✓');
+      const tip = 'Requested: '+(reqDate||'—')+'\nReceived: '+(recDate||'—')+(d!==null?'\n'+d+' days to receive':'');
       return `<td style="background:#f0fdf4;text-align:center;padding:5px 4px;cursor:default" title="${tip}">
         <div style="color:#15803d;font-weight:700;font-size:11px">✓</div>
-        <div style="color:#15803d;font-size:9px">${d!==null?d+'d':(rec?rec.slice(5).replace('-','/'):'-')}</div>
+        <div style="color:#15803d;font-size:9px">${displaySub}</div>
       </td>`;
     }
+
     if (status==='requested') {
-      const d = req ? Math.round((new Date(today)-new Date(req))/86400000) : null;
+      const reqDate = req || upd;
+      const d = reqDate ? Math.round((new Date(today)-new Date(reqDate))/86400000) : null;
       const col = (d!==null&&d>14)?'#dc2626':'#d97706';
-      const tip = 'Requested: '+(req||'?')+'\nPending: '+(d!==null?d+' days':'unknown');
+      const tip = 'Requested: '+(reqDate||'—')+'\nPending: '+(d!==null?d+' days':'unknown');
       return `<td style="background:#fffbeb;text-align:center;padding:5px 4px;cursor:default" title="${tip}">
         <div style="color:${col};font-weight:700;font-size:11px">⏳</div>
-        <div style="color:${col};font-size:9px">${d!==null?d+'d':(req?req.slice(5).replace('-','/'):'-')}</div>
+        <div style="color:${col};font-size:9px">${d!==null?d+'d':(reqDate?reqDate.slice(5).replace('-','/'):'-')}</div>
       </td>`;
     }
-    return `<td style="text-align:center;font-size:11px;color:#94a3b8;padding:5px 4px">?</td>`;
+    return `<td style="text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">—</td>`;
   };
 
   const rows = permits.map(p=>{
     const appl = ph1Keys.filter(({key})=>(p.stages?.[key]||'not-started')!=='n/a');
-    const rec  = appl.filter(({key})=>p.stages?.[key]==='received').length;
-    const pct  = appl.length ? Math.round(rec/appl.length*100) : 0;
-    return {p,rec,appl:appl.length,pct};
+    const done = appl.filter(({key})=>isDone(p.stages?.[key])).length;
+    const pct  = appl.length ? Math.round(done/appl.length*100) : 0;
+    return {p,done,appl:appl.length,pct};
   }).sort((a,b)=>a.pct-b.pct);
 
   const thCells = ph1Keys.map(({label})=>
     `<th style="font-size:9px;text-transform:uppercase;letter-spacing:.3px;padding:6px 4px;background:#f1f5f9;white-space:nowrap;min-width:52px;text-align:center;border-bottom:2px solid #cbd5e1;color:#64748b">${label}</th>`
   ).join('');
 
-  const tableRows = rows.map(({p,rec,appl,pct})=>{
+  const tableRows = rows.map(({p,done,appl,pct})=>{
     const addr = (p.address||'').split(',')[0];
     const bc = pct>=80?'#22c55e':pct>=40?'#f59e0b':'#ef4444';
     const prog = `<div style="display:flex;align-items:center;gap:4px">
       <div style="flex:1;height:5px;background:#e2e8f0;border-radius:3px"><div style="height:5px;background:${bc};border-radius:3px;width:${pct}%"></div></div>
-      <span style="font-size:9px;color:var(--text-muted);white-space:nowrap">${rec}/${appl}</span>
+      <span style="font-size:9px;color:var(--text-muted);white-space:nowrap">${done}/${appl}</span>
     </div>`;
     return `<tr onmouseenter="this.style.background='#f8fafc'" onmouseleave="this.style.background=''">
       <td style="white-space:nowrap;font-size:12px;font-weight:600;padding:6px 10px;cursor:pointer;color:#2d5a8e" onclick="openPermit('${p.id}')" title="${p.address||''}">${addr}</td>
