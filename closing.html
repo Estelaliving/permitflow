@@ -113,7 +113,7 @@
 
 <div class="header">
   <div id="header-back" style="display:none;margin-right:10px">
-    <a href="closing.html" style="color:#fff;opacity:0.8;text-decoration:none;font-size:22px;line-height:1">&#8592;</a>
+    <button onclick="goBack()" style="background:none;border:none;color:#fff;opacity:0.85;font-size:24px;line-height:1;cursor:pointer;padding:0 4px">&#8592;</button>
   </div>
   <div style="flex:1">
     <div class="header-logo">Estela Living</div>
@@ -337,7 +337,21 @@ function selectPermit(id) {
   _permitId = id;
   history.replaceState({}, '', '?id=' + id);
   document.getElementById('search-screen').style.display = 'none';
+  document.getElementById('header-back').style.display = 'block';
   loadForm();
+}
+
+function goBack() {
+  // If we came from a direct link (no search screen was shown), go to search page
+  // If we came from in-page search, go back to it
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('success-screen').style.display = 'none';
+  document.getElementById('header-back').style.display = 'none';
+  history.replaceState({}, '', 'closing.html');
+  _permitId = null; _permit = null; _cl = {};
+  document.getElementById('search-screen').style.display = 'block';
+  document.getElementById('address-search').value = '';
+  renderList(_allPermits.filter(p => p.overallStatus !== 'closed'));
 }
 
 function loadForm() {
