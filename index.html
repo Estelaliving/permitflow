@@ -501,6 +501,10 @@ td.address-cell { min-width:200px; }
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/><path d="M15 13h2M15 16h2M8 13h2M8 16h2"/></svg>
       <span>Reports</span>
     </div>
+    <div class="nav-item" onclick="setView('closed')" id="nav-closed">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Closed Homes</span>
+    </div>
     <div class="nav-item" onclick="openSettings()" id="nav-settings">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Settings</span>
     </div>
@@ -576,6 +580,7 @@ td.address-cell { min-width:200px; }
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <button onclick="openEditModal(window._detailPermitId)" style="padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:12px;font-weight:600;cursor:pointer;color:var(--text)">✏️ Edit Details</button>
+        <button onclick="startClosing(window._detailPermitId)" style="padding:6px 14px;border-radius:8px;border:none;background:#15803d;color:#fff;font-size:12px;font-weight:600;cursor:pointer">📋 Start Closing</button>
         <button onclick="closePermitDetail()" style="padding:6px 14px;border-radius:8px;border:none;background:#2d5a8e;color:#fff;font-size:13px;font-weight:700;cursor:pointer">✕ Close</button>
       </div>
     </div>
@@ -640,7 +645,7 @@ const DEFAULT_STAGE_CONFIG = {
 let STAGE_CONFIG = Object.assign({}, DEFAULT_STAGE_CONFIG);
 
 const COMMUNITIES = ['All','Sawmill Branch','Sabana Reserve','Palm Coast Scattered','Marion Oaks','Ocala Waterways','Juliette Falls'];
-const PROJECT_MANAGERS = ['Jason Bedaw','Michael Bedaw','Jim Humphreys','Jon Frantz'];
+const PROJECT_MANAGERS = ['Jason Bedaw','Michael Bedaw','Brandon Atchinson','Jon Frantz'];
 const OWNERS = [
   '001 · Estela Living, LLC',
   '002 · Estela Specs 1 LLC',
@@ -731,8 +736,8 @@ function resetStageConfig() {
   renderStagesView(document.getElementById('content'));
   render();
 }
-const STATUS_LABELS = { active:'Requesting Info', submitted:'Under Review', permitted:'Permit Approved', co:'CO Received' };
-const STATUS_CLS = { active:'status-active', submitted:'status-submitted', permitted:'status-permitted', co:'status-co' };
+const STATUS_LABELS = { active:'Requesting Info', submitted:'Under Review', permitted:'Permit Approved', co:'CO Received', closed:'Closed' };
+const STATUS_CLS = { active:'status-active', submitted:'status-submitted', permitted:'status-permitted', co:'status-co', closed:'status-co' };
 const ONEDRIVE_ROOT = 'Estela Living';
 
 // ── FILTER OPTIONS ──
@@ -1832,6 +1837,7 @@ function getPermitDocsStatus(p) {
 
 function getFilteredPermits() {
   return state.permits.filter(p => {
+    if (p.overallStatus === 'closed') return false;
     if (state.community !== 'All' && p.community !== state.community) return false;
     // Status filter: 'not-approved' = active + submitted; else exact match
     if (state.statusFilter && state.statusFilter !== 'all') {
@@ -1970,7 +1976,7 @@ function setView(v) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   const nav = document.getElementById('nav-'+v);
   if (nav) nav.classList.add('active');
-  const titles = { dashboard:'Dashboard', permits:'All Permits', alerts:'Alerts', stages:'Manage Phases' };
+  const titles = { dashboard:'Dashboard', permits:'All Permits', alerts:'Alerts', stages:'Manage Phases', closed:'Closed Homes' };
   document.getElementById('topbar-title').textContent = titles[v] || v;
   render();
 }
@@ -1999,7 +2005,7 @@ function render() {
     updateODButton();
     const content = document.getElementById('content');
     // Update nav active state
-    ['dashboard','permits','alerts','stages','pipeline','reports'].forEach(v => {
+    ['dashboard','permits','alerts','stages','pipeline','reports','closed'].forEach(v => {
       const el = document.getElementById('nav-'+v);
       if (el) el.classList.toggle('active', state.view === v);
     });
@@ -2008,6 +2014,7 @@ function render() {
     else if (state.view === 'alerts') renderAlertsView(content, alerts);
     else if (state.view === 'stages') renderStagesView(content);
     else if (state.view === 'pipeline') renderPipelineView(content);
+    else if (state.view === 'closed') renderClosedView(content);
     else renderPermitsView(content, alerts);
   } catch(err) {
     console.error('render() error:', err);
@@ -2521,6 +2528,55 @@ function renderWeeklyReport(el) {
       </div>
     </div>
     <style>@media print { .no-print { display:none!important; } body { background:#fff; } }</style>`;
+}
+
+function renderClosedView(el) {
+  const closed = state.permits.filter(p => p.overallStatus === 'closed').sort((a,b) => (b.closedAt||'').localeCompare(a.closedAt||''));
+  if (!closed.length) {
+    el.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">🏠</div><p style="font-size:15px;font-weight:600">No closed homes yet.</p><p style="font-size:13px">When a home's closing checklist is fully completed, it will appear here.</p></div>`;
+    return;
+  }
+  const rows = closed.map(p => {
+    const closedDate = p.closedAt ? new Date(p.closedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+    const checklist = p.closingChecklist || {};
+    const items = checklist.items || {};
+    const total = 7;
+    const done = Object.values(items).filter(v => v && v.checked).length;
+    const signoffs = (checklist.signoffs||[]).map(s=>s.name).join(', ') || '—';
+    return `<tr style="border-bottom:1px solid var(--border);cursor:pointer" onclick="openPermit('${p.id}')">
+      <td style="padding:10px 14px;font-weight:600;font-size:13px">${p.address||p.id}</td>
+      <td style="padding:10px 14px;font-size:13px;color:var(--muted)">${p.community||'—'}</td>
+      <td style="padding:10px 14px;font-size:13px;color:var(--muted)">${p.projectManager||'—'}</td>
+      <td style="padding:10px 14px;font-size:13px">${closedDate}</td>
+      <td style="padding:10px 14px;font-size:13px">
+        <span style="background:${done===total?'#f0fdf4':'#fef9c3'};color:${done===total?'#15803d':'#a16207'};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">${done}/${total}</span>
+      </td>
+      <td style="padding:10px 14px;font-size:12px;color:var(--muted);max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${signoffs}</td>
+    </tr>`;
+  }).join('');
+  el.innerHTML = `<div style="padding:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div>
+        <h2 style="margin:0;font-size:18px;font-weight:700">🏠 Closed Homes</h2>
+        <p style="margin:4px 0 0;font-size:13px;color:var(--muted)">${closed.length} home${closed.length!==1?'s':''} closed</p>
+      </div>
+    </div>
+    <div style="background:var(--card);border-radius:12px;border:1px solid var(--border);overflow:hidden">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="background:var(--bg);border-bottom:2px solid var(--border)">
+            <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">Address</th>
+            <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">Community</th>
+            <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">PM</th>
+            <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">Closed Date</th>
+            <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">Checklist</th>
+            <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">Completed By</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  </div>`;
 }
 
 function renderReportsView(el, alerts) {
@@ -3640,6 +3696,24 @@ function closePermitDetail() {
   document.body.style.overflow = '';
   window._detailPermitId = null;
   render(); // refresh underlying view
+}
+function startClosing(permitId) {
+  if (!permitId) return;
+  const url = 'closing.html?id=' + encodeURIComponent(permitId);
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:2000;display:flex;align-items:center;justify-content:center';
+  box.innerHTML = `<div style="background:var(--card);border-radius:14px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.35)">
+    <h3 style="margin:0 0 8px;font-size:17px;font-weight:700">📋 Start Closing</h3>
+    <p style="margin:0 0 18px;font-size:13px;color:var(--muted)">Share this link with the team to complete the closing checklist:</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;font-family:monospace;word-break:break-all;margin-bottom:18px">${location.origin + location.pathname.replace('index.html','') + url}</div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="this.closest('div[style*=fixed]').remove()" style="padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:13px;cursor:pointer;color:var(--text)">Cancel</button>
+      <button onclick="navigator.clipboard&&navigator.clipboard.writeText('${location.origin + location.pathname.replace('index.html','') + url}');showToast('Link copied!')" style="padding:7px 16px;border-radius:8px;border:none;background:#2d5a8e;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Copy Link</button>
+      <button onclick="window.open('${url}','_blank');this.closest('div[style*=fixed]').remove()" style="padding:7px 16px;border-radius:8px;border:none;background:#15803d;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Open Form</button>
+    </div>
+  </div>`;
+  document.body.appendChild(box);
+  box.addEventListener('click', e => { if (e.target === box) box.remove(); });
 }
 function refreshPermitDetail() {
   if (!window._detailPermitId) return;
