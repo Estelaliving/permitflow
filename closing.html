@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Home Closing Checklist — Estela Living</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f1f5f9;color:#1e293b}
+
+    /* Header */
+    .header{background:linear-gradient(135deg,#1e3a5f,#2d5a8e);color:#fff;padding:18px 20px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+    .header-logo{font-size:20px;font-weight:900;letter-spacing:-0.5px}
+    .header-sub{font-size:11px;opacity:0.7;margin-top:2px}
+
+    /* Address bar */
+    .address-bar{background:#fff;border-bottom:3px solid #2d5a8e;padding:14px 20px}
+    .address-bar .addr{font-size:17px;font-weight:800;color:#1e3a5f}
+    .address-bar .meta{font-size:12px;color:#64748b;margin-top:3px}
+
+    /* Cards */
+    .card{background:#fff;border-radius:16px;padding:18px;margin:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+    .section-title{font-size:11px;font-weight:800;color:#2d5a8e;text-transform:uppercase;letter-spacing:.7px;margin-bottom:14px}
+
+    /* Fields */
+    .field-wrap{margin-bottom:14px}
+    .field-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+    .field-input{width:100%;padding:13px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:16px;color:#1e293b;background:#fff;-webkit-appearance:none;appearance:none}
+    .field-input:focus{outline:none;border-color:#2d5a8e;box-shadow:0 0 0 3px rgba(45,90,142,0.1)}
+
+    /* Select wrapper */
+    .select-wrap{position:relative}
+    .select-wrap select{width:100%;padding:13px 40px 13px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:16px;background:#fff;color:#1e293b;-webkit-appearance:none;appearance:none}
+    .select-wrap select:focus{outline:none;border-color:#2d5a8e}
+    .select-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#64748b;pointer-events:none;font-size:14px}
+
+    /* Progress */
+    .progress-card{padding:14px 18px}
+    .progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .progress-title{font-size:13px;font-weight:700;color:#1e3a5f}
+    .progress-count{font-size:13px;font-weight:800;color:#2d5a8e}
+    .progress-bar{background:#e2e8f0;border-radius:6px;height:10px}
+    .progress-fill{height:10px;border-radius:6px;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .4s ease}
+
+    /* Checklist items */
+    .cl-item{border:1.5px solid #e2e8f0;border-radius:13px;margin-bottom:10px;overflow:hidden;transition:all .2s}
+    .cl-item.done{border-color:#86efac;background:#f0fdf4}
+    .cl-item.done .item-label{color:#15803d}
+    .cl-header{display:flex;align-items:center;gap:14px;padding:16px;cursor:pointer;user-select:none}
+    .checkbox{width:28px;height:28px;border:2.5px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;background:#fff}
+    .cl-item.done .checkbox{background:#22c55e;border-color:#22c55e}
+    .check-icon{color:#fff;font-size:15px;font-weight:900;display:none}
+    .cl-item.done .check-icon{display:block}
+    .item-label{font-size:16px;font-weight:600;flex:1;line-height:1.3}
+    .item-ts{font-size:10px;color:#94a3b8;white-space:nowrap;text-align:right;line-height:1.4}
+    .cl-item.done .item-ts{color:#15803d;font-weight:600}
+
+    .item-body{display:none;padding:0 16px 15px;border-top:1px solid #e2e8f0}
+    .cl-item.done .item-body{display:block}
+    .item-body-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.4px;margin:12px 0 6px}
+
+    .other-input{display:none;margin-top:8px}
+    .other-input.show{display:block}
+
+    /* Sign-off list */
+    .signoff-entry{display:flex;align-items:center;gap:10px;padding:11px 14px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:11px;margin-bottom:8px}
+    .signoff-name{font-weight:700;font-size:14px;flex:1}
+    .signoff-time{font-size:11px;color:#15803d;white-space:nowrap}
+
+    /* Buttons */
+    .btn{display:block;width:100%;padding:17px;border:none;border-radius:13px;font-size:16px;font-weight:800;cursor:pointer;text-align:center;letter-spacing:.2px;transition:opacity .15s}
+    .btn:active{opacity:.8}
+    .btn-primary{background:linear-gradient(135deg,#2d5a8e,#1e3a5f);color:#fff}
+    .btn-success{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff}
+    .btn-wrap{padding:4px 12px 8px}
+
+    /* Search list */
+    .permit-card{padding:15px 16px;border:1.5px solid #e2e8f0;border-radius:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s;background:#fff}
+    .permit-card:active{background:#f1f5f9}
+    .permit-card .pa{font-weight:700;font-size:15px;color:#1e3a5f}
+    .permit-card .pm{font-size:12px;color:#64748b;margin-top:3px}
+
+    /* Status banner */
+    .status-banner{padding:10px 16px;font-size:13px;font-weight:600;border-radius:10px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .status-banner.partial{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+    .status-banner.complete{background:#f0fdf4;color:#15803d;border:1px solid #86efac}
+
+    /* Toast */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;z-index:999;display:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+
+    /* Success screen */
+    #success-screen{text-align:center;padding:60px 24px 40px;display:none}
+    .success-icon{font-size:72px;margin-bottom:20px}
+    .success-title{font-size:26px;font-weight:900;color:#15803d;margin-bottom:10px}
+    .success-sub{font-size:15px;color:#64748b;line-height:1.5;margin-bottom:32px}
+
+    /* Loading */
+    #loading-screen{text-align:center;padding:80px 24px;color:#64748b}
+    .spinner{width:40px;height:40px;border:4px solid #e2e8f0;border-top-color:#2d5a8e;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Partial warning */
+    .partial-note{font-size:12px;color:#64748b;text-align:center;padding:8px 12px 16px;line-height:1.5}
+
+    /* Safe area */
+    .bottom-safe{height:env(safe-area-inset-bottom,16px);height:max(env(safe-area-inset-bottom),16px)}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">Estela Living</div>
+    <div class="header-sub">Home Closing Checklist</div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <div>Loading permit data…</div>
+</div>
+
+<!-- Search screen (no ?id param) -->
+<div id="search-screen" style="display:none;padding:12px">
+  <div class="card">
+    <div class="section-title">Find Your Property</div>
+    <div class="field-wrap">
+      <input type="text" class="field-input" id="address-search"
+        placeholder="Search address or lot number…"
+        oninput="filterPermits(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <div id="permit-list"></div>
+  </div>
+</div>
+
+<!-- Form screen -->
+<div id="form-screen" style="display:none">
+  <div class="address-bar">
+    <div class="addr" id="form-address">—</div>
+    <div class="meta" id="form-meta">—</div>
+  </div>
+
+  <!-- Progress -->
+  <div class="card progress-card">
+    <div class="progress-row">
+      <div class="progress-title">Completion Progress</div>
+      <div class="progress-count" id="progress-label">0 / 7</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- Existing status if partial -->
+  <div id="status-banner-wrap" style="margin:0 12px"></div>
+
+  <!-- Closing date -->
+  <div class="card">
+    <div class="section-title">Closing Information</div>
+    <div class="field-wrap">
+      <div class="field-label">Settlement / Closing Date</div>
+      <input type="date" class="field-input" id="closing-date">
+    </div>
+  </div>
+
+  <!-- Checklist -->
+  <div class="card">
+    <div class="section-title">Cancellations Required</div>
+    <div id="checklist-items"></div>
+  </div>
+
+  <!-- Notes -->
+  <div class="card">
+    <div class="section-title">Notes</div>
+    <textarea class="field-input" id="notes" rows="3"
+      placeholder="Any additional notes…" style="resize:none;font-family:inherit"></textarea>
+  </div>
+
+  <!-- Sign-off -->
+  <div class="card">
+    <div class="section-title">Your Sign-Off</div>
+    <div id="signoff-list"></div>
+    <div class="field-wrap">
+      <div class="field-label">Your Name</div>
+      <div class="select-wrap">
+        <select id="signoff-name" onchange="toggleSignoffOther(this)">
+          <option value="">Select your name…</option>
+          <option>Brandon Atchinson</option>
+          <option>Francine Martinez</option>
+          <option>Jamie Fuentes</option>
+          <option>Jason Bedaw</option>
+          <option>Jeffrey Gwinn</option>
+          <option>Jon Frantz</option>
+          <option>Luis Grimaldi</option>
+          <option>Michael Bedaw</option>
+          <option>Shirley Sarmiento</option>
+          <option value="other">Other (type name)</option>
+        </select>
+      </div>
+      <input type="text" class="field-input other-input" id="signoff-other"
+        placeholder="Type your name…" style="margin-top:8px">
+    </div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="btn btn-primary" onclick="saveProgress()">💾 Save Progress</button>
+  </div>
+  <div class="partial-note">
+    You can save progress now and others can complete the remaining items using the same link.
+  </div>
+  <div id="close-home-wrap" style="display:none;padding:0 12px 4px">
+    <button class="btn btn-success" onclick="closeHome()">🏠 Submit &amp; Close Home</button>
+  </div>
+  <div class="bottom-safe"></div>
+</div>
+
+<!-- Success screen -->
+<div id="success-screen">
+  <div class="success-icon" id="success-icon">✅</div>
+  <div class="success-title" id="success-title">Progress Saved!</div>
+  <div class="success-sub" id="success-sub">Your checklist entries have been saved successfully.</div>
+  <button class="btn btn-primary" id="back-btn" onclick="backToForm()" style="max-width:320px;margin:0 auto">← Back to Checklist</button>
+  <div class="bottom-safe"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL = 'https://raqiscditxkvgadiostr.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhcWlzY2RpdHhrdmdhZGlvc3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0ODM1NTMsImV4cCI6MjA5NjA1OTU1M30.5Y2c6kiORxfGN_BLdGk_InwnoYxAqlH55ruuZNzeVKQ';
+
+const NAMES = ['Brandon Atchinson','Francine Martinez','Jamie Fuentes','Jason Bedaw',
+               'Jeffrey Gwinn','Jon Frantz','Luis Grimaldi','Michael Bedaw','Shirley Sarmiento'];
+
+const ITEMS = [
+  { key:'buildersRisk',    label:"Builder's Risk Insurance" },
+  { key:'utilitiesWater',  label:'Utilities — Water' },
+  { key:'utilitiesElec',   label:'Utilities — Electric' },
+  { key:'dumpster',        label:'Waste Dumpster Pickup' },
+  { key:'mowing',          label:'Mowing' },
+  { key:'portablePickups', label:'Portable Pickups' },
+  { key:'pestControl',     label:'Pest Control' },
+];
+
+let _sb, _permitId, _permit, _allPermits = [], _cl = {};
+
+function getSB() {
+  if (!_sb) _sb = window.supabase.createClient(SB_URL, SB_KEY);
+  return _sb;
+}
+
+function showToast(msg, ms=2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display='none', ms);
+}
+
+function fmtDT(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'})
+       + ' ' + d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
+}
+
+async function init() {
+  const params = new URLSearchParams(location.search);
+  _permitId = params.get('id');
+  const sb = getSB();
+  const { data, error } = await sb.from('permit_database').select('data').eq('id',1).single();
+  if (error || !data) {
+    document.getElementById('loading-screen').innerHTML =
+      '<div style="color:#dc2626;font-size:15px">Error loading data. Please try again.</div>';
+    return;
+  }
+  _allPermits = data.data.permits || [];
+  document.getElementById('loading-screen').style.display = 'none';
+
+  if (_permitId) {
+    _permit = _allPermits.find(p => p.id === _permitId);
+    if (!_permit) {
+      document.getElementById('loading-screen').style.display = 'block';
+      document.getElementById('loading-screen').innerHTML =
+        '<div style="color:#dc2626;font-size:15px">Permit not found. Please check the link.</div>';
+      return;
+    }
+    loadForm();
+  } else {
+    document.getElementById('search-screen').style.display = 'block';
+    renderList(_allPermits.filter(p => p.overallStatus !== 'closed'));
+  }
+}
+
+function renderList(permits) {
+  const el = document.getElementById('permit-list');
+  if (!permits.length) {
+    el.innerHTML = '<div style="color:#94a3b8;padding:12px;text-align:center">No permits found</div>';
+    return;
+  }
+  el.innerHTML = permits.slice(0,80).map(p => {
+    const addr = (p.address||'').split(',')[0];
+    const hasCL = p.closingChecklist && p.closingChecklist.items;
+    const badge = hasCL
+      ? `<span style="background:#fef3c7;color:#92400e;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;margin-left:6px">In Progress</span>`
+      : '';
+    return `<div class="permit-card" onclick="selectPermit('${p.id}')">
+      <div class="pa">${addr}${badge}</div>
+      <div class="pm">${p.community||''} · Lot ${p.lotNumber||'?'} · ${p.model||''}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterPermits(q) {
+  const lq = q.toLowerCase();
+  renderList(_allPermits.filter(p => p.overallStatus!=='closed').filter(p =>
+    (p.address||'').toLowerCase().includes(lq) ||
+    (p.lotNumber||'').toLowerCase().includes(lq) ||
+    (p.community||'').toLowerCase().includes(lq) ||
+    (p.model||'').toLowerCase().includes(lq)
+  ));
+}
+
+function selectPermit(id) {
+  _permit = _allPermits.find(p => p.id === id);
+  if (!_permit) return;
+  _permitId = id;
+  history.replaceState({}, '', '?id=' + id);
+  document.getElementById('search-screen').style.display = 'none';
+  loadForm();
+}
+
+function loadForm() {
+  const addr = (_permit.address||'').split(',')[0];
+  document.getElementById('form-address').textContent = addr;
+  document.getElementById('form-meta').textContent =
+    (_permit.community||'') + ' · Lot ' + (_permit.lotNumber||'?') + ' · ' + (_permit.model||'');
+
+  const cl = _permit.closingChecklist || {};
+  _cl = cl.items ? JSON.parse(JSON.stringify(cl.items)) : {};
+
+  if (cl.closingDate) document.getElementById('closing-date').value = cl.closingDate;
+  if (cl.notes)       document.getElementById('notes').value = cl.notes;
+
+  // Status banner
+  const doneCt = ITEMS.filter(i => _cl[i.key] && _cl[i.key].done).length;
+  const bwrap = document.getElementById('status-banner-wrap');
+  if (doneCt > 0 && doneCt < ITEMS.length) {
+    bwrap.innerHTML = `<div class="status-banner partial">⏳ ${doneCt} of ${ITEMS.length} items completed — continue where others left off</div>`;
+  } else if (doneCt === ITEMS.length) {
+    bwrap.innerHTML = `<div class="status-banner complete">✅ All items completed — ready to close</div>`;
+  }
+
+  renderChecklist();
+  renderSignoffs(cl.signoffs || []);
+  updateProgress();
+
+  document.getElementById('form-screen').style.display = 'block';
+}
+
+function renderChecklist() {
+  document.getElementById('checklist-items').innerHTML = ITEMS.map(item => {
+    const d = _cl[item.key] || { done:false, by:'', at:null };
+    const isDone = d.done;
+    const byVal  = d.by || '';
+    const isOther = byVal && !NAMES.includes(byVal);
+    const nameOpts = NAMES.map(n => `<option${n===byVal?' selected':''}>${n}</option>`).join('');
+    const ts = isDone && d.at ? fmtDT(d.at) : '';
+
+    return `<div class="cl-item${isDone?' done':''}" id="cl-${item.key}">
+      <div class="cl-header" onclick="toggleItem('${item.key}')">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-label">${item.label}</div>
+        <div class="item-ts">${isDone ? ts : ''}</div>
+      </div>
+      <div class="item-body">
+        <div class="item-body-label">Cancelled By</div>
+        <div class="select-wrap">
+          <select id="by-${item.key}" onchange="toggleItemOther('${item.key}',this)">
+            <option value="">Select name…</option>
+            ${nameOpts}
+            <option value="other"${isOther?' selected':''}>Other (type name)</option>
+          </select>
+        </div>
+        <input type="text" class="field-input other-input${isOther?' show':''}"
+          id="byother-${item.key}" placeholder="Type name…"
+          value="${isOther ? byVal : ''}">
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleItem(key) {
+  const cur = _cl[key] || {};
+  if (cur.done) {
+    _cl[key] = { done:false, by: cur.by||'', at:null };
+  } else {
+    _cl[key] = { done:true, by: cur.by||'', at: new Date().toISOString() };
+  }
+  renderChecklist();
+  updateProgress();
+}
+
+function toggleItemOther(key, sel) {
+  const oi = document.getElementById('byother-'+key);
+  if (sel.value==='other') { oi.classList.add('show'); oi.focus(); }
+  else oi.classList.remove('show');
+}
+
+function toggleSignoffOther(sel) {
+  const oi = document.getElementById('signoff-other');
+  if (sel.value==='other') { oi.classList.add('show'); oi.focus(); }
+  else oi.classList.remove('show');
+}
+
+function updateProgress() {
+  const done = ITEMS.filter(i => _cl[i.key] && _cl[i.key].done).length;
+  const pct = Math.round(done/ITEMS.length*100);
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-label').textContent = done+' / '+ITEMS.length;
+  document.getElementById('close-home-wrap').style.display = done===ITEMS.length ? 'block' : 'none';
+}
+
+function renderSignoffs(list) {
+  const el = document.getElementById('signoff-list');
+  el.innerHTML = list.map(s =>
+    `<div class="signoff-entry">
+      <div class="signoff-name">${s.name}</div>
+      <div class="signoff-time">${fmtDT(s.at)}</div>
+    </div>`).join('');
+}
+
+function getItemName(key) {
+  const sel = document.getElementById('by-'+key);
+  const oi  = document.getElementById('byother-'+key);
+  if (!sel) return _cl[key]?.by || '';
+  return sel.value==='other' ? (oi?.value.trim()||'') : (sel.value||_cl[key]?.by||'');
+}
+
+function buildPayload() {
+  const items = {};
+  ITEMS.forEach(item => {
+    const existing = _cl[item.key] || {};
+    items[item.key] = {
+      done: existing.done||false,
+      by:   getItemName(item.key) || existing.by || '',
+      at:   existing.at||null,
+    };
+  });
+  return items;
+}
+
+function getSignerName() {
+  const sel = document.getElementById('signoff-name');
+  const oi  = document.getElementById('signoff-other');
+  return sel.value==='other' ? oi.value.trim() : sel.value;
+}
+
+async function persist(items, closingDate, notes, signer, markClosed) {
+  const sb = getSB();
+  const { data: db } = await sb.from('permit_database').select('data').eq('id',1).single();
+  if (!db) { showToast('Error loading data'); return false; }
+
+  const allP = db.data.permits || [];
+  const idx  = allP.findIndex(p => p.id === _permitId);
+  if (idx===-1) { showToast('Permit not found'); return false; }
+
+  const old   = allP[idx].closingChecklist || {};
+  const soffs = [...(old.signoffs||[])];
+  if (signer && !soffs.find(s=>s.name===signer)) {
+    soffs.push({ name:signer, at:new Date().toISOString() });
+  }
+
+  const cl = {
+    ...old,
+    closingDate,
+    notes,
+    items,
+    signoffs: soffs,
+    startedAt: old.startedAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  if (markClosed) cl.completedAt = new Date().toISOString();
+
+  allP[idx].closingChecklist = cl;
+  if (markClosed) {
+    allP[idx].overallStatus = 'closed';
+    allP[idx].closedAt = new Date().toISOString();
+  }
+
+  const newData = { ...db.data, permits:allP, version:Date.now(),
+                    updatedBy: signer||'Closing Form', updatedAt:new Date().toISOString() };
+  const { error } = await sb.from('permit_database').update({ data:newData }).eq('id',1);
+  if (error) { showToast('Error saving. Please try again.'); return false; }
+
+  _permit.closingChecklist = cl;
+  if (markClosed) _permit.overallStatus = 'closed';
+  return true;
+}
+
+async function saveProgress() {
+  const items       = buildPayload();
+  const closingDate = document.getElementById('closing-date').value;
+  const notes       = document.getElementById('notes').value;
+  const signer      = getSignerName();
+
+  const btn = document.querySelector('.btn-primary');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+
+  const ok = await persist(items, closingDate, notes, signer, false);
+  btn.textContent = '💾 Save Progress'; btn.disabled = false;
+  if (!ok) return;
+
+  _cl = items;
+  const done = ITEMS.filter(i=>items[i.key]&&items[i.key].done).length;
+
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+  document.getElementById('success-icon').textContent = '✅';
+  document.getElementById('success-title').textContent = 'Progress Saved!';
+  document.getElementById('success-sub').textContent =
+    done + ' of ' + ITEMS.length + ' items completed.\n' +
+    (done < ITEMS.length ? 'Others can open the same link to complete the remaining items.' : 'All items done — tap "Close Home" to finalize.');
+  document.getElementById('back-btn').style.display = 'block';
+}
+
+async function closeHome() {
+  const items       = buildPayload();
+  const closingDate = document.getElementById('closing-date').value;
+  const notes       = document.getElementById('notes').value;
+  const signer      = getSignerName();
+
+  const cbtn = document.querySelector('.btn-success');
+  cbtn.textContent = 'Closing…'; cbtn.disabled = true;
+
+  const ok = await persist(items, closingDate, notes, signer, true);
+  cbtn.textContent = '🏠 Submit & Close Home'; cbtn.disabled = false;
+  if (!ok) return;
+
+  document.getElementById('form-screen').style.display  = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+  document.getElementById('success-icon').textContent  = '🏠';
+  document.getElementById('success-title').textContent = 'Home Closed!';
+  document.getElementById('success-sub').textContent   =
+    'All cancellations are complete. This home has been marked closed and removed from active tracking.';
+  document.getElementById('back-btn').style.display    = 'none';
+}
+
+function backToForm() {
+  document.getElementById('success-screen').style.display = 'none';
+  document.getElementById('form-screen').style.display    = 'block';
+  renderSignoffs((_permit.closingChecklist||{}).signoffs||[]);
+  updateProgress();
+}
+
+init();
+</script>
+</body>
+</html>
