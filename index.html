@@ -768,6 +768,7 @@ let state = {
   editingId: null,
   selectedPermits: new Set(),
   settings: { clientId: '821a7b2f-4375-4b80-8a01-6ae79db4aab6', tenantId: '9aecb969-8ceb-4c3e-ba5a-53266a072fe8' },
+  vendorEmails: { global: {}, byCommunity: {} },
   // Report filters
   _reportCommunity: 'All',
   _reportStatus: 'All', _reportStatuses: [],
@@ -830,6 +831,7 @@ function loadData() {
   loadReviewConfig();
   loadCustomFields();
   loadOptionsList();
+  loadVendorEmails();
 
   // Sanitize NaT / bad date values from all permits
   state.permits = state.permits.map(sanitizePermit);
@@ -848,6 +850,60 @@ function loadData() {
   if (savedOdFiles) { try { state.odFiles = JSON.parse(savedOdFiles); } catch(e) {} }
 
   initMSAL();
+}
+
+function loadVendorEmails() {
+  const saved = localStorage.getItem('estela_vendor_emails_v1');
+  if (saved) { try { state.vendorEmails = JSON.parse(saved); } catch(e) {} }
+  if (!state.vendorEmails) state.vendorEmails = { global: {}, byCommunity: {} };
+  if (!state.vendorEmails.global) state.vendorEmails.global = {};
+  if (!state.vendorEmails.byCommunity) state.vendorEmails.byCommunity = {};
+}
+function saveVendorEmails() {
+  localStorage.setItem('estela_vendor_emails_v1', JSON.stringify(state.vendorEmails));
+  clearTimeout(state._syncTimer);
+  state._syncTimer = setTimeout(() => syncToGitHub(), 2000);
+}
+function getVendorEmail(stageKey, community) {
+  const ve = state.vendorEmails || {};
+  const byCom = (ve.byCommunity || {})[community] || {};
+  return byCom[stageKey] || (ve.global || {})[stageKey] || '';
+}
+function buildStageEmailHref(permit, stageKey, stageLabel, type) {
+  const email = getVendorEmail(stageKey, permit.community);
+  const addr = (permit.address||'').split(',')[0];
+  const reqDate = (permit.stageRequestedAt||{})[stageKey] || (permit.stageUpdatedAt||{})[stageKey] || '';
+  const d = reqDate ? Math.round((new Date()-new Date(reqDate))/86400000) : null;
+  const pm = permit.projectManager || 'the project manager';
+  if (type === 'request') {
+    const subj = encodeURIComponent(`Document Request: ${stageLabel} — ${addr}`);
+    const body = encodeURIComponent(
+      `Hello,\n\nWe are requesting the following document for a project we are working on:\n\n` +
+      `Document: ${stageLabel}\n` +
+      `Address: ${permit.address||''}\n` +
+      `Community: ${permit.community||''} | Lot: ${permit.lotNumber||'?'}\n` +
+      `Model: ${permit.model||''}\n` +
+      `Project Manager: ${pm}\n\n` +
+      `Please provide this document at your earliest convenience. Our target is to receive all Phase 1 documents within 3 business days.\n\n` +
+      `Thank you,\nEstela Living`
+    );
+    return `mailto:${email}?subject=${subj}&body=${body}`;
+  } else {
+    const subj = encodeURIComponent(`Follow-Up: ${stageLabel} Still Pending — ${addr}`);
+    const body = encodeURIComponent(
+      `Hello,\n\nThis is a follow-up on our previous request for the following document:\n\n` +
+      `Document: ${stageLabel}\n` +
+      `Address: ${permit.address||''}\n` +
+      `Community: ${permit.community||''} | Lot: ${permit.lotNumber||'?'}\n` +
+      `Model: ${permit.model||''}\n` +
+      `Project Manager: ${pm}\n` +
+      `Originally Requested: ${reqDate||'—'}\n` +
+      `Days Pending: ${d!==null?d+' days':'unknown'}\n\n` +
+      `We have not yet received this document. Could you please provide an update on the expected delivery date?\n\n` +
+      `Thank you,\nEstela Living`
+    );
+    return `mailto:${email}?subject=${subj}&body=${body}`;
+  }
 }
 
 function saveData() {
@@ -1011,6 +1067,7 @@ async function syncToGitHub() {
       stageConfig: STAGE_CONFIG,
       customFields: CUSTOM_PERMIT_FIELDS,
       optionsList: OPTIONS_LIST,
+      vendorEmails: state.vendorEmails,
     };
     const { error } = await sb.from('permit_database')
       .upsert({ id: 1, data: payload, updated_at: new Date().toISOString() });
@@ -1094,6 +1151,7 @@ function _startRealtimeSync() {
         if (d.stageConfig && Object.keys(d.stageConfig).length > 0) { STAGE_CONFIG = d.stageConfig; saveStageConfig(); }
         if (d.customFields && d.customFields.length > 0) { CUSTOM_PERMIT_FIELDS = d.customFields; saveCustomFields(); }
         if (d.optionsList && d.optionsList.length > 0) { OPTIONS_LIST = d.optionsList; saveOptionsList(); }
+        if (d.vendorEmails) { state.vendorEmails = d.vendorEmails; localStorage.setItem('estela_vendor_emails_v1', JSON.stringify(d.vendorEmails)); }
         localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
         render();
         updateSyncBadge('live');
@@ -3256,10 +3314,18 @@ function renderPhase1Tab(permits) {
       const d = reqDate ? Math.round((new Date(today)-new Date(reqDate))/86400000) : null;
       const clr = dayColor(d) || {bg:'#fffbeb',fg:'#d97706'};
       const tip = 'Requested: '+(reqDate||'—')+'\nPending: '+(d!==null?d+' days':'unknown')+(d!==null&&d>=3?'\n⚠️ Alert threshold reached':'');
-      const icon = d!==null&&d>=3 ? '🔴' : d!==null&&d>=4 ? '⚠️' : '⏳';
+      const icon = d!==null&&d>=6 ? '🔴' : d!==null&&d>=4 ? '⚠️' : '⏳';
+      const stageLabel = (STAGE_CONFIG[key]||{}).label || key;
+      const hasEmail = !!getVendorEmail(key, p.community);
+      const emailBtns = hasEmail ? `
+        <div style="display:flex;gap:2px;justify-content:center;margin-top:3px">
+          <a href="${buildStageEmailHref(p,key,stageLabel,'request')}" title="Send initial request email" style="background:#2d5a8e;color:#fff;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;text-decoration:none;line-height:1.6">📧</a>
+          ${d!==null&&d>=3?`<a href="${buildStageEmailHref(p,key,stageLabel,'followup')}" title="Send follow-up email (${d}d pending)" style="background:#b91c1c;color:#fff;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;text-decoration:none;line-height:1.6">🔔</a>`:''}
+        </div>` : '';
       return `<td style="background:${clr.bg};text-align:center;padding:5px 4px;cursor:default" title="${tip}">
         <div style="color:${clr.fg};font-weight:700;font-size:11px">${icon}</div>
         <div style="color:${clr.fg};font-size:9px">${d!==null?d+'d':(reqDate?reqDate.slice(5).replace('-','/'):'-')}</div>
+        ${emailBtns}
       </td>`;
     }
     return `<td style="text-align:center;font-size:11px;color:#cbd5e1;padding:5px 4px">—</td>`;
@@ -5328,6 +5394,61 @@ function closeModal() { document.getElementById('modal-overlay').classList.remov
 // ══════════════════════════════════════════════════
 //  SETTINGS
 // ══════════════════════════════════════════════════
+function renderVendorEmailSettings() {
+  const ph1Keys = Object.entries(STAGE_CONFIG).filter(([,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
+  const ve = state.vendorEmails || { global:{}, byCommunity:{} };
+  const communities = COMMUNITIES.filter(c=>c!=='All');
+
+  const rows = ph1Keys.map(({key,label})=>{
+    const globalEmail = (ve.global||{})[key]||'';
+    const comOverrides = communities.map(c=>{
+      const val = ((ve.byCommunity||{})[c]||{})[key]||'';
+      return `<div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+        <span style="font-size:10px;color:var(--text-muted);min-width:130px;white-space:nowrap">${c}:</span>
+        <input type="email" value="${val}" placeholder="Override (optional)"
+          style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--bg);color:var(--text)"
+          onchange="saveVendorEmailFromSettings('${key}','${c}',this.value)">
+      </div>`;
+    }).join('');
+    return `<div style="border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px">${label}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+        <span style="font-size:10px;color:var(--text-muted);min-width:130px;font-weight:600">Global (all communities):</span>
+        <input type="email" value="${globalEmail}" placeholder="vendor@email.com"
+          style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--bg);color:var(--text)"
+          onchange="saveVendorEmailFromSettings('${key}','__global__',this.value)">
+      </div>
+      <details style="margin-top:6px">
+        <summary style="font-size:10px;color:var(--text-muted);cursor:pointer;user-select:none">Per-community overrides</summary>
+        <div style="margin-top:4px">${comOverrides}</div>
+      </details>
+    </div>`;
+  }).join('');
+
+  return `<div class="settings-card">
+    <h4>📧 Vendor Emails — Phase 1 Stages</h4>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Set the email address for each vendor you request Phase 1 documents from. Once configured, 📧 and 🔔 buttons appear on pending stages in the Phase 1 Docs report so you can send a pre-filled request or follow-up with one click.</p>
+    ${rows}
+  </div>`;
+}
+
+function saveVendorEmailFromSettings(stageKey, scope, value) {
+  if (!state.vendorEmails) state.vendorEmails = { global:{}, byCommunity:{} };
+  if (!state.vendorEmails.global) state.vendorEmails.global = {};
+  if (!state.vendorEmails.byCommunity) state.vendorEmails.byCommunity = {};
+  const trimmed = value.trim();
+  if (scope === '__global__') {
+    if (trimmed) state.vendorEmails.global[stageKey] = trimmed;
+    else delete state.vendorEmails.global[stageKey];
+  } else {
+    if (!state.vendorEmails.byCommunity[scope]) state.vendorEmails.byCommunity[scope] = {};
+    if (trimmed) state.vendorEmails.byCommunity[scope][stageKey] = trimmed;
+    else delete state.vendorEmails.byCommunity[scope][stageKey];
+  }
+  saveVendorEmails();
+  showToast('✅ Vendor email saved');
+}
+
 function openSettings() {
   const s = state.settings;
   document.getElementById('settings-body').innerHTML = `
@@ -5346,6 +5467,7 @@ function openSettings() {
       <p style="font-size:12px;color:var(--text-muted)">File attachments (PDFs, drawings) are saved in this browser only. Use the 📎 Attach button on each stage row to attach files — they are available for download on this device.</p>
     </div>
     ${renderCustomFieldsManager()}
+    ${renderVendorEmailSettings()}
     <div class="settings-card">
       <h4>💾 Data Management</h4>
       <p>Data auto-saves to your browser and syncs to the shared GitHub database. Use the backup tools below to protect against data loss.</p>
