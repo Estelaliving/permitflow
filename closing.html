@@ -112,7 +112,10 @@
 <body>
 
 <div class="header">
-  <div>
+  <div id="header-back" style="display:none;margin-right:10px">
+    <a href="closing.html" style="color:#fff;opacity:0.8;text-decoration:none;font-size:22px;line-height:1">&#8592;</a>
+  </div>
+  <div style="flex:1">
     <div class="header-logo">Estela Living</div>
     <div class="header-sub">Home Closing Checklist</div>
   </div>
@@ -291,6 +294,7 @@ async function init() {
         '<div style="color:#dc2626;font-size:15px">Permit not found. Please check the link.</div>';
       return;
     }
+    document.getElementById('header-back').style.display = 'block';
     loadForm();
   } else {
     document.getElementById('search-screen').style.display = 'block';
