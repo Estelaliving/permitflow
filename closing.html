@@ -107,6 +107,35 @@
 
     /* Safe area */
     .bottom-safe{height:env(safe-area-inset-bottom,16px);height:max(env(safe-area-inset-bottom),16px)}
+
+    /* Print */
+    #print-view{display:none}
+    @media print {
+      body > *{display:none!important}
+      #print-view{display:block!important;font-family:Arial,sans-serif;color:#000;background:#fff;padding:0;margin:0}
+      .pr-page{max-width:680px;margin:0 auto;padding:32px 40px}
+      .pr-logo{font-size:22px;font-weight:900;color:#1e3a5f;letter-spacing:-0.5px}
+      .pr-doc-title{font-size:15px;color:#64748b;margin-top:2px}
+      .pr-divider{border:none;border-top:2px solid #1e3a5f;margin:14px 0 18px}
+      .pr-addr{font-size:18px;font-weight:800;color:#1e3a5f;margin-bottom:4px}
+      .pr-meta{font-size:12px;color:#64748b;margin-bottom:18px}
+      .pr-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+      .pr-info-box{border:1px solid #e2e8f0;border-radius:6px;padding:10px 14px}
+      .pr-info-label{font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+      .pr-info-val{font-size:13px;font-weight:700;color:#1e3a5f}
+      .pr-section-title{font-size:11px;font-weight:800;color:#2d5a8e;text-transform:uppercase;letter-spacing:.7px;margin:20px 0 10px;border-bottom:1px solid #e2e8f0;padding-bottom:6px}
+      .pr-item{display:grid;grid-template-columns:24px 1fr auto auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #f1f5f9}
+      .pr-check{width:20px;height:20px;border:2px solid #cbd5e1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+      .pr-check.done{background:#22c55e;border-color:#22c55e;color:#fff}
+      .pr-item-label{font-size:13px;font-weight:600}
+      .pr-item-by{font-size:11px;color:#64748b;text-align:right}
+      .pr-item-date{font-size:10px;color:#94a3b8;text-align:right;white-space:nowrap}
+      .pr-notes{font-size:13px;color:#374151;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:12px;margin-top:6px;white-space:pre-wrap}
+      .pr-signoff-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;margin-bottom:6px}
+      .pr-signoff-name{font-size:13px;font-weight:700;color:#15803d}
+      .pr-signoff-time{font-size:11px;color:#15803d}
+      .pr-footer{margin-top:30px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;font-size:10px;color:#94a3b8}
+    }
   </style>
 </head>
 <body>
@@ -216,6 +245,9 @@
   <div id="close-home-wrap" style="display:none;padding:0 12px 4px">
     <button class="btn btn-success" onclick="closeHome()">🏠 Submit &amp; Close Home</button>
   </div>
+  <div style="padding:8px 12px 4px">
+    <button class="btn" style="background:#f1f5f9;color:#475569;border:1px solid #e2e8f0" onclick="printChecklist()">🖨️ Print / Save as PDF</button>
+  </div>
   <div class="bottom-safe"></div>
 </div>
 
@@ -229,6 +261,9 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Print-only view (hidden on screen, shown on print) -->
+<div id="print-view"></div>
 
 <script>
 const SB_URL = 'https://raqiscditxkvgadiostr.supabase.co';
@@ -575,6 +610,92 @@ function backToForm() {
   document.getElementById('form-screen').style.display    = 'block';
   renderSignoffs((_permit.closingChecklist||{}).signoffs||[]);
   updateProgress();
+}
+
+function printChecklist() {
+  if (!_permit) return;
+  const cl = _permit.closingChecklist || {};
+  const items = cl.items || _cl || {};
+  const signoffs = cl.signoffs || [];
+  const closingDate = (document.getElementById('closing-date')||{}).value || cl.closingDate || '';
+  const notes = (document.getElementById('notes')||{}).value || cl.notes || '';
+
+  const addr = (_permit.address||'').split(',')[0];
+  const meta = (_permit.community||'') + ' · Lot ' + (_permit.lotNumber||'?') + ' · ' + (_permit.model||'');
+  const doneCt = ITEMS.filter(i => items[i.key] && items[i.key].done).length;
+  const now = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})
+            + ' ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+
+  const itemRows = ITEMS.map(item => {
+    const d = items[item.key] || {};
+    const isDone = d.done || false;
+    const by = d.by || '—';
+    const at = d.at ? fmtDT(d.at) : '—';
+    return `<div class="pr-item">
+      <div class="pr-check${isDone?' done':''}>${isDone?'✓':''}</div>
+      <div class="pr-item-label">${item.label}</div>
+      <div class="pr-item-by">${isDone ? by : '<span style="color:#94a3b8">Pending</span>'}</div>
+      <div class="pr-item-date">${isDone ? at : ''}</div>
+    </div>`;
+  }).join('');
+
+  const signoffRows = signoffs.length
+    ? signoffs.map(s => `<div class="pr-signoff-row">
+        <div class="pr-signoff-name">${s.name}</div>
+        <div class="pr-signoff-time">${fmtDT(s.at)}</div>
+      </div>`).join('')
+    : '<div style="font-size:13px;color:#94a3b8">No sign-offs recorded yet.</div>';
+
+  const statusColor = doneCt === ITEMS.length ? '#15803d' : '#92400e';
+  const statusLabel = doneCt === ITEMS.length ? '✅ Complete' : `⏳ ${doneCt} of ${ITEMS.length} items done`;
+
+  document.getElementById('print-view').innerHTML = `<div class="pr-page">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="pr-logo">Estela Living</div>
+        <div class="pr-doc-title">Home Closing Checklist — Official Record</div>
+      </div>
+      <div style="text-align:right;font-size:11px;color:#64748b">
+        <div style="font-weight:700;color:${statusColor}">${statusLabel}</div>
+      </div>
+    </div>
+    <hr class="pr-divider">
+    <div class="pr-addr">${addr}</div>
+    <div class="pr-meta">${meta}</div>
+    <div class="pr-info-grid">
+      <div class="pr-info-box">
+        <div class="pr-info-label">Settlement / Closing Date</div>
+        <div class="pr-info-val">${closingDate ? new Date(closingDate+'T00:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—'}</div>
+      </div>
+      <div class="pr-info-box">
+        <div class="pr-info-label">Community</div>
+        <div class="pr-info-val">${_permit.community||'—'}</div>
+      </div>
+      <div class="pr-info-box">
+        <div class="pr-info-label">Lot Number</div>
+        <div class="pr-info-val">${_permit.lotNumber||'—'}</div>
+      </div>
+      <div class="pr-info-box">
+        <div class="pr-info-label">Model</div>
+        <div class="pr-info-val">${_permit.model||'—'}</div>
+      </div>
+    </div>
+
+    <div class="pr-section-title">Cancellation Checklist</div>
+    ${itemRows}
+
+    ${notes ? `<div class="pr-section-title">Notes</div><div class="pr-notes">${notes}</div>` : ''}
+
+    <div class="pr-section-title">Sign-Offs</div>
+    ${signoffRows}
+
+    <div class="pr-footer">
+      <span>Estela Living — Confidential</span>
+      <span>Printed: ${now}</span>
+    </div>
+  </div>`;
+
+  window.print();
 }
 
 init();
