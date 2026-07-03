@@ -5395,7 +5395,7 @@ function closeModal() { document.getElementById('modal-overlay').classList.remov
 //  SETTINGS
 // ══════════════════════════════════════════════════
 function renderVendorEmailSettings() {
-  const ph1Keys = Object.entries(STAGE_CONFIG).filter(([,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
+  const ph1Keys = Object.entries(STAGE_CONFIG).filter(([_k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
   const ve = state.vendorEmails || { global:{}, byCommunity:{} };
   const communities = COMMUNITIES.filter(c=>c!=='All');
 
@@ -5466,8 +5466,8 @@ function openSettings() {
       <p>All permit data (stages, statuses, notes, options, custom fields) syncs automatically to GitHub and is shared across the whole team. Everyone sees the same data in real time.</p>
       <p style="font-size:12px;color:var(--text-muted)">File attachments (PDFs, drawings) are saved in this browser only. Use the 📎 Attach button on each stage row to attach files — they are available for download on this device.</p>
     </div>
+    ${(()=>{ try { return renderVendorEmailSettings(); } catch(e) { return `<div class="settings-card"><h4>📧 Vendor Emails</h4><p style="color:#dc2626;font-size:12px">Error loading vendor email settings: ${e.message}</p></div>`; } })()}
     ${renderCustomFieldsManager()}
-    ${renderVendorEmailSettings()}
     <div class="settings-card">
       <h4>💾 Data Management</h4>
       <p>Data auto-saves to your browser and syncs to the shared GitHub database. Use the backup tools below to protect against data loss.</p>
