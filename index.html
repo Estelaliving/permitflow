@@ -864,46 +864,144 @@ function saveVendorEmails() {
   clearTimeout(state._syncTimer);
   state._syncTimer = setTimeout(() => syncToGitHub(), 2000);
 }
-function getVendorEmail(stageKey, community) {
+function getVendorEmail(stageKey, market) {
   const ve = state.vendorEmails || {};
-  const byCom = (ve.byCommunity || {})[community] || {};
-  return byCom[stageKey] || (ve.global || {})[stageKey] || '';
+  return (ve[market] || {})[stageKey] || (ve['Palm Coast'] || {})[stageKey] || (ve.global || {})[stageKey] || '';
 }
-function buildStageEmailHref(permit, stageKey, stageLabel, type) {
-  const email = getVendorEmail(stageKey, permit.community);
-  const addr = (permit.address||'').split(',')[0];
+
+function getPermitWater(permit) {
+  const w = permit.water || '';
+  if (w === 'City Water') return 'CITY';
+  if (w === 'Well') return 'WELL';
+  if (w === 'Both') return 'CITY/WELL';
+  return w || '—';
+}
+
+function buildEmailContent(permit, stageKey, type) {
+  const cfg = STAGE_CONFIG[stageKey] || {};
+  const stageLabel = cfg.label || stageKey;
+  const addr = permit.address || '';
+  const street = addr.split(',')[0];
+  const community = permit.community || '—';
+  const parcel = permit.parcelId || '—';
+  const water = getPermitWater(permit);
+  const model = permit.model || '—';
+  const garage = permit.garage || '—';
+  const elevation = permit.elevation || '—';
+  const vendorEmail = getVendorEmail(stageKey, permit.market);
   const reqDate = (permit.stageRequestedAt||{})[stageKey] || (permit.stageUpdatedAt||{})[stageKey] || '';
   const d = reqDate ? Math.round((new Date()-new Date(reqDate))/86400000) : null;
-  const pm = permit.projectManager || 'the project manager';
+
+  const tableHtml = `<table style="border-collapse:collapse;font-size:13px;width:100%;margin:12px 0">
+    <thead><tr style="background:#cfe2f3">
+      <th style="border:1px solid #aaa;padding:6px 10px;text-align:left">City</th>
+      <th style="border:1px solid #aaa;padding:6px 10px;text-align:left">Address</th>
+      <th style="border:1px solid #aaa;padding:6px 10px;text-align:left">Parcel</th>
+      <th style="border:1px solid #aaa;padding:6px 10px;text-align:left">Water</th>
+      <th style="border:1px solid #aaa;padding:6px 10px;text-align:left">Model</th>
+      <th style="border:1px solid #aaa;padding:6px 10px;text-align:left">Garage</th>
+      <th style="border:1px solid #aaa;padding:6px 10px;text-align:left">Elevation</th>
+    </tr></thead>
+    <tbody><tr>
+      <td style="border:1px solid #aaa;padding:6px 10px">${community}</td>
+      <td style="border:1px solid #aaa;padding:6px 10px">${street}</td>
+      <td style="border:1px solid #aaa;padding:6px 10px">${parcel}</td>
+      <td style="border:1px solid #aaa;padding:6px 10px">${water}</td>
+      <td style="border:1px solid #aaa;padding:6px 10px">${model}</td>
+      <td style="border:1px solid #aaa;padding:6px 10px">${garage}</td>
+      <td style="border:1px solid #aaa;padding:6px 10px">${elevation}</td>
+    </tr></tbody>
+  </table>`;
+
+  const tablePlain = `City            Address         Parcel                     Water       Model           Garage          Elevation\n${community.padEnd(16)}${street.padEnd(16)}${parcel.padEnd(27)}${water.padEnd(12)}${model.padEnd(16)}${garage.padEnd(16)}${elevation}`;
+
   if (type === 'request') {
-    const subj = encodeURIComponent(`Document Request: ${stageLabel} — ${addr}`);
-    const body = encodeURIComponent(
-      `Hello,\n\nWe are requesting the following document for a project we are working on:\n\n` +
-      `Document: ${stageLabel}\n` +
-      `Address: ${permit.address||''}\n` +
-      `Community: ${permit.community||''} | Lot: ${permit.lotNumber||'?'}\n` +
-      `Model: ${permit.model||''}\n` +
-      `Project Manager: ${pm}\n\n` +
-      `Please provide this document at your earliest convenience. Our target is to receive all Phase 1 documents within 3 business days.\n\n` +
-      `Thank you,\nEstela Living`
-    );
-    return `mailto:${email}?subject=${subj}&body=${body}`;
+    const subject = `Request: ${stageLabel} — ${street}`;
+    const bodyHtml = `<p style="margin:0 0 10px">Hello,</p>
+<p style="margin:0 0 10px">We are starting the permitting process for the following address: <strong>${addr}</strong><br>Parcel ID: <strong>${parcel}</strong></p>
+${tableHtml}
+<p style="margin:10px 0">I would like to request a ${stageLabel}.</p>
+<p style="margin:0">Thanks!</p>`;
+    const bodyPlain = `Hello,\n\nWe are starting the permitting process for the following address: ${addr}\nParcel ID: ${parcel}\n\n${tablePlain}\n\nI would like to request a ${stageLabel}.\n\nThanks!`;
+    return { to: vendorEmail, subject, bodyHtml, bodyPlain, stageLabel };
   } else {
-    const subj = encodeURIComponent(`Follow-Up: ${stageLabel} Still Pending — ${addr}`);
-    const body = encodeURIComponent(
-      `Hello,\n\nThis is a follow-up on our previous request for the following document:\n\n` +
-      `Document: ${stageLabel}\n` +
-      `Address: ${permit.address||''}\n` +
-      `Community: ${permit.community||''} | Lot: ${permit.lotNumber||'?'}\n` +
-      `Model: ${permit.model||''}\n` +
-      `Project Manager: ${pm}\n` +
-      `Originally Requested: ${reqDate||'—'}\n` +
-      `Days Pending: ${d!==null?d+' days':'unknown'}\n\n` +
-      `We have not yet received this document. Could you please provide an update on the expected delivery date?\n\n` +
-      `Thank you,\nEstela Living`
-    );
-    return `mailto:${email}?subject=${subj}&body=${body}`;
+    const subject = `Follow-Up: ${stageLabel} Still Pending — ${street}`;
+    const fmtReqDate = reqDate ? new Date(reqDate+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+    const pendingHtml = (fmtReqDate && d!==null) ? `<p style="margin:10px 0">This was originally requested on <strong>${fmtReqDate}</strong>. We have been waiting <strong>${d} day${d!==1?'s':''}</strong>.</p>` : '';
+    const pendingPlain = (fmtReqDate && d!==null) ? `\nThis was originally requested on ${fmtReqDate}. We have been waiting ${d} day${d!==1?'s':''}.\n` : '';
+    const bodyHtml = `<p style="margin:0 0 10px">Hello,</p>
+<p style="margin:0 0 10px">This is a follow-up on our previous request for a <strong>${stageLabel}</strong>.</p>
+<p style="margin:0 0 10px">We are working on the permitting process for the following address: <strong>${addr}</strong><br>Parcel ID: <strong>${parcel}</strong></p>
+${tableHtml}
+${pendingHtml}
+<p style="margin:10px 0">Could you please provide an update on the expected delivery date?</p>
+<p style="margin:0">Thanks!</p>`;
+    const bodyPlain = `Hello,\n\nThis is a follow-up on our previous request for a ${stageLabel}.\n\nWe are working on the permitting process for the following address: ${addr}\nParcel ID: ${parcel}\n\n${tablePlain}\n${pendingPlain}\nCould you please provide an update on the expected delivery date?\n\nThanks!`;
+    return { to: vendorEmail, subject, bodyHtml, bodyPlain, stageLabel };
   }
+}
+
+function showEmailModal(permitId, stageKey, type) {
+  const permit = state.permits.find(p => p.id === permitId);
+  if (!permit) return;
+  const existing = document.getElementById('email-composer-overlay');
+  if (existing) existing.remove();
+  const content = buildEmailContent(permit, stageKey, type);
+  const typeLabel = type === 'request' ? '📧 Initial Request' : '🔔 Follow-Up Reminder';
+  const stageLabel = content.stageLabel;
+  const overlay = document.createElement('div');
+  overlay.id = 'email-composer-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:2100;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px';
+  overlay.innerHTML = `<div style="background:var(--card);border-radius:14px;max-width:740px;width:100%;margin:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+    <div style="background:#1e3a5f;color:#fff;padding:14px 20px;border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:15px;font-weight:700">${typeLabel}</div>
+        <div style="font-size:11px;opacity:0.75;margin-top:2px">${(permit.address||'').split(',')[0]} &nbsp;·&nbsp; ${stageLabel}</div>
+      </div>
+      <button onclick="document.getElementById('email-composer-overlay').remove()" style="background:none;border:none;color:#fff;opacity:0.7;font-size:22px;cursor:pointer;line-height:1;padding:0 4px">✕</button>
+    </div>
+    <div style="padding:18px 20px 20px">
+      <div style="display:grid;grid-template-columns:64px 1fr;gap:8px 10px;align-items:center;margin-bottom:14px">
+        <span style="font-size:12px;font-weight:700;color:var(--text-muted)">To:</span>
+        <input id="ec-to" type="email" value="${content.to}" placeholder="vendor@email.com — type or set in Settings"
+          style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);width:100%">
+        <span style="font-size:12px;font-weight:700;color:var(--text-muted)">Subject:</span>
+        <input id="ec-subject" type="text" value="${content.subject.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}"
+          style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);width:100%">
+      </div>
+      <div style="border:1.5px solid var(--border);border-radius:8px;padding:16px 18px;background:#fff;font-family:Arial,sans-serif;font-size:13px;line-height:1.6;color:#1e293b;max-height:360px;overflow-y:auto" id="ec-preview">${content.bodyHtml}</div>
+      ${!content.to ? `<div style="margin-top:10px;padding:9px 13px;background:#fef9c3;border:1px solid #fde68a;border-radius:8px;font-size:12px;color:#92400e">⚠️ No vendor email configured for this stage. <a href="#" onclick="document.getElementById('email-composer-overlay').remove();openSettings();return false" style="color:#1e3a5f;font-weight:700">Set it in Settings →</a></div>` : ''}
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button onclick="copyEmailBodyText()" style="flex:1;min-width:140px;padding:10px;border-radius:8px;border:1.5px solid #2d5a8e;background:var(--bg);color:#2d5a8e;font-size:13px;font-weight:700;cursor:pointer">📋 Copy Body</button>
+        <button onclick="openEmailInClient()" style="flex:2;min-width:160px;padding:10px;border-radius:8px;border:none;background:#2d5a8e;color:#fff;font-size:13px;font-weight:700;cursor:pointer">📧 Open in Email App</button>
+        <button onclick="document.getElementById('email-composer-overlay').remove()" style="padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;cursor:pointer">Cancel</button>
+      </div>
+    </div>
+  </div>`;
+  overlay.dataset.bodyPlain = content.bodyPlain;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+}
+
+function copyEmailBodyText() {
+  const overlay = document.getElementById('email-composer-overlay');
+  const text = overlay ? overlay.dataset.bodyPlain : '';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('📋 Email body copied to clipboard'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showToast('📋 Copied');
+  }
+}
+
+function openEmailInClient() {
+  const to = encodeURIComponent((document.getElementById('ec-to')||{}).value||'');
+  const subject = encodeURIComponent((document.getElementById('ec-subject')||{}).value||'');
+  const overlay = document.getElementById('email-composer-overlay');
+  const body = encodeURIComponent(overlay ? overlay.dataset.bodyPlain : '');
+  window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
 }
 
 function saveData() {
@@ -3316,12 +3414,11 @@ function renderPhase1Tab(permits) {
       const tip = 'Requested: '+(reqDate||'—')+'\nPending: '+(d!==null?d+' days':'unknown')+(d!==null&&d>=3?'\n⚠️ Alert threshold reached':'');
       const icon = d!==null&&d>=6 ? '🔴' : d!==null&&d>=4 ? '⚠️' : '⏳';
       const stageLabel = (STAGE_CONFIG[key]||{}).label || key;
-      const hasEmail = !!getVendorEmail(key, p.community);
-      const emailBtns = hasEmail ? `
-        <div style="display:flex;gap:2px;justify-content:center;margin-top:3px">
-          <a href="${buildStageEmailHref(p,key,stageLabel,'request')}" title="Send initial request email" style="background:#2d5a8e;color:#fff;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;text-decoration:none;line-height:1.6">📧</a>
-          ${d!==null&&d>=3?`<a href="${buildStageEmailHref(p,key,stageLabel,'followup')}" title="Send follow-up email (${d}d pending)" style="background:#b91c1c;color:#fff;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;text-decoration:none;line-height:1.6">🔔</a>`:''}
-        </div>` : '';
+      const hasEmail = !!getVendorEmail(key, p.market);
+      const emailBtns = `<div style="display:flex;gap:2px;justify-content:center;margin-top:3px">
+          <button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','request')" title="Send initial request email" style="background:${hasEmail?'#2d5a8e':'#94a3b8'};color:#fff;border:none;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;cursor:pointer;line-height:1.6">📧</button>
+          ${d!==null&&d>=3?`<button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','followup')" title="Send follow-up email (${d}d pending)" style="background:#b91c1c;color:#fff;border:none;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;cursor:pointer;line-height:1.6">🔔</button>`:''}
+        </div>`;
       return `<td style="background:${clr.bg};text-align:center;padding:5px 4px;cursor:default" title="${tip}">
         <div style="color:${clr.fg};font-weight:700;font-size:11px">${icon}</div>
         <div style="color:${clr.fg};font-size:9px">${d!==null?d+'d':(reqDate?reqDate.slice(5).replace('-','/'):'-')}</div>
@@ -5396,55 +5493,38 @@ function closeModal() { document.getElementById('modal-overlay').classList.remov
 // ══════════════════════════════════════════════════
 function renderVendorEmailSettings() {
   const ph1Keys = Object.entries(STAGE_CONFIG).filter(([_k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
-  const ve = state.vendorEmails || { global:{}, byCommunity:{} };
-  const communities = COMMUNITIES.filter(c=>c!=='All');
+  const ve = state.vendorEmails || {};
+  const markets = ['Palm Coast', 'Ocala'];
+  const activeMarket = state._vendorEmailTab || 'Palm Coast';
 
   const rows = ph1Keys.map(({key,label})=>{
-    const globalEmail = (ve.global||{})[key]||'';
-    const comOverrides = communities.map(c=>{
-      const val = ((ve.byCommunity||{})[c]||{})[key]||'';
-      return `<div style="display:flex;align-items:center;gap:6px;margin-top:4px">
-        <span style="font-size:10px;color:var(--text-muted);min-width:130px;white-space:nowrap">${c}:</span>
-        <input type="email" value="${val}" placeholder="Override (optional)"
-          style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--bg);color:var(--text)"
-          onchange="saveVendorEmailFromSettings('${key}','${c}',this.value)">
-      </div>`;
-    }).join('');
-    return `<div style="border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px">
-      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px">${label}</div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
-        <span style="font-size:10px;color:var(--text-muted);min-width:130px;font-weight:600">Global (all communities):</span>
-        <input type="email" value="${globalEmail}" placeholder="vendor@email.com"
-          style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--bg);color:var(--text)"
-          onchange="saveVendorEmailFromSettings('${key}','__global__',this.value)">
-      </div>
-      <details style="margin-top:6px">
-        <summary style="font-size:10px;color:var(--text-muted);cursor:pointer;user-select:none">Per-community overrides</summary>
-        <div style="margin-top:4px">${comOverrides}</div>
-      </details>
+    const email = (ve[activeMarket]||{})[key]||'';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:12px;font-weight:600;color:var(--text);min-width:170px">${label}</span>
+      <input type="email" value="${email}" placeholder="vendor@email.com"
+        style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)"
+        onchange="saveVendorEmailFromSettings('${key}','${activeMarket}',this.value)">
     </div>`;
   }).join('');
 
+  const tabs = markets.map(m=>
+    `<button onclick="state._vendorEmailTab='${m}';openSettings()" style="padding:6px 18px;border-radius:20px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:${activeMarket===m?'#2d5a8e':'var(--bg)'};color:${activeMarket===m?'#fff':'var(--text)'};border:1.5px solid ${activeMarket===m?'#2d5a8e':'var(--border)'}">${m}</button>`
+  ).join('');
+
   return `<div class="settings-card">
     <h4>📧 Vendor Emails — Phase 1 Stages</h4>
-    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Set the email address for each vendor you request Phase 1 documents from. Once configured, 📧 and 🔔 buttons appear on pending stages in the Phase 1 Docs report so you can send a pre-filled request or follow-up with one click.</p>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Set the vendor email for each Phase 1 stage, by market. Once set, every pending stage cell in the Phase 1 Docs report shows 📧 (initial request) and 🔔 (follow-up, appears after 3 days) buttons that open a pre-filled email composer.</p>
+    <div style="display:flex;gap:8px;margin-bottom:14px">${tabs}</div>
     ${rows}
   </div>`;
 }
 
-function saveVendorEmailFromSettings(stageKey, scope, value) {
-  if (!state.vendorEmails) state.vendorEmails = { global:{}, byCommunity:{} };
-  if (!state.vendorEmails.global) state.vendorEmails.global = {};
-  if (!state.vendorEmails.byCommunity) state.vendorEmails.byCommunity = {};
+function saveVendorEmailFromSettings(stageKey, market, value) {
+  if (!state.vendorEmails) state.vendorEmails = {};
+  if (!state.vendorEmails[market]) state.vendorEmails[market] = {};
   const trimmed = value.trim();
-  if (scope === '__global__') {
-    if (trimmed) state.vendorEmails.global[stageKey] = trimmed;
-    else delete state.vendorEmails.global[stageKey];
-  } else {
-    if (!state.vendorEmails.byCommunity[scope]) state.vendorEmails.byCommunity[scope] = {};
-    if (trimmed) state.vendorEmails.byCommunity[scope][stageKey] = trimmed;
-    else delete state.vendorEmails.byCommunity[scope][stageKey];
-  }
+  if (trimmed) state.vendorEmails[market][stageKey] = trimmed;
+  else delete state.vendorEmails[market][stageKey];
   saveVendorEmails();
   showToast('✅ Vendor email saved');
 }
