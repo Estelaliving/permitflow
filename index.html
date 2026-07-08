@@ -1067,7 +1067,8 @@ async function saveFileLocally(permitId, stageKey, file) {
     const db = await openFileDB();
     await new Promise((res, rej) => {
       const tx = db.transaction('files', 'readwrite');
-      tx.objectStore('files').put({ key, permitId, stageKey, name: file.name, size: file.size, type: file.type || 'application/octet-stream', blob: file, date: new Date().toISOString().split('T')[0] });
+      const _fd=new Date(); const _fdate=`${_fd.getFullYear()}-${String(_fd.getMonth()+1).padStart(2,'0')}-${String(_fd.getDate()).padStart(2,'0')}`;
+      tx.objectStore('files').put({ key, permitId, stageKey, name: file.name, size: file.size, type: file.type || 'application/octet-stream', blob: file, date: _fdate });
       tx.oncomplete = res; tx.onerror = rej;
     });
     // Track in state
@@ -2393,12 +2394,26 @@ function getPhaseDuration(permit, phase) {
 function setPhaseDate(permitId, key, value) {
   const p = state.permits.find(x=>x.id===permitId); if (!p) return;
   if (!p.phaseTimestamps) p.phaseTimestamps = {};
-  p.phaseTimestamps[key] = value || null;
+  if (value) { p.phaseTimestamps[key] = value; } else { delete p.phaseTimestamps[key]; }
   p._ts = Date.now();
   saveData();
 }
+function getAutoPhaseTimeline(permit) {
+  const p1keys = ['architecture','sitePlan','trussEng','energyCalcs','soilTest','structuralEng',
+    'landscape','productApproval','colorMaterial','roofingWorksheet','utilityPP',
+    'geotechLetter','constLienAff','noc','recordedDeed','subCOI'];
+  const reqDates = p1keys.map(k=>(permit.stageRequestedAt||{})[k]).filter(Boolean).sort();
+  const p1Start = reqDates.length ? reqDates[0] : (permit.releaseDate || '');
+  const subDate = (permit.stageRequestedAt||{}).submitted || (permit.stageCompletedAt||{}).submitted || (permit.stageDates||{}).submitted || '';
+  const issuedDate = (permit.stageCompletedAt||{}).permitIssued || (permit.stageDates||{}).permitIssued || '';
+  const coRecDate = (permit.stageCompletedAt||{}).coReceived || (permit.stageDates||{}).coReceived || '';
+  return { p1Start, p1End: subDate, p2Start: subDate, p2End: issuedDate, p3Start: issuedDate, p3End: coRecDate, p4Start: coRecDate, coDate: coRecDate };
+}
 function renderPhaseTimeline(permit) {
   const ts = permit.phaseTimestamps || {};
+  const auto = getAutoPhaseTimeline(permit);
+  const getVal  = k => ts[k] || auto[k] || '';
+  const isAuto  = k => !ts[k] && !!auto[k];
   const phases = [
     { n:1, label:'Phase 1 — Info Gathering',      start:'p1Start', end:'p1End',  color:'#3b82f6' },
     { n:2, label:'Phase 2 — Ready to Submit',      start:'p2Start', end:'p2End',  color:'#f59e0b' },
@@ -2425,14 +2440,17 @@ function renderPhaseTimeline(permit) {
           <span style="width:8px;height:8px;border-radius:50%;background:${ph.color};flex-shrink:0;${isCurrent?'box-shadow:0 0 0 3px '+ph.color+'40':''}"></span>
           <span style="font-weight:${isCurrent?'700':'500'}">${ph.label.split(' — ')[0]}</span>
         </div>
-        <input type="date" value="${ts[ph.start]||''}" style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg);color:var(--text)"
+        <input type="date" value="${getVal(ph.start)}" title="${isAuto(ph.start)?'Auto-filled from first Phase 1 request — edit to override':''}"
+          style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg);color:${isAuto(ph.start)?'#94a3b8':'var(--text)'}"
           onchange="setPhaseDate('${permit.id}','${ph.start}',this.value)">
-        <input type="date" value="${ts[ph.end]||''}" style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg);color:var(--text)"
+        <input type="date" value="${getVal(ph.end)}" title="${isAuto(ph.end)?'Auto-filled from permit data — edit to override':''}"
+          style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg);color:${isAuto(ph.end)?'#94a3b8':'var(--text)'}"
           onchange="setPhaseDate('${permit.id}','${ph.end}',this.value)">
         <span style="font-weight:700;color:${dur>30?'#b91c1c':dur>14?'#92400e':'#15803d'}">${dur!==null?(isCurrent&&!ts[ph.end]?dur+'d ▶':dur+'d'):'—'}</span>`;
       }).join('')}
       <div style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#64748b;flex-shrink:0"></span><span>CO Date</span></div>
-      <input type="date" value="${co||''}" style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg);color:var(--text)"
+      <input type="date" value="${getVal('coDate')}" title="${isAuto('coDate')?'Auto-filled from permit data — edit to override':''}"
+        style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg);color:${isAuto('coDate')?'#94a3b8':'var(--text)'}"
         onchange="setPhaseDate('${permit.id}','coDate',this.value)" placeholder="CO date">
       <div></div><div></div>
     </div>
@@ -2454,7 +2472,7 @@ function kanbanDrop(e, phase) {
   e.preventDefault(); e.currentTarget.style.outline='';
   const permit = state.permits.find(p=>p.id===_kanbanDragId); if (!permit) return;
   const ts = permit.phaseTimestamps || {}; permit.phaseTimestamps = ts;
-  const today = new Date().toISOString().split('T')[0];
+  const _kd=new Date(); const today=`${_kd.getFullYear()}-${String(_kd.getMonth()+1).padStart(2,'0')}-${String(_kd.getDate()).padStart(2,'0')}`;
   if (phase===1) { permit.overallStatus='active';    if(!ts.p1Start) ts.p1Start=today; }
   else if (phase===2) { permit.overallStatus='submitted'; if(!ts.p2Start) ts.p2Start=today; }
   else if (phase===3) { permit.overallStatus='permitted'; if(!ts.p3Start) ts.p3Start=today; }
