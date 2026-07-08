@@ -1789,9 +1789,11 @@ function getCityDays(permit) {
 function getPhase1Days(permit) {
   if (permit.overallStatus !== 'active') return null;
   const p1keys = ['architecture','sitePlan','trussEng','energyCalcs','soilTest','structuralEng','landscape','productApproval','colorMaterial','roofingWorksheet','utilityPP','geotechLetter','constLienAff','noc','recordedDeed','subCOI'];
-  const dates = p1keys.map(k => (permit.stageRequestedAt||{})[k]).filter(Boolean).sort();
-  if (!dates.length) return null;
-  return daysSince(dates[0]);
+  const reqDates = p1keys.map(k => (permit.stageRequestedAt||{})[k]).filter(Boolean).sort();
+  // Use earliest request date; if no requests yet, fall back to releaseDate
+  const startDate = reqDates.length ? reqDates[0] : permit.releaseDate;
+  if (!startDate) return null;
+  return daysSince(startDate);
 }
 function durClass(d) {
   if (d === null || d === undefined) return 'dur-gray';
@@ -3471,9 +3473,9 @@ function renderPhase1Tab(permits) {
       const icon = d!==null&&d>=6 ? '🔴' : d!==null&&d>=4 ? '⚠️' : '⏳';
       const stageLabel = (STAGE_CONFIG[key]||{}).label || key;
       const hasEmail = !!getVendorEmail(key, p.market);
-      const emailBtns = `<div style="display:flex;gap:2px;justify-content:center;margin-top:3px">
-          <button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','request')" title="Send initial request email" style="background:${hasEmail?'#2d5a8e':'#94a3b8'};color:#fff;border:none;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;cursor:pointer;line-height:1.6">📧</button>
-          ${d!==null&&d>=3?`<button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','followup')" title="Send follow-up email (${d}d pending)" style="background:#b91c1c;color:#fff;border:none;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;cursor:pointer;line-height:1.6">🔔</button>`:''}
+      const emailBtns = `<div style="display:flex;flex-direction:column;gap:2px;align-items:center;margin-top:3px">
+          <button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','request')" title="Send initial request email" style="background:${hasEmail?'#2d5a8e':'#94a3b8'};color:#fff;border:none;border-radius:3px;padding:1px 4px;font-size:9px;cursor:pointer;line-height:1.5;width:22px">📧</button>
+          ${d!==null&&d>=3?`<button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','followup')" title="Send follow-up email (${d}d pending)" style="background:#b91c1c;color:#fff;border:none;border-radius:3px;padding:1px 4px;font-size:9px;cursor:pointer;line-height:1.5;width:22px">🔔</button>`:''}
         </div>`;
       return `<td style="background:${clr.bg};text-align:center;padding:5px 4px;cursor:default" title="${tip}">
         <div style="color:${clr.fg};font-weight:700;font-size:11px">${icon}</div>
@@ -3493,8 +3495,14 @@ function renderPhase1Tab(permits) {
     return {p,done,appl:appl.length,pct};
   }).sort((a,b)=>a.pct-b.pct);
 
-  const thCells = ph1Keys.map(({label})=>
-    `<th style="font-size:9px;text-transform:uppercase;letter-spacing:.3px;padding:6px 4px;background:#f1f5f9;white-space:nowrap;min-width:52px;text-align:center;border-bottom:2px solid #cbd5e1;color:#64748b">${label}</th>`
+  const stageAbbrev = {
+    architecture:'Arch', sitePlan:'Site', trussEng:'Truss', energyCalcs:'Nrgy',
+    soilTest:'Soil', structuralEng:'Strct', landscape:'Land', productApproval:'Prod',
+    colorMaterial:'Clr', roofingWorksheet:'Roof', utilityPP:'Util', geotechLetter:'Geo',
+    constLienAff:'Lien', noc:'NOC', recordedDeed:'Deed', subCOI:'COI'
+  };
+  const thCells = ph1Keys.map(({key,label})=>
+    `<th title="${label}" style="font-size:9px;text-transform:uppercase;letter-spacing:.3px;padding:5px 2px;background:#f1f5f9;white-space:nowrap;width:34px;min-width:34px;text-align:center;border-bottom:2px solid #cbd5e1;color:#64748b;cursor:default">${stageAbbrev[key]||label.slice(0,4)}</th>`
   ).join('');
 
   const tableRows = rows.map(({p,done,appl,pct})=>{
