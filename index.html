@@ -110,7 +110,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background:var(--bg); color:v
   position:fixed; top:0; left:0; height:100vh; overflow-y:auto; z-index:100;
   display:flex; flex-direction:column;
 }
-#main { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; }
+#main { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; overflow-x:hidden; }
 #topbar {
   background:var(--card); border-bottom:1px solid var(--border);
   padding:0 24px; height:60px; display:flex; align-items:center;
@@ -644,7 +644,7 @@ const DEFAULT_STAGE_CONFIG = {
 
 let STAGE_CONFIG = Object.assign({}, DEFAULT_STAGE_CONFIG);
 
-const COMMUNITIES = ['All','Sawmill Branch','Sabana Reserve','Palm Coast Scattered','Marion Oaks','Ocala Waterways','Juliette Falls'];
+const COMMUNITIES = ['All','Sawmill Branch','Sabana Reserve','Palm Coast Scattered','Marion Oaks','Ocala Waterways','Juliette Falls','Rolling Hills'];
 const PROJECT_MANAGERS = ['Jason Bedaw','Michael Bedaw','Brandon Atchinson','Jon Frantz'];
 const OWNERS = [
   '001 · Estela Living, LLC',
@@ -916,13 +916,17 @@ function buildEmailContent(permit, stageKey, type) {
   const tablePlain = `City            Address         Parcel                     Water       Model           Garage          Elevation\n${community.padEnd(16)}${street.padEnd(16)}${parcel.padEnd(27)}${water.padEnd(12)}${model.padEnd(16)}${garage.padEnd(16)}${elevation}`;
 
   if (type === 'request') {
+    const selOpts = (permit.options||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const optionsHtml = selOpts.length ? `<div style="margin:10px 0"><strong>Selected Options:</strong><ul style="margin:5px 0 5px 20px;padding:0">${selOpts.map(o=>`<li style="margin:2px 0">${o}</li>`).join('')}</ul></div>` : '';
+    const optionsPlain = selOpts.length ? `\nSelected Options:\n${selOpts.map(o=>`  - ${o}`).join('\n')}\n` : '';
     const subject = `Request: ${stageLabel} — ${street}`;
     const bodyHtml = `<p style="margin:0 0 10px">Hello,</p>
 <p style="margin:0 0 10px">We are starting the permitting process for the following address: <strong>${addr}</strong><br>Parcel ID: <strong>${parcel}</strong></p>
 ${tableHtml}
+${optionsHtml}
 <p style="margin:10px 0">I would like to request a ${stageLabel}.</p>
 <p style="margin:0">Thanks!</p>`;
-    const bodyPlain = `Hello,\n\nWe are starting the permitting process for the following address: ${addr}\nParcel ID: ${parcel}\n\n${tablePlain}\n\nI would like to request a ${stageLabel}.\n\nThanks!`;
+    const bodyPlain = `Hello,\n\nWe are starting the permitting process for the following address: ${addr}\nParcel ID: ${parcel}\n\n${tablePlain}\n${optionsPlain}\nI would like to request a ${stageLabel}.\n\nThanks!`;
     return { to: vendorEmail, subject, bodyHtml, bodyPlain, stageLabel };
   } else {
     const subject = `Follow-Up: ${stageLabel} Still Pending — ${street}`;
@@ -979,18 +983,31 @@ function showEmailModal(permitId, stageKey, type) {
     </div>
   </div>`;
   overlay.dataset.bodyPlain = content.bodyPlain;
+  overlay.dataset.bodyHtml = content.bodyHtml;
   document.body.appendChild(overlay);
   overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 }
 
 function copyEmailBodyText() {
   const overlay = document.getElementById('email-composer-overlay');
-  const text = overlay ? overlay.dataset.bodyPlain : '';
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => showToast('📋 Email body copied to clipboard'));
+  if (!overlay) return;
+  const html = overlay.dataset.bodyHtml || '';
+  const plain = overlay.dataset.bodyPlain || '';
+  if (navigator.clipboard && window.ClipboardItem) {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([plain], { type: 'text/plain' })
+    });
+    navigator.clipboard.write([item])
+      .then(() => showToast('📋 Email body copied (with formatting)'))
+      .catch(() => {
+        navigator.clipboard.writeText(plain).then(() => showToast('📋 Email body copied (plain text)'));
+      });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(plain).then(() => showToast('📋 Copied'));
   } else {
     const ta = document.createElement('textarea');
-    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    ta.value = plain; ta.style.cssText = 'position:fixed;opacity:0';
     document.body.appendChild(ta); ta.select(); document.execCommand('copy');
     document.body.removeChild(ta); showToast('📋 Copied');
   }
@@ -1769,6 +1786,13 @@ function getCityDays(permit) {
   if (['submitted','permitted','co'].includes(permit.overallStatus)) return daysSince(sub);
   return null;
 }
+function getPhase1Days(permit) {
+  if (permit.overallStatus !== 'active') return null;
+  const p1keys = ['architecture','sitePlan','trussEng','energyCalcs','soilTest','structuralEng','landscape','productApproval','colorMaterial','roofingWorksheet','utilityPP','geotechLetter','constLienAff','noc','recordedDeed','subCOI'];
+  const dates = p1keys.map(k => (permit.stageRequestedAt||{})[k]).filter(Boolean).sort();
+  if (!dates.length) return null;
+  return daysSince(dates[0]);
+}
 function durClass(d) {
   if (d === null || d === undefined) return 'dur-gray';
   if (d < 30) return 'dur-green';
@@ -2100,7 +2124,8 @@ function cycleStage(e, permitId, stageName) {
   if (!permit) return;
   const cur = permit.stages[stageName];
   if (cur === 'n/a') return;
-  const today = new Date().toISOString().split('T')[0];
+  const _now = new Date();
+  const today = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
   const cycle = ['not-started','requested','complete'];
   const next = cycle[(cycle.indexOf(cur)+1)%cycle.length];
   permit.stages[stageName] = next;
@@ -2286,6 +2311,37 @@ function renderDashboard(el, alerts) {
             ${cs.alerts?`<span class="status-badge" style="background:#fee2e2;color:#b91c1c">${cs.alerts} ⚠</span>`:''}
           </div></div>`).join('')}
       </div>
+    </div>
+    <div style="background:var(--card);border-radius:12px;border:1px solid var(--border);padding:20px;margin-bottom:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h3 style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Active — Collecting Docs (Phase 1)</h3>
+        <button class="btn btn-sm btn-outline" onclick="setView('permits')">View All →</button>
+      </div>
+      ${(() => {
+        const active = all.filter(p=>p.overallStatus==='active').slice(0,8);
+        if (!active.length) return '<p style="color:var(--text-muted);font-size:13px">No active permits collecting docs.</p>';
+        return `<div class="table-scroll"><table style="min-width:500px">
+          <thead><tr>
+            <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border)">Address</th>
+            <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border)">Community</th>
+            <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border)">PM</th>
+            <th style="padding:8px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border)">Phase 1 Days</th>
+            <th style="padding:8px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border)">Docs Requested</th>
+          </tr></thead>
+          <tbody>${active.map(p => {
+            const d1 = getPhase1Days(p);
+            const reqCount = Object.keys(p.stageRequestedAt||{}).length;
+            const dc = d1 !== null ? durClass(d1) : 'dur-gray';
+            return `<tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:9px 12px;font-size:13px;font-weight:600">${(p.address||'').split(',')[0]}</td>
+              <td style="padding:9px 12px;font-size:12px;color:var(--text-muted)">${p.community||'—'}</td>
+              <td style="padding:9px 12px;font-size:12px;color:var(--text-muted)">${p.pm||'—'}</td>
+              <td style="padding:9px 12px;text-align:center">${d1 !== null ? `<span class="dur-pill ${dc}">${d1}d</span>` : '<span style="color:var(--text-muted);font-size:12px">Not started</span>'}</td>
+              <td style="padding:9px 12px;text-align:center;font-size:12px">${reqCount > 0 ? reqCount+' doc'+(reqCount!==1?'s':'') : '<span style="color:var(--text-muted)">—</span>'}</td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table></div>`;
+      })()}
     </div>
     <div style="background:var(--card);border-radius:12px;border:1px solid var(--border);padding:20px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -4408,7 +4464,7 @@ function renderDrawingChecklist(permit) {
                     const key = "opt_"+ok+"_"+d.key;
                     return `<td style="padding:3px;text-align:center;border:1px solid var(--border)">
                       <input type="checkbox" ${checks[key]?"checked":""} style="width:14px;height:14px;cursor:pointer;accent-color:#f59e0b"
-                        onchange="toggleDrawingCheck('${permit.id}','"+key+"',this.checked)">
+                        onchange="toggleDrawingCheck('${permit.id}','${key}',this.checked)">
                     </td>`;
                   }).join("")}
                   <td style="padding:3px;text-align:center;border:1px solid var(--border)">
@@ -4493,7 +4549,8 @@ function undoDrawingReview(permitId) {
 function updateStageField(permitId, stage, field, value) {
   const permit = state.permits.find(p=>p.id===permitId);
   if (!permit) return;
-  const today = new Date().toISOString().split('T')[0];
+  const _n2 = new Date();
+  const today = `${_n2.getFullYear()}-${String(_n2.getMonth()+1).padStart(2,'0')}-${String(_n2.getDate()).padStart(2,'0')}`;
   if (!permit.stageUpdatedAt) permit.stageUpdatedAt = {};
   if (!permit.stageRequestedAt) permit.stageRequestedAt = {};
   if (!permit.stageCompletedAt) permit.stageCompletedAt = {};
