@@ -5051,7 +5051,9 @@ function saveOptionsList() {
 }
 
 function getSelectedOptions(permit) {
-  return (permit.options||'').split(',').map(s=>s.trim()).filter(Boolean);
+  // Deduplicate on read so stored dirty data doesn't cause duplicate chips
+  const seen = new Set();
+  return (permit.options||'').split(',').map(s=>s.trim()).filter(s => { if (!s || seen.has(s)) return false; seen.add(s); return true; });
 }
 
 function renderOptionsPicker(permitId, permit, mode) {
@@ -5227,10 +5229,10 @@ function togglePermitOption(permitId, opt, btn) {
   let sel = getSelectedOptions(p);
   if (sel.includes(opt)) {
     sel = sel.filter(s=>s!==opt);
-    btn.style.background = 'var(--card)'; btn.style.color = 'var(--text)'; btn.style.borderColor = 'var(--border)';
+    if (btn) { btn.style.background = 'var(--card)'; btn.style.color = 'var(--text)'; btn.style.borderColor = 'var(--border)'; }
   } else {
     sel.push(opt);
-    btn.style.background = '#2d5a8e'; btn.style.color = '#fff'; btn.style.borderColor = '#2d5a8e';
+    if (btn) { btn.style.background = '#2d5a8e'; btn.style.color = '#fff'; btn.style.borderColor = '#2d5a8e'; }
   }
   p.options = sel.join(', ');
   saveData();
@@ -5278,13 +5280,14 @@ function addPermitOption(permitId, label) {
 function toggleFormOption(permitId, opt, btn) {
   const inp = document.getElementById('f-options');
   if (!inp) return;
-  let sel = inp.value.split(',').map(s=>s.trim()).filter(Boolean);
+  const seen = new Set(); // deduplicate existing value before toggling
+  let sel = inp.value.split(',').map(s=>s.trim()).filter(s=>{ if(!s||seen.has(s)) return false; seen.add(s); return true; });
   if (sel.includes(opt)) {
     sel = sel.filter(s=>s!==opt);
-    btn.style.background = 'var(--card)'; btn.style.color = 'var(--text)'; btn.style.borderColor = 'var(--border)';
+    if (btn) { btn.style.background = 'var(--card)'; btn.style.color = 'var(--text)'; btn.style.borderColor = 'var(--border)'; }
   } else {
     sel.push(opt);
-    btn.style.background = '#2d5a8e'; btn.style.color = '#fff'; btn.style.borderColor = '#2d5a8e';
+    if (btn) { btn.style.background = '#2d5a8e'; btn.style.color = '#fff'; btn.style.borderColor = '#2d5a8e'; }
   }
   inp.value = sel.join(', ');
 }
@@ -5544,7 +5547,7 @@ function buildModalForm(permit) {
 function saveModal() {
   const addr = document.getElementById('f-address').value.trim();
   if (!addr) { alert('Address is required.'); return; }
-  const today = new Date().toISOString().split('T')[0];
+  const _sm=new Date(); const today=`${_sm.getFullYear()}-${String(_sm.getMonth()+1).padStart(2,'0')}-${String(_sm.getDate()).padStart(2,'0')}`;
   const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','water','projectManager','estWeeks','permitNumber','permitFee','utilities','options','notes'];
   if (state.editingId) {
     const permit = state.permits.find(p=>p.id===state.editingId);
