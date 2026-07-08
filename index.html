@@ -5606,6 +5606,59 @@ function openSettings() {
     ${(()=>{ try { return renderVendorEmailSettings(); } catch(e) { return `<div class="settings-card"><h4>📧 Vendor Emails</h4><p style="color:#dc2626;font-size:12px">Error loading vendor email settings: ${e.message}</p></div>`; } })()}
     ${renderCustomFieldsManager()}
     <div class="settings-card">
+      <h4>🔄 Bulk Data Updates</h4>
+      <p style="margin-bottom:14px">Rename a value across all permit records at once — useful when a team member name changes or a community is renamed.</p>
+      <div style="display:grid;gap:14px">
+        ${(()=>{
+          const pmInUse = [...new Set(state.permits.map(p=>p.pm).filter(Boolean))].sort();
+          const allPMs = [...new Set([...PROJECT_MANAGERS, ...pmInUse])].sort();
+          const commInUse = [...new Set(state.permits.map(p=>p.community).filter(Boolean))].sort();
+          const allComms = [...new Set([...COMMUNITIES.filter(c=>c!=='All'), ...commInUse])].sort();
+          return `
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Rename Project Manager</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+              <div style="flex:1;min-width:140px">
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">Current name</label>
+                <select id="bulk-pm-from" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)">
+                  <option value="">— select —</option>
+                  ${allPMs.map(pm=>`<option value="${pm}">${pm}</option>`).join('')}
+                </select>
+              </div>
+              <div style="flex:1;min-width:140px">
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">Replace with</label>
+                <select id="bulk-pm-to" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)">
+                  <option value="">— select —</option>
+                  ${PROJECT_MANAGERS.map(pm=>`<option value="${pm}">${pm}</option>`).join('')}
+                </select>
+              </div>
+              <button onclick="bulkRename('pm','bulk-pm-from','bulk-pm-to','Project Manager')" style="padding:8px 16px;background:#2d5a8e;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Apply</button>
+            </div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Rename Community</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+              <div style="flex:1;min-width:140px">
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">Current name</label>
+                <select id="bulk-comm-from" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)">
+                  <option value="">— select —</option>
+                  ${commInUse.map(c=>`<option value="${c}">${c}</option>`).join('')}
+                </select>
+              </div>
+              <div style="flex:1;min-width:140px">
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">Replace with</label>
+                <select id="bulk-comm-to" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)">
+                  <option value="">— select —</option>
+                  ${allComms.map(c=>`<option value="${c}">${c}</option>`).join('')}
+                </select>
+              </div>
+              <button onclick="bulkRename('community','bulk-comm-from','bulk-comm-to','Community')" style="padding:8px 16px;background:#2d5a8e;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Apply</button>
+            </div>
+          </div>`;
+        })()}
+      </div>
+    </div>
+    <div class="settings-card">
       <h4>💾 Data Management</h4>
       <p>Data auto-saves to your browser and syncs to the shared GitHub database. Use the backup tools below to protect against data loss.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
@@ -5630,6 +5683,20 @@ function openSettings() {
   document.getElementById('settings-overlay').classList.add('show');
 }
 function closeSettings() { document.getElementById('settings-overlay').classList.remove('show'); }
+function bulkRename(field, fromId, toId, label) {
+  const from = document.getElementById(fromId)?.value;
+  const to = document.getElementById(toId)?.value;
+  if (!from) { showToast('⚠️ Select a current ' + label); return; }
+  if (!to)   { showToast('⚠️ Select a replacement ' + label); return; }
+  if (from === to) { showToast('⚠️ Names are the same — nothing to change'); return; }
+  const affected = state.permits.filter(p => p[field] === from);
+  if (!affected.length) { showToast('No permits found with that ' + label + ' name'); return; }
+  if (!confirm(`Rename "${from}" → "${to}" on ${affected.length} permit${affected.length!==1?'s':''}?`)) return;
+  affected.forEach(p => { p[field] = to; });
+  saveData();
+  openSettings();
+  showToast(`✅ Updated ${affected.length} permit${affected.length!==1?'s':''}`);
+}
 
 // ══════════════════════════════════════════════════
 //  EXPORT
