@@ -4432,7 +4432,7 @@ function renderDrawingChecklist(permit) {
           <thead>
             <tr style="background:var(--bg)">
               <th style="padding:8px 10px;text-align:left;border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted);min-width:140px">Document</th>
-              ${REVIEW_FIELDS.map(f=>`<th style="width:30px;min-width:30px;text-align:center;border:1px solid var(--border);padding:0;vertical-align:bottom"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap;padding:6px 4px">${f.label}</div></th>`).join('')}
+              ${REVIEW_FIELDS.map(f=>`<th style="min-width:60px;max-width:75px;text-align:center;border:1px solid var(--border);padding:5px 4px;font-size:10px;font-weight:700;color:var(--text-muted);word-break:break-word;white-space:normal;line-height:1.3">${f.label}</th>`).join('')}
               <th style="padding:6px 8px;text-align:center;border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--text-muted)">All ✓</th>
             </tr>
           </thead>
@@ -4477,7 +4477,7 @@ function renderDrawingChecklist(permit) {
             <thead>
               <tr style="background:var(--bg)">
                 <th style="padding:6px 10px;text-align:left;border:1px solid var(--border);font-weight:700;color:var(--text-muted);min-width:200px">Option</th>
-                ${activeDocs.map(d=>`<th style="width:30px;min-width:30px;text-align:center;border:1px solid var(--border);padding:0;vertical-align:bottom"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap;padding:6px 4px">${d.label}</div></th>`).join("")}
+                ${activeDocs.map(d=>`<th style="min-width:60px;max-width:75px;text-align:center;border:1px solid var(--border);padding:5px 4px;font-size:10px;font-weight:700;color:var(--text-muted);word-break:break-word;white-space:normal;line-height:1.3">${d.label}</th>`).join("")}
                 <th style="padding:5px 6px;text-align:center;border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--text-muted)">All ✓</th>
               </tr>
             </thead>
