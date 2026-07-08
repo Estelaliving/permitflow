@@ -347,10 +347,12 @@ td.address-cell { min-width:200px; }
 /* EXPANDED ROW */
 .expand-row td { padding:0; }
 .expand-content { padding:20px; background:#f0f4ff; border-top:2px solid #c7d2fe; }
-.expand-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
+.expand-grid { display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px; }
 .phase-block { background:var(--card); border-radius:10px; padding:14px; border:1px solid var(--border); }
 .phase-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#fff; padding:4px 10px; border-radius:6px; margin-bottom:12px; display:inline-block; }
-.stage-row { display:flex; align-items:center; padding:6px 0; border-bottom:1px solid var(--border); gap:6px; }
+.stage-row { display:flex; flex-direction:column; padding:6px 0; border-bottom:1px solid var(--border); gap:3px; }
+.stage-row-main { display:flex; align-items:center; gap:6px; min-width:0; }
+.stage-row-dates { display:flex; align-items:center; gap:6px; flex-wrap:wrap; padding-left:44px; }
 .stage-row:last-child { border-bottom:none; }
 .stage-name { font-size:12px; color:var(--text-muted); flex:1; min-width:120px; }
 .stage-status-select { font-size:12px; border:1px solid var(--border); border-radius:6px; padding:3px 6px; background:var(--card); cursor:pointer; outline:none; min-width:105px; }
@@ -572,7 +574,7 @@ td.address-cell { min-width:200px; }
 
 <!-- Full-screen permit detail modal — opens from Dashboard, Pipeline, Reports, anywhere -->
 <div id="permit-detail-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1100;overflow-y:auto">
-  <div style="max-width:1200px;margin:20px auto;background:var(--card);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);min-height:calc(100vh - 40px)">
+  <div style="max-width:1200px;margin:20px auto;background:var(--card);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);min-height:calc(100vh - 40px);overflow-x:hidden">
     <div style="position:sticky;top:0;z-index:10;background:var(--card);border-radius:16px 16px 0 0;border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
       <div style="display:flex;align-items:center;gap:10px">
         <span id="permit-detail-title" style="font-size:16px;font-weight:700"></span>
@@ -4030,26 +4032,29 @@ function renderExpandContent(permit) {
       ondragleave="stageDragLeave(event)"
       ondrop="stageDrop(event,'${k}','${permit.id}')"
       style="cursor:grab">
-      <span style="color:var(--text-muted);font-size:14px;cursor:grab;padding:0 2px;flex-shrink:0" title="Drag to reorder">⠿</span>
-      <div style="width:16px;font-size:13px;text-align:center;flex-shrink:0">${statusIcon}</div>
-      <span class="stage-name">${STAGE_CONFIG[k].label}</span>
-      <select class="stage-status-select" onchange="updateStageField('${permit.id}','${k}','status',this.value)">
-        <option value="not-started" ${status==='not-started'?'selected':''}>○ Not Started</option>
-        <option value="requested"   ${status==='requested'?'selected':''} >${inProgressLabel}</option>
-        <option value="complete"    ${status==='complete'?'selected':''} >${doneLabel}</option>
-        <option value="n/a"         ${status==='n/a'?'selected':''}>— N/A</option>
-      </select>
-      <input placeholder="Stage note..." value="${stageNote.replace(/"/g,'&quot;')}"
-        style="flex:1;min-width:100px;font-size:11px;padding:2px 7px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--text);font-style:${stageNote?'normal':'italic'}"
-        onblur="updateStageNote('${permit.id}','${k}',this.value)"
-        onclick="event.stopPropagation()"
-        onfocus="this.style.fontStyle='normal'"
-        onkeydown="if(event.key==='Enter'){this.blur()}"
-        title="Note for this stage">
-      ${daysLabel}
+      <div class="stage-row-main">
+        <span style="color:var(--text-muted);font-size:14px;cursor:grab;padding:0 2px;flex-shrink:0" title="Drag to reorder">⠿</span>
+        <div style="width:16px;font-size:13px;text-align:center;flex-shrink:0">${statusIcon}</div>
+        <span class="stage-name">${STAGE_CONFIG[k].label}</span>
+        <select class="stage-status-select" onchange="updateStageField('${permit.id}','${k}','status',this.value)">
+          <option value="not-started" ${status==='not-started'?'selected':''}>○ Not Started</option>
+          <option value="requested"   ${status==='requested'?'selected':''} >${inProgressLabel}</option>
+          <option value="complete"    ${status==='complete'?'selected':''} >${doneLabel}</option>
+          <option value="n/a"         ${status==='n/a'?'selected':''}>— N/A</option>
+        </select>
+        <input placeholder="Stage note..." value="${stageNote.replace(/"/g,'&quot;')}"
+          style="flex:1;min-width:0;font-size:11px;padding:2px 7px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--text);font-style:${stageNote?'normal':'italic'}"
+          onblur="updateStageNote('${permit.id}','${k}',this.value)"
+          onclick="event.stopPropagation()"
+          onfocus="this.style.fontStyle='normal'"
+          onkeydown="if(event.key==='Enter'){this.blur()}"
+          title="Note for this stage">
+        ${daysLabel}
+      </div>
       ${!isNA ? `
+      <div class="stage-row-dates">
         ${showRequestedInput ? `
-          <label style="font-size:10px;color:var(--text-muted);margin-left:6px">${reqLabel}:</label>
+          <label style="font-size:10px;color:var(--text-muted)">${reqLabel}:</label>
           <input type="date" class="stage-date-input" value="${requestedAt||legacyDate}"
                  title="Enter the ${reqLabel.toLowerCase()} date manually"
                  onchange="updateStageField('${permit.id}','${k}','requestedAt',this.value)" style="width:120px">
@@ -4061,9 +4066,9 @@ function renderExpandContent(permit) {
                  value="${rcvValue}" style="display:none;width:115px;background:#f0fdf4"
                  onchange="updateStageField('${permit.id}','${k}','completedAt',this.value)">
         ` : ''}
-      ` : ''}
+      </div>` : ''}
       ${!isNA ? `
-        <div class="stage-rounds" style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)">
+        <div class="stage-rounds" style="margin-left:44px;padding-top:4px;border-top:1px dashed var(--border)">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
             <span style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px">Rounds</span>
             <button onclick="event.stopPropagation();addStageRound('${permit.id}','${k}')" style="font-size:10px;padding:1px 7px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;color:var(--text-muted);line-height:1.6">+ Add Round</button>
