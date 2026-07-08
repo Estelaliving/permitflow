@@ -2954,10 +2954,10 @@ function renderReportsView(el, alerts) {
           <button onclick="state._reportStatus='All';render()" style="padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)">✕ Clear filter</button>
         </div>
         <table class="report-table"><thead><tr>
-          <th>Address</th><th>Community</th><th>Lot</th><th>Parcel ID</th><th>Owner</th><th>Model</th><th>PM</th><th>Permit #</th><th>Days at City</th><th></th>
+          <th>Address</th><th>Community</th><th>Lot</th><th>Parcel ID</th><th>Owner</th><th>Model</th><th>PM</th><th>Permit #</th><th>${filterStatus==='active'?'Phase 1 Days':'Days at City'}</th><th></th>
         </tr></thead><tbody>
           ${all.map(p=>{
-            const cityDays = getCityDays(p);
+            const daysVal = filterStatus==='active' ? getPhase1Days(p) : getCityDays(p);
             const ownerVal = (p.customFields && p.customFields[Object.keys(p.customFields||{}).find(k=>{ const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k); return cf&&cf.label.toUpperCase().includes('OWNER'); })||'']) || p.owner || '—';
             return `<tr>
               <td style="font-weight:600;cursor:pointer;color:#2d5a8e" onclick="openPermit('${p.id}')">${(p.address||'').split(',')[0]}</td>
@@ -2968,7 +2968,7 @@ function renderReportsView(el, alerts) {
               <td style="font-size:12px">${p.model||'—'}</td>
               <td style="font-size:12px">${p.projectManager||'—'}</td>
               <td style="font-size:12px;font-family:monospace">${p.permitNumber||'—'}</td>
-              <td>${cityDays!==null?`<span class="dur-pill ${durClass(cityDays)}">${cityDays}d</span>`:'—'}</td>
+              <td>${daysVal!==null?`<span class="dur-pill ${durClass(daysVal)}">${daysVal}d</span>`:'—'}</td>
               <td><button class="btn btn-sm btn-outline" onclick="openPermit('${p.id}')">Open →</button></td>
             </tr>`;
           }).join('')}
