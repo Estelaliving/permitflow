@@ -268,7 +268,7 @@ tbody tr.has-critical:hover { background:#fee2e2; }
 tbody tr.expanded { background:#eff6ff !important; }
 td { padding:10px 12px; font-size:13px; vertical-align:middle; }
 td.stage-col { text-align:center; border-left:1px solid #f0f0f0; padding:8px 4px; }
-td.address-cell { min-width:200px; }
+td.address-cell { min-width:150px; }
 .address-main { font-weight:600; }
 .address-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
 .lot-badge { display:inline-block; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:2px 6px; font-size:11px; font-weight:600; margin-right:4px; }
@@ -278,8 +278,8 @@ td.address-cell { min-width:200px; }
 
 /* STAGE DOTS */
 .stage-dot {
-  width:28px; height:28px; border-radius:50%; display:inline-flex;
-  align-items:center; justify-content:center; font-size:13px; cursor:pointer;
+  width:20px; height:20px; border-radius:50%; display:inline-flex;
+  align-items:center; justify-content:center; font-size:10px; cursor:pointer;
   transition:transform 0.1s; position:relative;
 }
 .stage-dot:hover { transform:scale(1.2); }
@@ -3846,7 +3846,6 @@ function renderTableCore(permits, allAlerts, compact) {
       <tr>
         <th style="width:24px"><input type="checkbox" id="select-all-cb" title="Select all" onchange="toggleSelectAll(this.checked)" style="cursor:pointer"></th>
         <th>Address / Lot</th>
-        ${!compact?'<th>Community</th>':''}
         <th>Model · Elevation</th>
         <th>Progress</th>
         <th>Status</th>
@@ -3881,8 +3880,8 @@ function renderPermitRow(permit, allAlerts, compact) {
         ${permit.lotNumber?`<span class="lot-badge">Lot ${permit.lotNumber}</span>`:''}
         <div class="address-main">${permit.address.split(',')[0]}</div>
         ${permit.address.includes(',')?`<div class="address-sub">${permit.address.split(',').slice(1).join(',').trim()}</div>`:''}
+        ${permit.community?`<div style="font-size:10px;color:var(--text-muted);margin-top:1px">${permit.community}</div>`:''}
       </td>
-      ${!compact?`<td><span class="community-pill market-${permit.market==='Palm Coast'?'PC':'OC'}">${permit.community}</span></td>`:''}
       <td>
         <div style="font-size:13px;font-weight:600">${permit.model||'—'}</div>
         <div style="font-size:11px;color:var(--text-muted)">${permit.elevation||''}</div>
@@ -3895,7 +3894,7 @@ function renderPermitRow(permit, allAlerts, compact) {
       </td>
       <td>${renderDualStatus(permit)}</td>
       <td class="stage-col" style="border-left:2px solid var(--border)">
-        <div style="display:flex;gap:2px;justify-content:center;flex-wrap:nowrap">
+        <div style="display:flex;gap:1px;justify-content:center;flex-wrap:wrap;max-width:170px;margin:0 auto">
           ${stageKeys.filter(k=>STAGE_CONFIG[k].phase===1).map(k=>statusDot(permit.stages[k],k,permit.id,permit.stageUpdatedAt?.[k])).join('')}
         </div>
       </td>
@@ -3923,7 +3922,7 @@ function renderPermitRow(permit, allAlerts, compact) {
       </td>
     </tr>`;
   if (isExpanded) {
-    rows += `<tr class="expand-row" id="expand-${permit.id}"><td colspan="${compact?13:14}">${renderExpandContent(permit)}</td></tr>`;
+    rows += `<tr class="expand-row" id="expand-${permit.id}"><td colspan="13">${renderExpandContent(permit)}</td></tr>`;
   }
   return rows;
 }
@@ -4433,7 +4432,7 @@ function renderDrawingChecklist(permit) {
           <thead>
             <tr style="background:var(--bg)">
               <th style="padding:8px 10px;text-align:left;border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted);min-width:140px">Document</th>
-              ${REVIEW_FIELDS.map(f=>`<th style="padding:6px 8px;text-align:center;border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap">${f.label}</th>`).join('')}
+              ${REVIEW_FIELDS.map(f=>`<th style="width:30px;min-width:30px;text-align:center;border:1px solid var(--border);padding:0;vertical-align:bottom"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap;padding:6px 4px">${f.label}</div></th>`).join('')}
               <th style="padding:6px 8px;text-align:center;border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--text-muted)">All ✓</th>
             </tr>
           </thead>
@@ -4478,7 +4477,7 @@ function renderDrawingChecklist(permit) {
             <thead>
               <tr style="background:var(--bg)">
                 <th style="padding:6px 10px;text-align:left;border:1px solid var(--border);font-weight:700;color:var(--text-muted);min-width:200px">Option</th>
-                ${activeDocs.map(d=>`<th style="padding:5px 6px;text-align:center;border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap">${d.label}</th>`).join("")}
+                ${activeDocs.map(d=>`<th style="width:30px;min-width:30px;text-align:center;border:1px solid var(--border);padding:0;vertical-align:bottom"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap;padding:6px 4px">${d.label}</div></th>`).join("")}
                 <th style="padding:5px 6px;text-align:center;border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--text-muted)">All ✓</th>
               </tr>
             </thead>
