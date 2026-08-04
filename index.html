@@ -747,7 +747,7 @@ const ONEDRIVE_ROOT = 'Estela Living';
 
 // ── FILTER OPTIONS ──
 const MODELS = ['Andros','Appaloosa','Bay','Bimini','Bimini X','Cremello','Exuma X','Heron','Heron X','IBIS','Palomino','Sabino','Snapper'];
-const ELEVATIONS = ['A2 Stone/Stucco','A4 Wood/Stucco/Bands','Farmhouse','Transitional'];
+const ELEVATIONS = ['A2 Stone/Stucco','A4 Wood/Stucco/Bands','Farmhouse','Modern','Transitional'];
 const MARKETS = ['Palm Coast','Ocala'];
 
 // ══════════════════════════════════════════════════
@@ -3771,6 +3771,7 @@ function renderPermitsView(el, alerts) {
           <select class="filter-select" onchange="state.elevationFilter=this.value;state.expandedRow=null;render()">
             <option value="">All Elevations</option>
             <option value="Farmhouse" ${state.elevationFilter==='Farmhouse'?'selected':''}>Farmhouse</option>
+            <option value="Modern" ${state.elevationFilter==='Modern'?'selected':''}>Modern</option>
             <option value="Transitional" ${state.elevationFilter==='Transitional'?'selected':''}>Transitional</option>
             <option value="A2 Stone" ${state.elevationFilter==='A2 Stone'?'selected':''}>A2 Stone/Stucco</option>
             <option value="A4 Wood" ${state.elevationFilter==='A4 Wood'?'selected':''}>A4 Wood/Stucco</option>
@@ -4151,6 +4152,7 @@ function renderExpandContent(permit) {
         <select class="info-input" onchange="updatePermitField('${permit.id}','elevation',this.value)">
           <option value="">Select...</option>
           <option value="Farmhouse" ${(permit.elevation||'')==='Farmhouse'?'selected':''}>Farmhouse</option>
+          <option value="Modern" ${(permit.elevation||'')==='Modern'?'selected':''}>Modern</option>
           <option value="Transitional" ${(permit.elevation||'')==='Transitional'?'selected':''}>Transitional</option>
           <option value="A2 Stone/Stucco" ${(permit.elevation||'')==='A2 Stone/Stucco'?'selected':''}>A2 Stone/Stucco</option>
           <option value="A4 Wood/Stucco/Bands" ${(permit.elevation||'')==='A4 Wood/Stucco/Bands'?'selected':''}>A4 Wood/Stucco/Bands</option>
@@ -5499,6 +5501,7 @@ function buildModalForm(permit) {
       <select class="form-input" id="f-elevation">
         <option value="">Select...</option>
         <option value="Farmhouse" ${v('elevation')==='Farmhouse'?'selected':''}>Farmhouse</option>
+        <option value="Modern" ${v('elevation')==='Modern'?'selected':''}>Modern</option>
         <option value="Transitional" ${v('elevation')==='Transitional'?'selected':''}>Transitional</option>
         <option value="A2 Stone/Stucco" ${v('elevation')==='A2 Stone/Stucco'?'selected':''}>A2 Stone/Stucco</option>
         <option value="A4 Wood/Stucco/Bands" ${v('elevation')==='A4 Wood/Stucco/Bands'?'selected':''}>A4 Wood/Stucco/Bands</option>
