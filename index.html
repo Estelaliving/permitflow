@@ -779,7 +779,7 @@ let state = {
   vendorEmails: { global: {}, byCommunity: {} },
   // Report filters
   _reportCommunity: 'All',
-  _reportStatus: 'All', _reportStatuses: [],
+  _reportStatus: 'All', _reportStatuses: [], _reportSortBy: 'permitDate-desc',
   _reportPM: 'All',
   _reportMarket: 'All',
 };
@@ -2846,11 +2846,21 @@ function renderReportsView(el, alerts) {
   const filterStatuses = state._reportStatuses || [];
   const filterPM      = state._reportPM        || 'All';
   const filterMarket  = state._reportMarket    || 'All';
+  const _rSort = state._reportSortBy || 'permitDate-desc';
+  const _getPermitDate = p => (p.stageCompletedAt||{}).permitIssued||(p.stageDates||{}).permitIssued||'';
+  const _getSubDate    = p => (p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted||'';
   const all = state.permits
     .filter(p => filterCom === 'All' || p.community === filterCom)
     .filter(p => filterStatuses.length === 0 ? (filterStatus === 'All' || p.overallStatus === filterStatus) : filterStatuses.includes(p.overallStatus))
     .filter(p => filterPM     === 'All' || (p.projectManager||'—') === filterPM)
-    .filter(p => filterMarket === 'All' || (p.market||'') === filterMarket);
+    .filter(p => filterMarket === 'All' || (p.market||'') === filterMarket)
+    .sort((a,b) => {
+      if (_rSort==='permitDate-desc') return (_getPermitDate(b)||'0') > (_getPermitDate(a)||'0') ? 1 : -1;
+      if (_rSort==='permitDate-asc')  return (_getPermitDate(a)||'0') > (_getPermitDate(b)||'0') ? 1 : -1;
+      if (_rSort==='subDate-desc')    return (_getSubDate(b)||'0') > (_getSubDate(a)||'0') ? 1 : -1;
+      if (_rSort==='subDate-asc')     return (_getSubDate(a)||'0') > (_getSubDate(b)||'0') ? 1 : -1;
+      return 0;
+    });
   const submitted  = all.filter(p=>p.overallStatus==='submitted');
   const permitted  = all.filter(p=>p.overallStatus==='permitted');
   const coList     = all.filter(p=>p.overallStatus==='co');
@@ -2999,12 +3009,22 @@ function renderReportsView(el, alerts) {
           </div>
           <button onclick="state._reportStatus='All';render()" style="padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)">✕ Clear filter</button>
         </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+          <span style="font-size:11px;color:var(--text-muted);font-weight:600">Sort:</span>
+          ${[['permitDate-desc','Permit Date ↓'],['permitDate-asc','Permit Date ↑'],['subDate-desc','Submitted ↓'],['subDate-asc','Submitted ↑']].map(([v,l])=>`<button onclick="state._reportSortBy='${v}';render()" style="font-size:11px;padding:3px 10px;border-radius:12px;border:1px solid ${_rSort===v?'#2d5a8e':'var(--border)'};background:${_rSort===v?'#2d5a8e':'var(--card)'};color:${_rSort===v?'#fff':'var(--text)'};cursor:pointer;font-weight:${_rSort===v?'700':'400'}">${l}</button>`).join('')}
+        </div>
         <table class="report-table"><thead><tr>
-          <th>Address</th><th>Community</th><th>Lot</th><th>Parcel ID</th><th>Owner</th><th>Model</th><th>PM</th><th>Permit #</th><th>${filterStatus==='active'?'Phase 1 Days':'Days at City'}</th><th></th>
+          <th style="cursor:pointer" onclick="state._reportSortBy='permitDate-desc';render()">Address</th>
+          <th>Community</th><th>Lot</th><th>Parcel ID</th><th>Owner</th><th>Model</th><th>PM</th>
+          <th>Permit #</th>
+          ${filterStatus==='permitted'||filterStatus==='co' ? `<th style="cursor:pointer;color:#15803d" onclick="state._reportSortBy=_rSort==='permitDate-desc'?'permitDate-asc':'permitDate-desc';render()">Permit Date ${_rSort==='permitDate-desc'?'↓':_rSort==='permitDate-asc'?'↑':'↕'}</th>` : ''}
+          <th style="cursor:pointer" onclick="state._reportSortBy=_rSort==='subDate-desc'?'subDate-asc':'subDate-desc';render()">${filterStatus==='active'?'Phase 1 Days':'Days at City'} ${_rSort==='subDate-desc'?'↓':_rSort==='subDate-asc'?'↑':''}</th>
+          <th></th>
         </tr></thead><tbody>
           ${all.map(p=>{
             const daysVal = filterStatus==='active' ? getPhase1Days(p) : getCityDays(p);
             const ownerVal = (p.customFields && p.customFields[Object.keys(p.customFields||{}).find(k=>{ const cf=CUSTOM_PERMIT_FIELDS.find(f=>f.key===k); return cf&&cf.label.toUpperCase().includes('OWNER'); })||'']) || p.owner || '—';
+            const permitDateVal = _getPermitDate(p);
             return `<tr>
               <td style="font-weight:600;cursor:pointer;color:#2d5a8e" onclick="openPermit('${p.id}')">${(p.address||'').split(',')[0]}</td>
               <td>${p.community||''}</td>
@@ -3014,6 +3034,7 @@ function renderReportsView(el, alerts) {
               <td style="font-size:12px">${p.model||'—'}</td>
               <td style="font-size:12px">${p.projectManager||'—'}</td>
               <td style="font-size:12px;font-family:monospace">${p.permitNumber||'—'}</td>
+              ${filterStatus==='permitted'||filterStatus==='co' ? `<td style="font-size:12px;font-weight:600;color:#15803d;white-space:nowrap">${permitDateVal?permitDateVal.slice(0,10):'—'}</td>` : ''}
               <td>${daysVal!==null?`<span class="dur-pill ${durClass(daysVal)}">${daysVal}d</span>`:'—'}</td>
               <td><button class="btn btn-sm btn-outline" onclick="openPermit('${p.id}')">Open →</button></td>
             </tr>`;
