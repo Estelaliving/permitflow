@@ -2881,6 +2881,8 @@ function renderReportsView(el, alerts) {
       if (_rSort==='days-desc')       return (getCityDays(b)||0) - (getCityDays(a)||0);
       if (_rSort==='coDate-asc')      return (_getCODate(a)||'0') > (_getCODate(b)||'0') ? 1 : -1;
       if (_rSort==='coDate-desc')     return (_getCODate(b)||'0') > (_getCODate(a)||'0') ? 1 : -1;
+      if (_rSort==='p2co-asc')        return (getPermitToCODays(a)||0) - (getPermitToCODays(b)||0);
+      if (_rSort==='p2co-desc')       return (getPermitToCODays(b)||0) - (getPermitToCODays(a)||0);
       return 0;
     });
   const submitted  = all.filter(p=>p.overallStatus==='submitted');
@@ -3042,6 +3044,7 @@ function renderReportsView(el, alerts) {
           <th style="${_thStyle}" onclick="${_rSortToggle('permitNum')}">Permit # ${_rSortIcon('permitNum')}</th>
           ${filterStatus==='permitted'||filterStatus==='co' ? `<th style="${_thStyle};color:#15803d" onclick="${_rSortToggle('permitDate')}">Permit Date ${_rSortIcon('permitDate')}</th>` : ''}
           ${filterStatus==='co' ? `<th style="${_thStyle};color:#0e7490" onclick="${_rSortToggle('coDate')}">CO Date ${_rSortIcon('coDate')}</th>` : ''}
+          ${filterStatus==='co' ? `<th style="${_thStyle};color:#7c3aed" onclick="${_rSortToggle('p2co')}">Permit→CO Days ${_rSortIcon('p2co')}</th>` : ''}
           <th style="${_thStyle}" onclick="${_rSortToggle('days')}">${filterStatus==='active'?'Phase 1 Days':'Days at City'} ${_rSortIcon('days')}</th>
           <th></th>
         </tr></thead><tbody>
@@ -3060,6 +3063,7 @@ function renderReportsView(el, alerts) {
               <td style="font-size:12px;font-family:monospace">${p.permitNumber||'—'}</td>
               ${filterStatus==='permitted'||filterStatus==='co' ? `<td style="font-size:12px;font-weight:600;color:#15803d;white-space:nowrap">${permitDateVal?permitDateVal.slice(0,10):'—'}</td>` : ''}
               ${filterStatus==='co' ? `<td style="font-size:12px;font-weight:600;color:#0e7490;white-space:nowrap">${_getCODate(p)?_getCODate(p).slice(0,10):'—'}</td>` : ''}
+              ${filterStatus==='co' ? `<td>${(()=>{const d=getPermitToCODays(p);return d!==null?`<span class="dur-pill ${durClass(d)}">${d}d</span>`:'—';})()}</td>` : ''}
               <td>${daysVal!==null?`<span class="dur-pill ${durClass(daysVal)}">${daysVal}d</span>`:'—'}</td>
               <td><button class="btn btn-sm btn-outline" onclick="openPermit('${p.id}')">Open →</button></td>
             </tr>`;
