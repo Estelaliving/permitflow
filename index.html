@@ -2849,16 +2849,35 @@ function renderReportsView(el, alerts) {
   const _rSort = state._reportSortBy || 'permitDate-desc';
   const _getPermitDate = p => (p.stageCompletedAt||{}).permitIssued||(p.stageDates||{}).permitIssued||'';
   const _getSubDate    = p => (p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted||'';
+  const _rSortToggle = col => `state._reportSortBy=state._reportSortBy==='${col}-asc'?'${col}-desc':'${col}-asc';render()`;
+  const _rSortIcon   = col => _rSort===col+'-asc'?'↑':_rSort===col+'-desc'?'↓':'↕';
+  const _thStyle = 'cursor:pointer;user-select:none;white-space:nowrap';
   const all = state.permits
     .filter(p => filterCom === 'All' || p.community === filterCom)
     .filter(p => filterStatuses.length === 0 ? (filterStatus === 'All' || p.overallStatus === filterStatus) : filterStatuses.includes(p.overallStatus))
     .filter(p => filterPM     === 'All' || (p.projectManager||'—') === filterPM)
     .filter(p => filterMarket === 'All' || (p.market||'') === filterMarket)
     .sort((a,b) => {
+      const str = (v) => (v||'').toLowerCase();
+      const num = (v) => parseFloat(v)||0;
       if (_rSort==='permitDate-desc') return (_getPermitDate(b)||'0') > (_getPermitDate(a)||'0') ? 1 : -1;
       if (_rSort==='permitDate-asc')  return (_getPermitDate(a)||'0') > (_getPermitDate(b)||'0') ? 1 : -1;
       if (_rSort==='subDate-desc')    return (_getSubDate(b)||'0') > (_getSubDate(a)||'0') ? 1 : -1;
       if (_rSort==='subDate-asc')     return (_getSubDate(a)||'0') > (_getSubDate(b)||'0') ? 1 : -1;
+      if (_rSort==='address-asc')     return str(a.address) > str(b.address) ? 1 : -1;
+      if (_rSort==='address-desc')    return str(b.address) > str(a.address) ? 1 : -1;
+      if (_rSort==='community-asc')   return str(a.community) > str(b.community) ? 1 : -1;
+      if (_rSort==='community-desc')  return str(b.community) > str(a.community) ? 1 : -1;
+      if (_rSort==='lot-asc')         return num(a.lotNumber) - num(b.lotNumber);
+      if (_rSort==='lot-desc')        return num(b.lotNumber) - num(a.lotNumber);
+      if (_rSort==='model-asc')       return str(a.model) > str(b.model) ? 1 : -1;
+      if (_rSort==='model-desc')      return str(b.model) > str(a.model) ? 1 : -1;
+      if (_rSort==='pm-asc')          return str(a.projectManager) > str(b.projectManager) ? 1 : -1;
+      if (_rSort==='pm-desc')         return str(b.projectManager) > str(a.projectManager) ? 1 : -1;
+      if (_rSort==='permitNum-asc')   return str(a.permitNumber) > str(b.permitNumber) ? 1 : -1;
+      if (_rSort==='permitNum-desc')  return str(b.permitNumber) > str(a.permitNumber) ? 1 : -1;
+      if (_rSort==='days-asc')        return (getCityDays(a)||0) - (getCityDays(b)||0);
+      if (_rSort==='days-desc')       return (getCityDays(b)||0) - (getCityDays(a)||0);
       return 0;
     });
   const submitted  = all.filter(p=>p.overallStatus==='submitted');
@@ -3009,16 +3028,17 @@ function renderReportsView(el, alerts) {
           </div>
           <button onclick="state._reportStatus='All';render()" style="padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text)">✕ Clear filter</button>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-          <span style="font-size:11px;color:var(--text-muted);font-weight:600">Sort:</span>
-          ${[['permitDate-desc','Permit Date ↓'],['permitDate-asc','Permit Date ↑'],['subDate-desc','Submitted ↓'],['subDate-asc','Submitted ↑']].map(([v,l])=>`<button onclick="state._reportSortBy='${v}';render()" style="font-size:11px;padding:3px 10px;border-radius:12px;border:1px solid ${_rSort===v?'#2d5a8e':'var(--border)'};background:${_rSort===v?'#2d5a8e':'var(--card)'};color:${_rSort===v?'#fff':'var(--text)'};cursor:pointer;font-weight:${_rSort===v?'700':'400'}">${l}</button>`).join('')}
-        </div>
         <table class="report-table"><thead><tr>
-          <th style="cursor:pointer" onclick="state._reportSortBy='permitDate-desc';render()">Address</th>
-          <th>Community</th><th>Lot</th><th>Parcel ID</th><th>Owner</th><th>Model</th><th>PM</th>
-          <th>Permit #</th>
-          ${filterStatus==='permitted'||filterStatus==='co' ? `<th style="cursor:pointer;color:#15803d" onclick="state._reportSortBy=_rSort==='permitDate-desc'?'permitDate-asc':'permitDate-desc';render()">Permit Date ${_rSort==='permitDate-desc'?'↓':_rSort==='permitDate-asc'?'↑':'↕'}</th>` : ''}
-          <th style="cursor:pointer" onclick="state._reportSortBy=_rSort==='subDate-desc'?'subDate-asc':'subDate-desc';render()">${filterStatus==='active'?'Phase 1 Days':'Days at City'} ${_rSort==='subDate-desc'?'↓':_rSort==='subDate-asc'?'↑':''}</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('address')}">Address ${_rSortIcon('address')}</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('community')}">Community ${_rSortIcon('community')}</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('lot')}">Lot ${_rSortIcon('lot')}</th>
+          <th>Parcel ID</th>
+          <th>Owner</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('model')}">Model ${_rSortIcon('model')}</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('pm')}">PM ${_rSortIcon('pm')}</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('permitNum')}">Permit # ${_rSortIcon('permitNum')}</th>
+          ${filterStatus==='permitted'||filterStatus==='co' ? `<th style="${_thStyle};color:#15803d" onclick="${_rSortToggle('permitDate')}">Permit Date ${_rSortIcon('permitDate')}</th>` : ''}
+          <th style="${_thStyle}" onclick="${_rSortToggle('days')}">${filterStatus==='active'?'Phase 1 Days':'Days at City'} ${_rSortIcon('days')}</th>
           <th></th>
         </tr></thead><tbody>
           ${all.map(p=>{
