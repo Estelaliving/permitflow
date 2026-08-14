@@ -2849,6 +2849,7 @@ function renderReportsView(el, alerts) {
   const _rSort = state._reportSortBy || 'permitDate-desc';
   const _getPermitDate = p => (p.stageCompletedAt||{}).permitIssued||(p.stageDates||{}).permitIssued||'';
   const _getSubDate    = p => (p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted||'';
+  const _getCODate     = p => (p.stageCompletedAt||{}).co||(p.stageDates||{}).co||'';
   const _rSortToggle = col => `state._reportSortBy=state._reportSortBy==='${col}-asc'?'${col}-desc':'${col}-asc';render()`;
   const _rSortIcon   = col => _rSort===col+'-asc'?'↑':_rSort===col+'-desc'?'↓':'↕';
   const _thStyle = 'cursor:pointer;user-select:none;white-space:nowrap';
@@ -2878,6 +2879,8 @@ function renderReportsView(el, alerts) {
       if (_rSort==='permitNum-desc')  return str(b.permitNumber) > str(a.permitNumber) ? 1 : -1;
       if (_rSort==='days-asc')        return (getCityDays(a)||0) - (getCityDays(b)||0);
       if (_rSort==='days-desc')       return (getCityDays(b)||0) - (getCityDays(a)||0);
+      if (_rSort==='coDate-asc')      return (_getCODate(a)||'0') > (_getCODate(b)||'0') ? 1 : -1;
+      if (_rSort==='coDate-desc')     return (_getCODate(b)||'0') > (_getCODate(a)||'0') ? 1 : -1;
       return 0;
     });
   const submitted  = all.filter(p=>p.overallStatus==='submitted');
@@ -3038,6 +3041,7 @@ function renderReportsView(el, alerts) {
           <th style="${_thStyle}" onclick="${_rSortToggle('pm')}">PM ${_rSortIcon('pm')}</th>
           <th style="${_thStyle}" onclick="${_rSortToggle('permitNum')}">Permit # ${_rSortIcon('permitNum')}</th>
           ${filterStatus==='permitted'||filterStatus==='co' ? `<th style="${_thStyle};color:#15803d" onclick="${_rSortToggle('permitDate')}">Permit Date ${_rSortIcon('permitDate')}</th>` : ''}
+          ${filterStatus==='co' ? `<th style="${_thStyle};color:#0e7490" onclick="${_rSortToggle('coDate')}">CO Date ${_rSortIcon('coDate')}</th>` : ''}
           <th style="${_thStyle}" onclick="${_rSortToggle('days')}">${filterStatus==='active'?'Phase 1 Days':'Days at City'} ${_rSortIcon('days')}</th>
           <th></th>
         </tr></thead><tbody>
@@ -3055,6 +3059,7 @@ function renderReportsView(el, alerts) {
               <td style="font-size:12px">${p.projectManager||'—'}</td>
               <td style="font-size:12px;font-family:monospace">${p.permitNumber||'—'}</td>
               ${filterStatus==='permitted'||filterStatus==='co' ? `<td style="font-size:12px;font-weight:600;color:#15803d;white-space:nowrap">${permitDateVal?permitDateVal.slice(0,10):'—'}</td>` : ''}
+              ${filterStatus==='co' ? `<td style="font-size:12px;font-weight:600;color:#0e7490;white-space:nowrap">${_getCODate(p)?_getCODate(p).slice(0,10):'—'}</td>` : ''}
               <td>${daysVal!==null?`<span class="dur-pill ${durClass(daysVal)}">${daysVal}d</span>`:'—'}</td>
               <td><button class="btn btn-sm btn-outline" onclick="openPermit('${p.id}')">Open →</button></td>
             </tr>`;
