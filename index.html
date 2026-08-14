@@ -769,6 +769,9 @@ let state = {
   cityDaysFilter: '',
   subDateFrom: '',
   subDateTo: '',
+  permitDateFrom: '',
+  permitDateTo: '',
+  sortBy: '',
   expandedRow: null,
   editingId: null,
   selectedPermits: new Set(),
@@ -2061,6 +2064,14 @@ function getFilteredPermits() {
       const sub = (p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted;
       if (!sub || sub > state.subDateTo + 'T23:59:59') return false;
     }
+    if (state.permitDateFrom) {
+      const pd = (p.stageCompletedAt||{}).permitIssued||(p.stageDates||{}).permitIssued||'';
+      if (!pd || pd < state.permitDateFrom) return false;
+    }
+    if (state.permitDateTo) {
+      const pd = (p.stageCompletedAt||{}).permitIssued||(p.stageDates||{}).permitIssued||'';
+      if (!pd || pd > state.permitDateTo + 'T23:59:59') return false;
+    }
     if (state.search) {
       const q = state.search.toLowerCase();
       return p.address.toLowerCase().includes(q) ||
@@ -2073,6 +2084,15 @@ function getFilteredPermits() {
         (p.projectManager||'').toLowerCase().includes(q);
     }
     return true;
+  }).sort((a, b) => {
+    if (!state.sortBy) return 0;
+    const getPermitDate = p => (p.stageCompletedAt||{}).permitIssued||(p.stageDates||{}).permitIssued||'';
+    const getSubDate = p => (p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted||'';
+    if (state.sortBy === 'permitDate-desc') return (getPermitDate(b)||'0') > (getPermitDate(a)||'0') ? 1 : -1;
+    if (state.sortBy === 'permitDate-asc')  return (getPermitDate(a)||'0') > (getPermitDate(b)||'0') ? 1 : -1;
+    if (state.sortBy === 'subDate-desc')    return (getSubDate(b)||'0') > (getSubDate(a)||'0') ? 1 : -1;
+    if (state.sortBy === 'subDate-asc')     return (getSubDate(a)||'0') > (getSubDate(b)||'0') ? 1 : -1;
+    return 0;
   });
 }
 
@@ -2090,6 +2110,8 @@ function countActiveFilters() {
   if (state.cityDaysFilter) n++;
   if (state.subDateFrom) n++;
   if (state.subDateTo) n++;
+  if (state.permitDateFrom) n++;
+  if (state.permitDateTo) n++;
   if (state.search) n++;
   return n;
 }
@@ -2099,6 +2121,7 @@ function clearFilters() {
   state.modelFilter = ''; state.elevationFilter = ''; state.search = '';
   state.garageFilter = ''; state.pmFilter = ''; state.permitTrackFilter = 'all';
   state.cityDaysFilter = ''; state.subDateFrom = ''; state.subDateTo = '';
+  state.permitDateFrom = ''; state.permitDateTo = ''; state.sortBy = '';
   state.expandedRow = null; render();
 }
 
@@ -3811,6 +3834,26 @@ function renderPermitsView(el, alerts) {
           <input type="date" class="filter-select" value="${state.subDateTo||''}"
             onchange="state.subDateTo=this.value;state.expandedRow=null;render()">
         </div>
+        <div class="filter-field">
+          <label class="filter-label">🏛 Permit Date From</label>
+          <input type="date" class="filter-select" value="${state.permitDateFrom||''}"
+            onchange="state.permitDateFrom=this.value;state.expandedRow=null;render()">
+        </div>
+        <div class="filter-field">
+          <label class="filter-label">🏛 Permit Date To</label>
+          <input type="date" class="filter-select" value="${state.permitDateTo||''}"
+            onchange="state.permitDateTo=this.value;state.expandedRow=null;render()">
+        </div>
+        <div class="filter-field">
+          <label class="filter-label">↕ Sort By</label>
+          <select class="filter-select" onchange="state.sortBy=this.value;state.expandedRow=null;render()">
+            <option value="" ${!state.sortBy?'selected':''}>Default</option>
+            <option value="permitDate-desc" ${state.sortBy==='permitDate-desc'?'selected':''}>Permit Date — Newest First</option>
+            <option value="permitDate-asc"  ${state.sortBy==='permitDate-asc'?'selected':''}>Permit Date — Oldest First</option>
+            <option value="subDate-desc"    ${state.sortBy==='subDate-desc'?'selected':''}>Submitted Date — Newest First</option>
+            <option value="subDate-asc"     ${state.sortBy==='subDate-asc'?'selected':''}>Submitted Date — Oldest First</option>
+          </select>
+        </div>
       </div>
     </div>
     
@@ -3859,6 +3902,7 @@ function renderTableCore(permits, allAlerts, compact) {
               <th class="stage-group" style="border-left:2px solid var(--border)"><span class="stage-header phase-4">Constr.</span></th>
         <th>Alerts</th>
         <th style="white-space:nowrap">? Days</th><th>Permit #</th>
+        <th style="white-space:nowrap;cursor:pointer" onclick="state.sortBy=state.sortBy==='permitDate-desc'?'permitDate-asc':'permitDate-desc';render()" title="Sort by permit date">Permit Date ${state.sortBy==='permitDate-desc'?'↓':state.sortBy==='permitDate-asc'?'↑':'↕'}</th>
         <th></th>
       </tr>
     </thead>
@@ -3920,13 +3964,14 @@ function renderPermitRow(permit, allAlerts, compact) {
       <td>${pAlerts.length?`<span class="days-pill ${hasCritical?'days-danger':'days-warn'}">${hasCritical?'🚨':'⚠️'} ${pAlerts.length}</span>`:'<span class="days-pill days-ok">✓ OK</span>'}</td>
       <td style="font-size:11px;line-height:1.6">${(()=>{const pd=getProcessDays(permit);const cd=getCityDays(permit);let o="";if(pd!==null)o+=`<span class="dur-pill ${durClass(pd)}" title="Days since release">${pd}d</span>`;if(cd!==null)o+=`<br><span class="dur-pill ${durClass(cd)}" title="Days at city">${cd}d city</span>`;return o||'<span class="dur-pill dur-gray">?</span>';})()}</td>
       <td style="font-size:12px;color:var(--text-muted)">${permit.permitNumber||'—'}</td>
+      <td style="font-size:12px;white-space:nowrap">${(()=>{const pd=(permit.stageCompletedAt||{}).permitIssued||(permit.stageDates||{}).permitIssued||'';return pd?`<span style="color:#15803d;font-weight:600">${pd.slice(0,10)}</span>`:'<span style="color:var(--text-muted)">—</span>';})()}</td>
       <td style="white-space:nowrap">
         <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openEditModal('${permit.id}')">Edit</button>
         <button class="btn btn-sm" style="background:#15803d;color:#fff;border:none;margin-left:4px" onclick="event.stopPropagation();startClosing('${permit.id}')" title="Start closing checklist">📋</button>
       </td>
     </tr>`;
   if (isExpanded) {
-    rows += `<tr class="expand-row" id="expand-${permit.id}"><td colspan="13">${renderExpandContent(permit)}</td></tr>`;
+    rows += `<tr class="expand-row" id="expand-${permit.id}"><td colspan="14">${renderExpandContent(permit)}</td></tr>`;
   }
   return rows;
 }
