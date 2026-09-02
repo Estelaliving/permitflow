@@ -782,6 +782,7 @@ let state = {
   _reportStatus: 'All', _reportStatuses: [], _reportSortBy: 'permitDate-desc',
   _reportPM: 'All',
   _reportMarket: 'All',
+  _reportVendor: 'All',
 };
 
 // Data Sanitization - cleans NaT / null strings from imported data
@@ -2081,7 +2082,9 @@ function getFilteredPermits() {
         p.community.toLowerCase().includes(q) ||
         p.elevation.toLowerCase().includes(q) ||
         (p.garage||'').toLowerCase().includes(q) ||
-        (p.projectManager||'').toLowerCase().includes(q);
+        (p.projectManager||'').toLowerCase().includes(q) ||
+        (p.parcelId||'').toLowerCase().includes(q) ||
+        (p.vendor||'').toLowerCase().includes(q);
     }
     return true;
   }).sort((a, b) => {
@@ -2846,6 +2849,7 @@ function renderReportsView(el, alerts) {
   const filterStatuses = state._reportStatuses || [];
   const filterPM      = state._reportPM        || 'All';
   const filterMarket  = state._reportMarket    || 'All';
+  const filterVendor  = state._reportVendor    || 'All';
   const _rSort = state._reportSortBy || 'permitDate-desc';
   const _getPermitDate = p => (p.stageCompletedAt||{}).permitIssued||(p.stageDates||{}).permitIssued||'';
   const _getSubDate    = p => (p.stageRequestedAt||{}).submitted||(p.stageCompletedAt||{}).submitted||(p.stageDates||{}).submitted||'';
@@ -2858,6 +2862,7 @@ function renderReportsView(el, alerts) {
     .filter(p => filterStatuses.length === 0 ? (filterStatus === 'All' || p.overallStatus === filterStatus) : filterStatuses.includes(p.overallStatus))
     .filter(p => filterPM     === 'All' || (p.projectManager||'—') === filterPM)
     .filter(p => filterMarket === 'All' || (p.market||'') === filterMarket)
+    .filter(p => filterVendor === 'All' || (p.vendor||'') === filterVendor)
     .sort((a,b) => {
       const str = (v) => (v||'').toLowerCase();
       const num = (v) => parseFloat(v)||0;
@@ -2875,6 +2880,8 @@ function renderReportsView(el, alerts) {
       if (_rSort==='model-desc')      return str(b.model) > str(a.model) ? 1 : -1;
       if (_rSort==='pm-asc')          return str(a.projectManager) > str(b.projectManager) ? 1 : -1;
       if (_rSort==='pm-desc')         return str(b.projectManager) > str(a.projectManager) ? 1 : -1;
+      if (_rSort==='vendor-asc')      return str(a.vendor) > str(b.vendor) ? 1 : -1;
+      if (_rSort==='vendor-desc')     return str(b.vendor) > str(a.vendor) ? 1 : -1;
       if (_rSort==='permitNum-asc')   return str(a.permitNumber) > str(b.permitNumber) ? 1 : -1;
       if (_rSort==='permitNum-desc')  return str(b.permitNumber) > str(a.permitNumber) ? 1 : -1;
       if (_rSort==='days-asc')        return (getCityDays(a)||0) - (getCityDays(b)||0);
@@ -3041,6 +3048,7 @@ function renderReportsView(el, alerts) {
           <th>Owner</th>
           <th style="${_thStyle}" onclick="${_rSortToggle('model')}">Model ${_rSortIcon('model')}</th>
           <th style="${_thStyle}" onclick="${_rSortToggle('pm')}">PM ${_rSortIcon('pm')}</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('vendor')}">Vendor ${_rSortIcon('vendor')}</th>
           <th style="${_thStyle}" onclick="${_rSortToggle('permitNum')}">Permit # ${_rSortIcon('permitNum')}</th>
           ${filterStatus==='permitted'||filterStatus==='co' ? `<th style="${_thStyle};color:#15803d" onclick="${_rSortToggle('permitDate')}">Permit Date ${_rSortIcon('permitDate')}</th>` : ''}
           ${filterStatus==='co' ? `<th style="${_thStyle};color:#0e7490" onclick="${_rSortToggle('coDate')}">CO Date ${_rSortIcon('coDate')}</th>` : ''}
@@ -3060,6 +3068,7 @@ function renderReportsView(el, alerts) {
               <td style="font-size:11px">${ownerVal}</td>
               <td style="font-size:12px">${p.model||'—'}</td>
               <td style="font-size:12px">${p.projectManager||'—'}</td>
+              <td style="font-size:12px;color:#2d5a8e;font-weight:${p.vendor?'600':'400'}">${p.vendor||'—'}</td>
               <td style="font-size:12px;font-family:monospace">${p.permitNumber||'—'}</td>
               ${filterStatus==='permitted'||filterStatus==='co' ? `<td style="font-size:12px;font-weight:600;color:#15803d;white-space:nowrap">${permitDateVal?permitDateVal.slice(0,10):'—'}</td>` : ''}
               ${filterStatus==='co' ? `<td style="font-size:12px;font-weight:600;color:#0e7490;white-space:nowrap">${_getCODate(p)?_getCODate(p).slice(0,10):'—'}</td>` : ''}
@@ -3414,8 +3423,10 @@ function renderReportsView(el, alerts) {
   const pmPills = allReportPMs.map(pm=>pill(pm==='All'?'All PMs':pm, pm===filterPM, `state._reportPM='${pm}';render()`)).join('');
   const marketDefs = ['All','Palm Coast','Ocala'];
   const marketPills = marketDefs.map(m=>pill(m==='All'?'All Markets':m, m===filterMarket, `state._reportMarket='${m}';render()`)).join('');
-  const hasFilter = filterCom!=='All' || filterStatuses.length>0 || filterStatus!=='All' || filterPM!=='All' || filterMarket!=='All';
-  const clearBtn  = hasFilter ? `<button style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid #dc2626;background:#dc2626;color:#fff" onclick="state._reportCommunity='All';state._reportStatus='All';state._reportStatuses=[];state._reportPM='All';state._reportMarket='All';render()">✕ Clear Filters</button>` : '';
+  const allReportVendors = ['All',...[...new Set(state.permits.map(p=>p.vendor||'').filter(Boolean))].sort()];
+  const vendorPills = allReportVendors.map(v=>pill(v==='All'?'All Vendors':v, v===filterVendor, `state._reportVendor='${v}';render()`)).join('');
+  const hasFilter = filterCom!=='All' || filterStatuses.length>0 || filterStatus!=='All' || filterPM!=='All' || filterMarket!=='All' || filterVendor!=='All';
+  const clearBtn  = hasFilter ? `<button style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid #dc2626;background:#dc2626;color:#fff" onclick="state._reportCommunity='All';state._reportStatus='All';state._reportStatuses=[];state._reportPM='All';state._reportMarket='All';state._reportVendor='All';render()">✕ Clear Filters</button>` : '';
   el.innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
       <h2 style="font-size:18px;font-weight:700">Reports & Analytics</h2>
@@ -3437,7 +3448,11 @@ function renderReportsView(el, alerts) {
         </div>
         <div>
           <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">👤 Project Manager</div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px">${pmPills} ${clearBtn}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">${pmPills}</div>
+        </div>
+        <div style="grid-column:1/-1">
+          <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">🏗 Vendor / Surveyor</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">${vendorPills} ${clearBtn}</div>
         </div>
       </div>
     </div>
@@ -3979,6 +3994,8 @@ function renderPermitRow(permit, allAlerts, compact) {
         <div class="address-main">${permit.address.split(',')[0]}</div>
         ${permit.address.includes(',')?`<div class="address-sub">${permit.address.split(',').slice(1).join(',').trim()}</div>`:''}
         ${permit.community?`<div style="font-size:10px;color:var(--text-muted);margin-top:1px">${permit.community}</div>`:''}
+        ${permit.parcelId?`<div style="font-size:10px;color:var(--text-muted);font-family:monospace;margin-top:1px">${permit.parcelId}</div>`:''}
+        ${permit.vendor?`<div style="font-size:10px;color:#2d5a8e;font-weight:600;margin-top:1px">🏗 ${permit.vendor}</div>`:''}
       </td>
       <td>
         <div style="font-size:13px;font-weight:600">${permit.model||'—'}</div>
@@ -4211,6 +4228,11 @@ function renderExpandContent(permit) {
         <span class="info-label">Parcel ID</span>
         <input class="info-input" style="font-family:monospace;font-size:12px" value="${permit.parcelId||''}" placeholder="Enter parcel ID"
                onchange="updatePermitField('${permit.id}','parcelId',this.value)">
+      </div>
+      <div class="info-field">
+        <span class="info-label">Vendor / Surveyor</span>
+        <input class="info-input" value="${permit.vendor||''}" placeholder="e.g. ABC Surveying"
+               onchange="updatePermitField('${permit.id}','vendor',this.value)">
       </div>
       <div class="info-field">
         <span class="info-label">Lot Number</span>
@@ -5591,6 +5613,7 @@ function buildModalForm(permit) {
     </div>
     <div class="form-field"><label class="form-label">Lot Number</label><input class="form-input" id="f-lotNumber" value="${v('lotNumber')}"></div>
     <div class="form-field"><label class="form-label">Parcel ID</label><input class="form-input" id="f-parcelId" value="${v('parcelId')}"></div>
+    <div class="form-field"><label class="form-label">Vendor / Surveyor</label><input class="form-input" id="f-vendor" value="${v('vendor')}" placeholder="e.g. ABC Surveying"></div>
     <div class="form-field"><label class="form-label">House Model</label><input class="form-input" id="f-model" value="${v('model')}" placeholder="Palomino"></div>
     <div class="form-field"><label class="form-label">Elevation</label>
       <select class="form-input" id="f-elevation">
@@ -5653,7 +5676,7 @@ function saveModal() {
   const addr = document.getElementById('f-address').value.trim();
   if (!addr) { alert('Address is required.'); return; }
   const _sm=new Date(); const today=`${_sm.getFullYear()}-${String(_sm.getMonth()+1).padStart(2,'0')}-${String(_sm.getDate()).padStart(2,'0')}`;
-  const fields = ['community','market','address','lotNumber','parcelId','model','plan','garage','elevation','water','projectManager','estWeeks','permitNumber','permitFee','utilities','options','notes'];
+  const fields = ['community','market','address','lotNumber','parcelId','vendor','model','plan','garage','elevation','water','projectManager','estWeeks','permitNumber','permitFee','utilities','options','notes'];
   if (state.editingId) {
     const permit = state.permits.find(p=>p.id===state.editingId);
     if (permit) {
