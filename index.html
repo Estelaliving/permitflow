@@ -749,6 +749,16 @@ const ONEDRIVE_ROOT = 'Estela Living';
 const MODELS = ['Andros','Appaloosa','Bay','Bimini','Bimini X','Cremello','Exuma X','Heron','Heron X','IBIS','Palomino','Sabino','Snapper'];
 const ELEVATIONS = ['A2 Stone/Stucco','A4 Wood/Stucco/Bands','Farmhouse','Modern','Transitional'];
 const MARKETS = ['Palm Coast','Ocala'];
+const PALM_COAST_COMMUNITIES = ['Palm Coast Scattered','Sawmill Branch'];
+function getMarketForCommunity(community) {
+  return PALM_COAST_COMMUNITIES.includes(community) ? 'Palm Coast' : 'Ocala';
+}
+const DEFAULT_SURVEYORS = [
+  { id: 's-ardurra', name: 'Ardurra', email: '', markets: ['Ocala'] },
+  { id: 's-jch',     name: 'JCH',     email: '', markets: ['Ocala'] },
+  { id: 's-alliant', name: 'Alliant', email: '', markets: ['Palm Coast'] },
+  { id: 's-swa',     name: 'SWA',     email: '', markets: ['Palm Coast'] },
+];
 
 // ══════════════════════════════════════════════════
 //  STATE
@@ -783,6 +793,7 @@ let state = {
   _reportPM: 'All',
   _reportMarket: 'All',
   _reportVendor: 'All',
+  surveyors: [],
 };
 
 // Data Sanitization - cleans NaT / null strings from imported data
@@ -841,6 +852,7 @@ function loadData() {
   loadCustomFields();
   loadOptionsList();
   loadVendorEmails();
+  loadSurveyors();
 
   // Sanitize NaT / bad date values from all permits
   state.permits = state.permits.map(sanitizePermit);
@@ -873,7 +885,31 @@ function saveVendorEmails() {
   clearTimeout(state._syncTimer);
   state._syncTimer = setTimeout(() => syncToGitHub(), 2000);
 }
-function getVendorEmail(stageKey, market) {
+function loadSurveyors() {
+  const saved = localStorage.getItem('estela_surveyors_v1');
+  if (saved) { try { state.surveyors = JSON.parse(saved); } catch(e) { state.surveyors = []; } }
+  if (!state.surveyors || state.surveyors.length === 0) {
+    state.surveyors = JSON.parse(JSON.stringify(DEFAULT_SURVEYORS));
+    localStorage.setItem('estela_surveyors_v1', JSON.stringify(state.surveyors));
+  }
+}
+function saveSurveyors() {
+  localStorage.setItem('estela_surveyors_v1', JSON.stringify(state.surveyors));
+  clearTimeout(state._syncTimer);
+  state._syncTimer = setTimeout(() => syncToGitHub(), 2000);
+}
+function getSurveyorOptions(permit, currentVal) {
+  const market = getMarketForCommunity(permit.community || '');
+  const filtered = state.surveyors.filter(s => !s.markets || s.markets.length === 0 || s.markets.includes(market) || s.markets.includes('Both'));
+  const hasCurrentInList = filtered.some(s => s.name === currentVal);
+  const extra = (currentVal && !hasCurrentInList) ? `<option value="${currentVal}" selected>${currentVal}</option>` : '';
+  return `<option value="">Select surveyor...</option>${extra}${filtered.map(s=>`<option value="${s.name}" ${currentVal===s.name?'selected':''}>${s.name}</option>`).join('')}`;
+}
+function getVendorEmail(stageKey, market, permit) {
+  if (stageKey === 'sitePlan' && permit && permit.vendor) {
+    const surveyor = (state.surveyors || []).find(s => s.name === permit.vendor);
+    if (surveyor && surveyor.email) return surveyor.email;
+  }
   const ve = state.vendorEmails || {};
   return (ve[market] || {})[stageKey] || (ve['Palm Coast'] || {})[stageKey] || (ve.global || {})[stageKey] || '';
 }
@@ -897,7 +933,7 @@ function buildEmailContent(permit, stageKey, type) {
   const model = permit.model || '—';
   const garage = permit.garage || '—';
   const elevation = permit.elevation || '—';
-  const vendorEmail = getVendorEmail(stageKey, permit.market);
+  const vendorEmail = getVendorEmail(stageKey, permit.market, permit);
   const reqDate = (permit.stageRequestedAt||{})[stageKey] || (permit.stageUpdatedAt||{})[stageKey] || '';
   const d = reqDate ? Math.round((new Date()-new Date(reqDate))/86400000) : null;
 
@@ -1193,6 +1229,7 @@ async function syncToGitHub() {
       customFields: CUSTOM_PERMIT_FIELDS,
       optionsList: OPTIONS_LIST,
       vendorEmails: state.vendorEmails,
+      surveyors: state.surveyors,
     };
     const { error } = await sb.from('permit_database')
       .upsert({ id: 1, data: payload, updated_at: new Date().toISOString() });
@@ -1277,6 +1314,7 @@ function _startRealtimeSync() {
         if (d.customFields && d.customFields.length > 0) { CUSTOM_PERMIT_FIELDS = d.customFields; saveCustomFields(); }
         if (d.optionsList && d.optionsList.length > 0) { OPTIONS_LIST = d.optionsList; saveOptionsList(); }
         if (d.vendorEmails) { state.vendorEmails = d.vendorEmails; localStorage.setItem('estela_vendor_emails_v1', JSON.stringify(d.vendorEmails)); }
+        if (d.surveyors && d.surveyors.length > 0) { state.surveyors = d.surveyors; localStorage.setItem('estela_surveyors_v1', JSON.stringify(d.surveyors)); }
         localStorage.setItem('estela_permits_v3', JSON.stringify(state.permits));
         render();
         updateSyncBadge('live');
@@ -3048,7 +3086,7 @@ function renderReportsView(el, alerts) {
           <th>Owner</th>
           <th style="${_thStyle}" onclick="${_rSortToggle('model')}">Model ${_rSortIcon('model')}</th>
           <th style="${_thStyle}" onclick="${_rSortToggle('pm')}">PM ${_rSortIcon('pm')}</th>
-          <th style="${_thStyle}" onclick="${_rSortToggle('vendor')}">Vendor ${_rSortIcon('vendor')}</th>
+          <th style="${_thStyle}" onclick="${_rSortToggle('vendor')}">Surveyor ${_rSortIcon('vendor')}</th>
           <th style="${_thStyle}" onclick="${_rSortToggle('permitNum')}">Permit # ${_rSortIcon('permitNum')}</th>
           ${filterStatus==='permitted'||filterStatus==='co' ? `<th style="${_thStyle};color:#15803d" onclick="${_rSortToggle('permitDate')}">Permit Date ${_rSortIcon('permitDate')}</th>` : ''}
           ${filterStatus==='co' ? `<th style="${_thStyle};color:#0e7490" onclick="${_rSortToggle('coDate')}">CO Date ${_rSortIcon('coDate')}</th>` : ''}
@@ -3424,7 +3462,7 @@ function renderReportsView(el, alerts) {
   const marketDefs = ['All','Palm Coast','Ocala'];
   const marketPills = marketDefs.map(m=>pill(m==='All'?'All Markets':m, m===filterMarket, `state._reportMarket='${m}';render()`)).join('');
   const allReportVendors = ['All',...[...new Set(state.permits.map(p=>p.vendor||'').filter(Boolean))].sort()];
-  const vendorPills = allReportVendors.map(v=>pill(v==='All'?'All Vendors':v, v===filterVendor, `state._reportVendor='${v}';render()`)).join('');
+  const vendorPills = allReportVendors.map(v=>pill(v==='All'?'All Surveyors':v, v===filterVendor, `state._reportVendor='${v}';render()`)).join('');
   const hasFilter = filterCom!=='All' || filterStatuses.length>0 || filterStatus!=='All' || filterPM!=='All' || filterMarket!=='All' || filterVendor!=='All';
   const clearBtn  = hasFilter ? `<button style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid #dc2626;background:#dc2626;color:#fff" onclick="state._reportCommunity='All';state._reportStatus='All';state._reportStatuses=[];state._reportPM='All';state._reportMarket='All';state._reportVendor='All';render()">✕ Clear Filters</button>` : '';
   el.innerHTML = `
@@ -3451,7 +3489,7 @@ function renderReportsView(el, alerts) {
           <div style="display:flex;flex-wrap:wrap;gap:5px">${pmPills}</div>
         </div>
         <div style="grid-column:1/-1">
-          <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">🏗 Vendor / Surveyor</div>
+          <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">🔍 Surveyor</div>
           <div style="display:flex;flex-wrap:wrap;gap:5px">${vendorPills} ${clearBtn}</div>
         </div>
       </div>
@@ -3583,7 +3621,7 @@ function renderPhase1Tab(permits) {
       const tip = 'Requested: '+(reqDate||'—')+'\nPending: '+(d!==null?d+' days':'unknown')+(d!==null&&d>=3?'\n⚠️ Alert threshold reached':'');
       const icon = d!==null&&d>=6 ? '🔴' : d!==null&&d>=4 ? '⚠️' : '⏳';
       const stageLabel = (STAGE_CONFIG[key]||{}).label || key;
-      const hasEmail = !!getVendorEmail(key, p.market);
+      const hasEmail = !!getVendorEmail(key, p.market, p);
       const emailBtns = `<div style="display:flex;flex-direction:column;gap:2px;align-items:center;margin-top:3px">
           <button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','request')" title="Send initial request email" style="background:${hasEmail?'#2d5a8e':'#94a3b8'};color:#fff;border:none;border-radius:3px;padding:1px 4px;font-size:9px;cursor:pointer;line-height:1.5;width:22px">📧</button>
           ${d!==null&&d>=3?`<button onclick="event.stopPropagation();showEmailModal('${p.id}','${key}','followup')" title="Send follow-up email (${d}d pending)" style="background:#b91c1c;color:#fff;border:none;border-radius:3px;padding:1px 4px;font-size:9px;cursor:pointer;line-height:1.5;width:22px">🔔</button>`:''}
@@ -3995,7 +4033,7 @@ function renderPermitRow(permit, allAlerts, compact) {
         ${permit.address.includes(',')?`<div class="address-sub">${permit.address.split(',').slice(1).join(',').trim()}</div>`:''}
         ${permit.community?`<div style="font-size:10px;color:var(--text-muted);margin-top:1px">${permit.community}</div>`:''}
         ${permit.parcelId?`<div style="font-size:10px;color:var(--text-muted);font-family:monospace;margin-top:1px">${permit.parcelId}</div>`:''}
-        ${permit.vendor?`<div style="font-size:10px;color:#2d5a8e;font-weight:600;margin-top:1px">🏗 ${permit.vendor}</div>`:''}
+        ${permit.vendor?`<div style="font-size:10px;color:#2d5a8e;font-weight:600;margin-top:1px">🔍 ${permit.vendor}</div>`:''}
       </td>
       <td>
         <div style="font-size:13px;font-weight:600">${permit.model||'—'}</div>
@@ -4230,9 +4268,10 @@ function renderExpandContent(permit) {
                onchange="updatePermitField('${permit.id}','parcelId',this.value)">
       </div>
       <div class="info-field">
-        <span class="info-label">Vendor / Surveyor</span>
-        <input class="info-input" value="${permit.vendor||''}" placeholder="e.g. ABC Surveying"
-               onchange="updatePermitField('${permit.id}','vendor',this.value)">
+        <span class="info-label">Surveyor</span>
+        <select class="info-input" onchange="updatePermitField('${permit.id}','vendor',this.value)">
+          ${getSurveyorOptions(permit, permit.vendor||'')}
+        </select>
       </div>
       <div class="info-field">
         <span class="info-label">Lot Number</span>
@@ -5613,7 +5652,11 @@ function buildModalForm(permit) {
     </div>
     <div class="form-field"><label class="form-label">Lot Number</label><input class="form-input" id="f-lotNumber" value="${v('lotNumber')}"></div>
     <div class="form-field"><label class="form-label">Parcel ID</label><input class="form-input" id="f-parcelId" value="${v('parcelId')}"></div>
-    <div class="form-field"><label class="form-label">Vendor / Surveyor</label><input class="form-input" id="f-vendor" value="${v('vendor')}" placeholder="e.g. ABC Surveying"></div>
+    <div class="form-field"><label class="form-label">Surveyor</label>
+      <select class="form-input" id="f-vendor">
+        ${(()=>{const m=v('market')||'Palm Coast';const ss=state.surveyors.filter(s=>!s.markets||!s.markets.length||s.markets.includes(m)||s.markets.includes('Both'));const cur=v('vendor');const hasIt=ss.some(s=>s.name===cur);return`<option value="">Select surveyor...</option>${cur&&!hasIt?`<option value="${cur}" selected>${cur}</option>`:''}${ss.map(s=>`<option value="${s.name}"${cur===s.name?' selected':''}>${s.name}</option>`).join('')}`;})()}
+      </select>
+    </div>
     <div class="form-field"><label class="form-label">House Model</label><input class="form-input" id="f-model" value="${v('model')}" placeholder="Palomino"></div>
     <div class="form-field"><label class="form-label">Elevation</label>
       <select class="form-input" id="f-elevation">
@@ -5705,6 +5748,38 @@ function closeModal() { document.getElementById('modal-overlay').classList.remov
 // ══════════════════════════════════════════════════
 //  SETTINGS
 // ══════════════════════════════════════════════════
+function renderSurveyorSettings() {
+  const surveyors = state.surveyors || [];
+  const rows = surveyors.map((s,i) => {
+    const mks = ['Palm Coast','Ocala','Both'];
+    const mChks = mks.map(m=>`<label style="display:inline-flex;align-items:center;gap:4px;font-size:12px;cursor:pointer;white-space:nowrap">
+      <input type="checkbox" ${(s.markets||[]).includes(m)?'checked':''} onchange="(()=>{const sv=state.surveyors[${i}];if(!sv.markets)sv.markets=[];if(this.checked){if(!sv.markets.includes('${m}'))sv.markets.push('${m}');}else{sv.markets=sv.markets.filter(x=>x!=='${m}');}saveSurveyors();showToast('✅ Saved');})()">${m}
+    </label>`).join('');
+    return `<div style="display:grid;grid-template-columns:1fr 1.5fr auto auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">
+      <input value="${s.name}" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)"
+        onchange="state.surveyors[${i}].name=this.value.trim();saveSurveyors();showToast('✅ Saved')" placeholder="Name">
+      <input type="email" value="${s.email||''}" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)"
+        onchange="state.surveyors[${i}].email=this.value.trim();saveSurveyors();showToast('✅ Email saved')" placeholder="email@surveyor.com">
+      <div style="display:flex;gap:8px">${mChks}</div>
+      <button style="padding:4px 8px;background:#fee2e2;color:#dc2626;border:none;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer"
+        onclick="if(confirm('Remove ${s.name}?')){state.surveyors.splice(${i},1);saveSurveyors();openSettings()}">✕</button>
+    </div>`;
+  }).join('');
+
+  return `<div class="settings-card">
+    <h4>🔍 Surveyors</h4>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Manage the surveyor list. Surveyors are filtered by market when selecting on a permit. The Site Plan email will use the surveyor's email automatically.</p>
+    <div style="display:grid;grid-template-columns:1fr 1.5fr auto auto;gap:8px;padding:6px 0;border-bottom:2px solid var(--border)">
+      <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase">Name</span>
+      <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase">Email</span>
+      <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase">Markets</span>
+      <span></span>
+    </div>
+    ${rows}
+    <button class="btn btn-accent btn-sm" style="margin-top:12px" onclick="(()=>{state.surveyors.push({id:'s-'+Date.now(),name:'New Surveyor',email:'',markets:['Ocala']});saveSurveyors();openSettings()})()">+ Add Surveyor</button>
+  </div>`;
+}
+
 function renderVendorEmailSettings() {
   const ph1Keys = Object.entries(STAGE_CONFIG).filter(([_k,cfg])=>cfg.phase===1).map(([k,cfg])=>({key:k,label:cfg.label}));
   const ve = state.vendorEmails || {};
@@ -5760,6 +5835,7 @@ function openSettings() {
       <p>All permit data (stages, statuses, notes, options, custom fields) syncs automatically to GitHub and is shared across the whole team. Everyone sees the same data in real time.</p>
       <p style="font-size:12px;color:var(--text-muted)">File attachments (PDFs, drawings) are saved in this browser only. Use the 📎 Attach button on each stage row to attach files — they are available for download on this device.</p>
     </div>
+    ${(()=>{ try { return renderSurveyorSettings(); } catch(e) { return `<div class="settings-card"><h4>🔍 Surveyors</h4><p style="color:#dc2626;font-size:12px">Error: ${e.message}</p></div>`; } })()}
     ${(()=>{ try { return renderVendorEmailSettings(); } catch(e) { return `<div class="settings-card"><h4>📧 Vendor Emails</h4><p style="color:#dc2626;font-size:12px">Error loading vendor email settings: ${e.message}</p></div>`; } })()}
     ${renderCustomFieldsManager()}
     <div class="settings-card">
