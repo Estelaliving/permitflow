@@ -1012,7 +1012,7 @@ function showEmailModal(permitId, stageKey, type) {
     <div style="padding:18px 20px 20px">
       <div style="display:grid;grid-template-columns:64px 1fr;gap:8px 10px;align-items:center;margin-bottom:14px">
         <span style="font-size:12px;font-weight:700;color:var(--text-muted)">To:</span>
-        <input id="ec-to" type="email" value="${content.to}" placeholder="vendor@email.com — type or set in Settings"
+        <input id="ec-to" type="text" value="${content.to}" placeholder="email@vendor.com, another@email.com — type or set in Settings"
           style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);width:100%">
         <span style="font-size:12px;font-weight:700;color:var(--text-muted)">Subject:</span>
         <input id="ec-subject" type="text" value="${content.subject.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}"
@@ -5758,8 +5758,8 @@ function renderSurveyorSettings() {
     return `<div style="display:grid;grid-template-columns:1fr 1.5fr auto auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">
       <input value="${s.name}" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)"
         onchange="state.surveyors[${i}].name=this.value.trim();saveSurveyors();showToast('✅ Saved')" placeholder="Name">
-      <input type="email" value="${s.email||''}" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)"
-        onchange="state.surveyors[${i}].email=this.value.trim();saveSurveyors();showToast('✅ Email saved')" placeholder="email@surveyor.com">
+      <input type="text" value="${s.email||''}" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)"
+        onchange="state.surveyors[${i}].email=this.value.trim();saveSurveyors();showToast('✅ Email saved')" placeholder="email@surveyor.com, cc@company.com">
       <div style="display:flex;gap:8px">${mChks}</div>
       <button style="padding:4px 8px;background:#fee2e2;color:#dc2626;border:none;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer"
         onclick="if(confirm('Remove ${s.name}?')){state.surveyors.splice(${i},1);saveSurveyors();openSettings()}">✕</button>
